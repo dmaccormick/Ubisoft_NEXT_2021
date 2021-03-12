@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+# Additional VS files
+*.db
+*suo
+*.ipch
+*.pdb
+*.idb
+*.ilk
+*.tlog

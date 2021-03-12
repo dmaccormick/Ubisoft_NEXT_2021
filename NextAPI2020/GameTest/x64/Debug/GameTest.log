@@ -1,0 +1,12 @@
+﻿  stdafx.cpp
+  app.cpp
+  main.cpp
+  SimpleController.cpp
+  SimpleSound.cpp
+  SimpleSprite.cpp
+  TextureLoader.cpp
+  GameTest.cpp
+  Generating Code...
+  GameTest.vcxproj -> C:\Repos\UbisoftNextTesting\NextAPI2020\x64\Debug\GameTest.exe
+  C:\Repos\UbisoftNextTesting\NextAPI2020\\GameTest\glut\bin\x64\freeglut.dll
+  1 File(s) copied
