@@ -100,7 +100,7 @@ float Vec2::GetMagnitudeSquared() const
 
 
 //--- Operator Overloads ---//
-Vec2& Vec2::operator+ (const Vec2& _other) const
+Vec2 Vec2::operator+ (const Vec2& _other) const
 {
 	return Vec2(m_x + _other.GetX(), m_y + _other.GetY());
 }
@@ -111,7 +111,7 @@ Vec2& Vec2::operator+= (const Vec2& _other)
 	return *this;
 }
 
-Vec2& Vec2::operator- (const Vec2& _other) const
+Vec2 Vec2::operator- (const Vec2& _other) const
 {
 	return Vec2(m_x - _other.GetX(), m_y - _other.GetY());
 }
@@ -122,12 +122,12 @@ Vec2& Vec2::operator-= (const Vec2& _other)
 	return *this;
 }
 
-Vec2& Vec2::operator* (const float& _other) const
+Vec2 Vec2::operator* (const float& _other) const
 {
 	return Vec2(m_x * _other, m_y * _other);
 }
 
-Vec2& operator* (const float& _a, const Vec2& _b)
+Vec2 operator* (const float& _a, const Vec2& _b)
 {
 	return _b * _a;
 }
@@ -149,7 +149,7 @@ bool Vec2::operator== (const Vec2& _other) const
 	return (m_x == _other.GetX() && m_y == _other.GetY());
 }
 
-Vec2& Vec2::operator- () const
+Vec2 Vec2::operator- () const
 {
 	return Vec2(-m_x, -m_y);
 }

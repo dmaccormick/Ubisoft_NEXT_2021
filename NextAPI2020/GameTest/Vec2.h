@@ -30,16 +30,16 @@ public:
 	float GetMagnitudeSquared() const;
 
 	//--- Operator Overloads ---//
-	Vec2&					operator+	(const Vec2& _other) const;
+	Vec2					operator+	(const Vec2& _other) const;
 	Vec2&					operator+=	(const Vec2& _other);
-	Vec2&					operator-	(const Vec2& _other) const;
+	Vec2					operator-	(const Vec2& _other) const;
 	Vec2&					operator-=	(const Vec2& _other);
-	Vec2&					operator*	(const float& _other) const;
-	friend Vec2&			operator*	(const float& _a, const Vec2& _b);
+	Vec2					operator*	(const float& _other) const;
+	friend Vec2				operator*	(const float& _a, const Vec2& _b);
 	Vec2&					operator*=	(const float& _other);
 	void					operator=	(const Vec2& _other);
 	bool					operator==	(const Vec2& _other) const;
-	Vec2&					operator-	() const;
+	Vec2					operator-	() const;
 	friend std::ostream&	operator<<	(std::ostream& _os, const Vec2& _vec);
 
 	//--- Static Methods ---//
