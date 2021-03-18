@@ -65,8 +65,10 @@ void STest::Init()
 
 void STest::Update(float _deltaTime)
 {
-	auto playerTransform = m_registry.GetComponent<CTransform>(m_player);
-	auto playerSprite = m_registry.GetComponent<CSprite>(m_player);
+	/*auto playerTransform = m_registry.GetComponent<CTransform>(m_player);
+	auto playerSprite = m_registry.GetComponent<CSprite>(m_player);*/
+	auto playerTransform = m_player->GetComponent<CTransform>();
+	auto playerSprite = m_player->GetComponent<CSprite>();
 
 	if (App::GetController().GetLeftThumbStickX() > 0.5f)
 	{
@@ -85,7 +87,8 @@ void STest::Update(float _deltaTime)
 
 void STest::Draw()
 {
-	std::vector<CSprite*> sprites = m_registry.GetAllComponents<CSprite>();
+	//std::vector<CSprite*> sprites = m_registry.GetAllComponents<CSprite>();
+	std::vector<CSprite*> sprites = m_registry.GetAllComponentsByType<CSprite>();
 	std::sort(sprites.begin(), sprites.end(), [](CSprite* _a, CSprite* _b) {return _a->GetRenderLayer() > _b->GetRenderLayer(); });
 
 	for (auto sprite : sprites)

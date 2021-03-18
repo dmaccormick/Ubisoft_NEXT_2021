@@ -33,6 +33,9 @@
     <ClCompile Include="CSprite.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Expanded Framework\ECS\Base</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
