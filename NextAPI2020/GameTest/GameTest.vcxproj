@@ -184,6 +184,7 @@
     <ClInclude Include="App\SimpleSound.h" />
     <ClInclude Include="App\SimpleSprite.h" />
     <ClInclude Include="App\TextureLoader.h" />
+    <ClInclude Include="CBoxCollider.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="CTransform.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="App\SimpleSound.cpp" />
     <ClCompile Include="App\SimpleSprite.cpp" />
     <ClCompile Include="App\TextureLoader.cpp" />
+    <ClCompile Include="CBoxCollider.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="Entity.cpp" />

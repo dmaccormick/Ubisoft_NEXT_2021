@@ -31,6 +31,7 @@ public:
 
 	//--- Getters ---//
 	float GetRenderLayer() const;
+	CSimpleSprite* GetSprite() const;
 
 private:
 	//--- Private Data ---//

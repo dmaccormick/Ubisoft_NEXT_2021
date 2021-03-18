@@ -51,5 +51,5 @@ private:
 	std::vector<Component*> m_components;
 
 	//--- Private Methods ---//
-	void AddComponent(Component* _comp);
+	void AddComponent(Component* _comp); // Private so that components can only be added through the registry
 };

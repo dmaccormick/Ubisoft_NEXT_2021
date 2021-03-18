@@ -26,7 +26,6 @@ CSprite::~CSprite()
 //--- Component Interface ---//
 void CSprite::Init()
 {
-	//m_transform = m_registry->GetComponent<CTransform>(m_entity);
 	m_transform = m_entity->GetComponent<CTransform>();
 }
 
@@ -84,4 +83,9 @@ void CSprite::SetRenderLayer(float _renderLayer)
 float CSprite::GetRenderLayer() const
 {
 	return m_sprite->GetRenderLayer();
+}
+
+CSimpleSprite* CSprite::GetSprite() const
+{
+	return m_sprite;
 }

@@ -36,6 +36,9 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Expanded Framework\ECS\Base</Filter>
     </ClCompile>
+    <ClCompile Include="CBoxCollider.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
@@ -78,6 +81,9 @@
       <Filter>Expanded Framework\Scene Management\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="CSprite.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoxCollider.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>

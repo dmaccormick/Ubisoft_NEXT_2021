@@ -22,6 +22,7 @@ public:
 	Entity* GetEntity() const { return m_entity; }
 
 protected:
+	//--- Protected Data ---//
 	Entity* m_entity;
 	Registry* m_registry;
 };
