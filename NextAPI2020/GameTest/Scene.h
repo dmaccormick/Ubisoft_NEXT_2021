@@ -1,5 +1,8 @@
 #pragma once
 
+// Internal includes
+#include "Registry.h"
+
 class Scene
 {
 public:
@@ -8,8 +11,11 @@ public:
 	virtual ~Scene() {}
 
 	//--- Methods ---//
-	virtual void Load() = 0;
-	virtual void Start() = 0;
+	virtual void Init() = 0;
 	virtual void Update(float _deltaTime) = 0;
-	virtual void Unload() = 0;
+	virtual void Draw() = 0;
+
+protected:
+	//--- Protected Data ---//
+	Registry m_registry;
 };

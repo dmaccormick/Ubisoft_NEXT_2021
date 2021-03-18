@@ -95,7 +95,11 @@ void InitGL()
 	StartCounter();
 	gLastTime = GetCounter();
 	// Set "clearing" or background color
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // Black and opaque
+	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+
+	// Added GL depth testing
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 }
 
 //---------------------------------------------------------------------------------
@@ -104,7 +108,8 @@ void InitGL()
 //---------------------------------------------------------------------------------
 void Display()
 {
-	glClear(GL_COLOR_BUFFER_BIT);   // Clear the color buffer with current clearing color
+	// Added depth buffer clearing
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);   // Clear the color buffer with current clearing color
 
 	gUserRenderProfiler.Start();	
 	Render();						// Call user defined render.

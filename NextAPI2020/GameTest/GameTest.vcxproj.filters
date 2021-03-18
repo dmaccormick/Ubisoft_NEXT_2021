@@ -9,11 +9,29 @@
     <ClCompile Include="App\TextureLoader.cpp" />
     <ClCompile Include="GameTest.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="SceneManager.cpp">
+    <ClCompile Include="GameObject.cpp">
       <Filter>Expanded Framework</Filter>
     </ClCompile>
-    <ClCompile Include="Vec2.cpp">
+    <ClCompile Include="SpriteObject.cpp">
       <Filter>Expanded Framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Registry.cpp">
+      <Filter>Expanded Framework\ECS\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="CTransform.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Expanded Framework\Scene Management\Base</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec2.cpp">
+      <Filter>Expanded Framework\Utilities</Filter>
+    </ClCompile>
+    <ClCompile Include="STest.cpp">
+      <Filter>Expanded Framework\Scene Management\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="CSprite.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -26,17 +44,38 @@
     <ClInclude Include="App\TextureLoader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="Scene.h">
-      <Filter>Expanded Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Expanded Framework</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Expanded Framework</Filter>
     </ClInclude>
-    <ClInclude Include="Vec2.h">
+    <ClInclude Include="SpriteObject.h">
       <Filter>Expanded Framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Expanded Framework\ECS\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Expanded Framework\ECS\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Registry.h">
+      <Filter>Expanded Framework\ECS\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CTransform.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Expanded Framework\Scene Management\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Expanded Framework\Scene Management\Base</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec2.h">
+      <Filter>Expanded Framework\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="STest.h">
+      <Filter>Expanded Framework\Scene Management\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="CSprite.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +84,27 @@
   <ItemGroup>
     <Filter Include="Expanded Framework">
       <UniqueIdentifier>{8ef741ca-811c-4846-bf28-e82c29e81ee3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Expanded Framework\ECS">
+      <UniqueIdentifier>{c961110a-b35a-415b-aa85-dae93500083a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Expanded Framework\ECS\Components">
+      <UniqueIdentifier>{fcb76f87-6952-46a7-b28d-d631683e950f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Expanded Framework\ECS\Base">
+      <UniqueIdentifier>{73d25d1a-288b-46ef-bddd-64b6a9a44232}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Expanded Framework\Scene Management">
+      <UniqueIdentifier>{276ae0e6-c493-4c38-a239-0b0a653295ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Expanded Framework\Scene Management\Base">
+      <UniqueIdentifier>{23d40c1c-263c-42eb-9cb0-e17eb869cd41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Expanded Framework\Scene Management\Scenes">
+      <UniqueIdentifier>{52c12485-b9d3-46b1-93ac-51f9e0007f9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Expanded Framework\Utilities">
+      <UniqueIdentifier>{da52ab5e-37f7-4b51-b629-189749e45dd3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

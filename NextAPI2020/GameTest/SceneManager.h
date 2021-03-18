@@ -11,14 +11,15 @@ public:
 	~SceneManager();
 
 	//--- Methods ---//
-	template<typename T> void LoadScene()
+	template<typename SceneType> void LoadScene()
 	{
 		UnloadActiveScene();
 		
-		m_activeScene = new T();
-		m_activeScene->Load();
+		m_activeScene = new SceneType();
+		m_activeScene->Init();
 	}
 	void UpdateActiveScene(float _deltaTime);
+	void DrawActiveScene();
 	void UnloadActiveScene();
 
 private:

@@ -107,7 +107,7 @@ void CSimpleSprite::Draw()
     for (unsigned int i = 0; i < 8; i += 2)
     {
         glTexCoord2f(m_uvcoords[i], m_uvcoords[i + 1]);
-        glVertex2f(m_points[i], m_points[i+1]);
+        glVertex3f(m_points[i], m_points[i+1], m_renderLayer);
     }
     glEnd();
     glPopMatrix();

@@ -44,12 +44,12 @@ public:
 
 	//--- Static Methods ---//
 	static float Dot(const Vec2& _a, const Vec2& _b);
-	static Vec2& Normalize(const Vec2& _vec);
-	static Vec2& Up();
-	static Vec2& Right();
-	static Vec2& Down();
-	static Vec2& Left();
-	static Vec2& Zero();
+	static Vec2 Normalize(const Vec2& _vec);
+	static Vec2 Up();
+	static Vec2 Right();
+	static Vec2 Down();
+	static Vec2 Left();
+	static Vec2 Zero();
 
 private:
 	//--- Data Members ---//

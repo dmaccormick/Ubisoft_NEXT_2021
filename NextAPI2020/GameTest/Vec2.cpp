@@ -167,33 +167,33 @@ float Vec2::Dot(const Vec2& _a, const Vec2& _b)
 	return _a.Dot(_b);
 }
 
-Vec2& Vec2::Normalize(const Vec2& _vec)
+Vec2 Vec2::Normalize(const Vec2& _vec)
 {
 	float mag = _vec.GetMagnitude();
 	return Vec2(_vec.m_x / mag, _vec.m_y / mag);
 }
 
-Vec2& Vec2::Up()
+Vec2 Vec2::Up()
 {
 	return Vec2(0.0f, 1.0f);
 }
 
-Vec2& Vec2::Right()
+Vec2 Vec2::Right()
 {
 	return Vec2(1.0f, 0.0f);
 }
 
-Vec2& Vec2::Down()
+Vec2 Vec2::Down()
 {
 	return Vec2(0.0f, -1.0f);
 }
 
-Vec2& Vec2::Left()
+Vec2 Vec2::Left()
 {
 	return Vec2(-1.0f, 0.0f);
 }
 
-Vec2& Vec2::Zero()
+Vec2 Vec2::Zero()
 {
 	return Vec2();
 }

@@ -8,6 +8,7 @@
 #include "../glut/include/GL/freeglut.h"
 #include <map>
 #include <vector>
+#include <algorithm>
 
 //-----------------------------------------------------------------------------
 // CSimpleSprite
@@ -56,6 +57,12 @@ public:
 	void SetVertex(unsigned int i, float v) { if(i < 8) m_points[i] = v; }
 	float GetVertex(unsigned int i) { if (i >= 8) i = 0; return m_points[i]; }
 
+    // Additions
+    // Render Layer between -10 and 10 (can't go above or below that)
+    // Positive numbers push towards the back, negative push towards the front
+    void SetRenderLayer(float _newLayer) { m_renderLayer = std::min<float>(10.0f, std::max<float>(_newLayer, -10.0f)); }
+    float GetRenderLayer() const { return m_renderLayer; }
+
 private:
     void CalculateUVs();
     GLuint m_texture;
@@ -78,6 +85,9 @@ private:
 	float m_alpha = 1.0f;
     int     m_currentAnim = -1;
     float   m_animTime = 0.0F;
+
+    // Additions
+    float m_renderLayer = 0.0f;
 
     struct sAnimation
     {

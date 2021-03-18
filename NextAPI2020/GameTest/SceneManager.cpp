@@ -25,8 +25,6 @@ void SceneManager::UnloadActiveScene()
 {
 	if (m_activeScene)
 	{
-		m_activeScene->Unload();
-
 		// Clean up the scene memory
 		delete m_activeScene;
 		m_activeScene = nullptr;
@@ -36,4 +34,9 @@ void SceneManager::UnloadActiveScene()
 void SceneManager::UpdateActiveScene(float _deltaTime)
 {
 	m_activeScene->Update(_deltaTime);
+}
+
+void SceneManager::DrawActiveScene()
+{
+	m_activeScene->Draw();
 }
