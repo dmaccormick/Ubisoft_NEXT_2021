@@ -12,19 +12,14 @@ unsigned int Registry::m_nextUniqueID = 0;
 //--- Constructors and Destructor ---//
 Registry::Registry()
 {
-	//m_flatComps = std::vector<Component*>();
-	//m_data = std::map<Entity*, COMP_TYPE_LIST>();
 	m_allEntities = std::vector<Entity*>();
 	m_allComps = std::map<std::type_index, std::vector<Component*>>();
 }
 
 Registry::~Registry()
 {
-	/*while (m_data.size() > 0)
-		DeleteEntity(m_data.begin()->first);*/
-
-	for (auto entity : m_allEntities)
-		DeleteEntity(entity);
+	while (m_allEntities.size() > 0)
+		DeleteEntity(m_allEntities[0]);
 }
 
 Entity* Registry::CreateEntity(std::string _name)
@@ -32,8 +27,6 @@ Entity* Registry::CreateEntity(std::string _name)
 	// Create a new entity and assign it a unique ID
 	Entity* newEntity = new Entity(_name, m_nextUniqueID++);
 
-	// Add the entity to the list
-	//m_data.emplace(std::pair<Entity*, COMP_TYPE_LIST>(newEntity, COMP_TYPE_LIST()));
 	m_allEntities.push_back(newEntity);
 
 	// Return the entity
@@ -70,43 +63,8 @@ bool Registry::DeleteEntity(Entity* _entity)
 	return false;
 }
 
-//bool Registry::DeleteEntity(Entity* _entity)
-//{
-//	// Check if the entity is in the map
-//	auto entityRef = m_data.find(_entity);
-//	if (entityRef != m_data.end())
-//	{
-//		// Delete the entity 
-//		delete entityRef->first;
-//
-//		// Delete all of the components associated with the entity
-//		for (auto compData = entityRef->second.begin(); compData != entityRef->second.end(); compData++)
-//		{
-//			auto compList = compData->second;
-//
-//			for (auto comp : compList)
-//			{
-//				m_flatComps.erase(std::remove(m_flatComps.begin(), m_flatComps.end(), comp), m_flatComps.end());
-//				delete comp;
-//			}
-//		}
-//		
-//		// Erase the data from the list
-//		m_data.erase(_entity);
-//
-//		// Return true since it worked
-//		return true;
-//	}
-//
-//	// Return false since it failed
-//	return false;
-//}
-
 void Registry::InitAll()
 {
-	/*for (auto comp : m_flatComps)
-		comp->Init();*/
-
 	for (auto compList : m_allComps)
 	{
 		for (auto comp : compList.second)
@@ -116,9 +74,6 @@ void Registry::InitAll()
 
 void Registry::UpdateAll(float _deltaTime)
 {
-	/*for (auto comp : m_flatComps)
-		comp->Update(_deltaTime);*/
-
 	for (auto compList : m_allComps)
 	{
 		for (auto comp : compList.second)
