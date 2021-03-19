@@ -28,6 +28,7 @@ public:
 	void SetAnimation(unsigned int _id);
 	void SetFrame(unsigned int _frameNum);
 	void SetRenderLayer(float _depthLayer);
+	void SetColor(float _r, float _g, float _b, float _a = 1.0f);
 
 	//--- Getters ---//
 	float GetRenderLayer() const;

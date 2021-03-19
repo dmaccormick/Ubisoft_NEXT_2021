@@ -20,6 +20,13 @@ Entity::~Entity()
 
 
 
+//--- Getters ---//
+std::string Entity::GetName() const
+{
+	return m_name;
+}
+
+
 //--- Private Methods ---//
 void Entity::AddComponent(Component* _comp)
 {

@@ -77,6 +77,11 @@ void CSprite::SetRenderLayer(float _renderLayer)
 	m_sprite->SetRenderLayer(_renderLayer);
 }
 
+void CSprite::SetColor(float _r, float _g, float _b, float _a)
+{
+	m_sprite->SetColor(_r, _g, _b, _a);
+}
+
 
 
 //--- Getters ---//

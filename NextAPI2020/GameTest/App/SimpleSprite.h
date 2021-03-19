@@ -62,6 +62,8 @@ public:
     // Positive numbers push towards the back, negative push towards the front
     void SetRenderLayer(float _newLayer) { m_renderLayer = std::min<float>(10.0f, std::max<float>(_newLayer, -10.0f)); }
     float GetRenderLayer() const { return m_renderLayer; }
+    float GetFrameWidth() const { return m_width / (float)m_nColumns; }
+    float GetFrameHeight() const { return m_height / (float)m_nRows; }
 
 private:
     void CalculateUVs();

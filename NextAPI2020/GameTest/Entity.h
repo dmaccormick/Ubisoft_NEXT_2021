@@ -44,6 +44,9 @@ public:
 		return relevantComps;
 	}
 
+	//--- Getters ---//
+	std::string GetName() const;
+
 private:
 	//--- Private Data ---//
 	std::string m_name;

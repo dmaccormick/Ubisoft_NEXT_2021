@@ -95,7 +95,7 @@ void InitGL()
 	StartCounter();
 	gLastTime = GetCounter();
 	// Set "clearing" or background color
-	glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
 
 	// Added GL depth testing
 	glEnable(GL_DEPTH_TEST);
