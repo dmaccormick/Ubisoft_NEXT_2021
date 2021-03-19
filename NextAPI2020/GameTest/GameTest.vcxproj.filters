@@ -9,12 +9,6 @@
     <ClCompile Include="App\TextureLoader.cpp" />
     <ClCompile Include="GameTest.cpp" />
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Expanded Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteObject.cpp">
-      <Filter>Expanded Framework</Filter>
-    </ClCompile>
     <ClCompile Include="Registry.cpp">
       <Filter>Expanded Framework\ECS\Base</Filter>
     </ClCompile>
@@ -39,6 +33,12 @@
     <ClCompile Include="CBoxCollider.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
+    <ClCompile Include="SGame.cpp">
+      <Filter>Expanded Framework\Scene Management\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelLoader.cpp">
+      <Filter>Expanded Framework\Utilities</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
@@ -50,12 +50,6 @@
     <ClInclude Include="App\TextureLoader.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
-    <ClInclude Include="GameObject.h">
-      <Filter>Expanded Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteObject.h">
-      <Filter>Expanded Framework</Filter>
-    </ClInclude>
     <ClInclude Include="Component.h">
       <Filter>Expanded Framework\ECS\Base</Filter>
     </ClInclude>
@@ -84,6 +78,15 @@
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
     <ClInclude Include="CBoxCollider.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SGame.h">
+      <Filter>Expanded Framework\Scene Management\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelLoader.h">
+      <Filter>Expanded Framework\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="CMovementTile.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>

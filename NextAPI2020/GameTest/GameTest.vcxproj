@@ -185,17 +185,18 @@
     <ClInclude Include="App\SimpleSprite.h" />
     <ClInclude Include="App\TextureLoader.h" />
     <ClInclude Include="CBoxCollider.h" />
+    <ClInclude Include="CMovementTile.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="CTransform.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="Registry.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
-    <ClInclude Include="SpriteObject.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="STest.h" />
+    <ClInclude Include="SGame.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Vec2.h" />
   </ItemGroup>
@@ -210,11 +211,10 @@
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameTest.cpp" />
+    <ClCompile Include="LevelLoader.cpp" />
     <ClCompile Include="Registry.cpp" />
     <ClCompile Include="SceneManager.cpp" />
-    <ClCompile Include="SpriteObject.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -222,6 +222,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="STest.cpp" />
+    <ClCompile Include="SGame.cpp" />
     <ClCompile Include="Vec2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
