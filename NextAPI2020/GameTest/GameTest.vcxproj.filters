@@ -39,6 +39,9 @@
     <ClCompile Include="LevelLoader.cpp">
       <Filter>Expanded Framework\Utilities</Filter>
     </ClCompile>
+    <ClCompile Include="CTile.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
@@ -86,7 +89,7 @@
     <ClInclude Include="LevelLoader.h">
       <Filter>Expanded Framework\Utilities</Filter>
     </ClInclude>
-    <ClInclude Include="CMovementTile.h">
+    <ClInclude Include="CTile.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>

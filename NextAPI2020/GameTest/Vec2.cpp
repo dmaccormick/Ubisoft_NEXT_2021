@@ -149,6 +149,11 @@ bool Vec2::operator== (const Vec2& _other) const
 	return (m_x == _other.GetX() && m_y == _other.GetY());
 }
 
+bool Vec2::operator!= (const Vec2& _other) const
+{
+	return !(*this == _other);
+}
+
 Vec2 Vec2::operator- () const
 {
 	return Vec2(-m_x, -m_y);

@@ -83,15 +83,6 @@ bool CBoxCollider::CheckCollision(const CBoxCollider* _a, const CBoxCollider* _b
 
 		if (CBoxCollider::CheckCollision1D(yAxisA, yAxisB))
 		{
-			//// Calculate the overlap
-			//float overlapStartX = std::max<float>(aMin.GetX(), bMin.GetX());
-			//float overlapEndX = std::min<float>(aMax.GetX(), aMax.GetX());
-			//_overlap.SetX(overlapEndX - overlapStartX);
-
-			//float overlapStartY = std::max<float>(aMin.GetY(), bMin.GetY());
-			//float overlapEndY = std::min<float>(aMax.GetY(), aMax.GetY());
-			//_overlap.SetY(overlapEndY - overlapStartY);
-
 			// If completely within the bounds of the other object, don't need to move at all
 			if (aMin.GetX() >= bMin.GetX() && aMax.GetX() <= bMax.GetX())
 				_overlap.SetX(0.0f);

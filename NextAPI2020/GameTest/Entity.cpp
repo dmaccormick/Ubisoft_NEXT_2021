@@ -6,8 +6,8 @@
 #include "Component.h"
 
 //--- Constructors and Destructor ---//
-Entity::Entity(std::string _name, unsigned int _uniqueID)
-	: m_name(_name), m_uniqueID(_uniqueID)
+Entity::Entity(std::string _name, unsigned int _uniqueID, EntityTag _tag)
+	: m_name(_name), m_uniqueID(_uniqueID), m_tag(_tag)
 {
 	m_components = std::vector<Component*>();
 }
@@ -24,6 +24,11 @@ Entity::~Entity()
 std::string Entity::GetName() const
 {
 	return m_name;
+}
+
+EntityTag Entity::GetTag() const
+{
+	return m_tag;
 }
 
 

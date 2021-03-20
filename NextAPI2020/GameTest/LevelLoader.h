@@ -7,7 +7,7 @@
 
 // Internal includes
 #include "Registry.h"
-#include "CMovementTile.h"
+#include "CTile.h"
 #include "Vec2.h"
 
 struct LevelInfo
@@ -24,15 +24,21 @@ struct TileInfo
 	{
 		m_tileType = TileType::Wall;
 		m_movementDir = Vec2::Zero();
+		m_colliderDimenions = Vec2::Zero();
+		m_entityTag = EntityTag::None;
 	}
 
-	TileInfo(TileType _tileType, Vec2 _movementDir)
+	TileInfo(TileType _tileType, Vec2 _movementDir, Vec2 _colliderDimensions, EntityTag _entityTag)
 		:	m_tileType(_tileType),
-			m_movementDir(_movementDir)
+			m_movementDir(_movementDir),
+			m_colliderDimenions(_colliderDimensions),
+			m_entityTag(_entityTag)
 	{}
 
 	TileType m_tileType;
 	Vec2 m_movementDir;
+	Vec2 m_colliderDimenions;
+	EntityTag m_entityTag;
 };
 
 class LevelLoader

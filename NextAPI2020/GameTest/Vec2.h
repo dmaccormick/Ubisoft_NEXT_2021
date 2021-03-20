@@ -39,6 +39,7 @@ public:
 	Vec2&					operator*=	(const float& _other);
 	void					operator=	(const Vec2& _other);
 	bool					operator==	(const Vec2& _other) const;
+	bool					operator!=	(const Vec2& _other) const;
 	Vec2					operator-	() const;
 	friend std::ostream&	operator<<	(std::ostream& _os, const Vec2& _vec);
 

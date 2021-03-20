@@ -6,13 +6,26 @@
 
 class Component;
 
+enum class EntityTag
+{
+	Player,
+	Enemy,
+
+	PlayerBase,
+	EnemySpawn,	
+	EnemyPath,
+
+	None,
+	Count
+};
+
 class Entity
 {
 	friend class Registry;
 
 public:
 	//--- Constructors and Destructor ---//
-	Entity(std::string _name, unsigned int _uniqueID);
+	Entity(std::string _name, unsigned int _uniqueID, EntityTag _tag);
 	~Entity();
 
 	//--- Methods ---//
@@ -46,11 +59,13 @@ public:
 
 	//--- Getters ---//
 	std::string GetName() const;
+	EntityTag GetTag() const;
 
 private:
 	//--- Private Data ---//
 	std::string m_name;
 	unsigned int m_uniqueID;
+	EntityTag m_tag;
 	std::vector<Component*> m_components;
 
 	//--- Private Methods ---//

@@ -185,7 +185,7 @@
     <ClInclude Include="App\SimpleSprite.h" />
     <ClInclude Include="App\TextureLoader.h" />
     <ClInclude Include="CBoxCollider.h" />
-    <ClInclude Include="CMovementTile.h" />
+    <ClInclude Include="CTile.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="CTransform.h" />
@@ -209,6 +209,7 @@
     <ClCompile Include="App\TextureLoader.cpp" />
     <ClCompile Include="CBoxCollider.cpp" />
     <ClCompile Include="CSprite.cpp" />
+    <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTransform.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameTest.cpp" />

@@ -5,6 +5,7 @@
 #include "SGame.h"
 #include "LevelLoader.h"
 #include "CSprite.h"
+#include "CBoxCollider.h"
 
 //--- Statics ---//
 std::string SGame::m_assetFolderPath = ".\\GameData\\";
@@ -46,6 +47,10 @@ void SGame::Draw()
 
 	for (auto sprite : sprites)
 		sprite->DrawSprite();
+
+	auto colliders = m_registry.GetAllComponentsByType<CBoxCollider>();
+	for (auto collider : colliders)
+		collider->DebugDraw();
 }
 
 

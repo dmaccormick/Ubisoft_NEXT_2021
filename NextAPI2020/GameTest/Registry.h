@@ -21,7 +21,7 @@ public:
 	~Registry();
 
 	//--- Methods ---//
-	Entity* CreateEntity(std::string _name = "entity");
+	Entity* CreateEntity(std::string _name = "entity", EntityTag _tag = EntityTag::None);
 	bool DeleteEntity(Entity*);
 	void InitAll();
 	void UpdateAll(float _deltaTime);
@@ -63,6 +63,17 @@ public:
 		{
 			return std::vector<CompType*>();
 		}
+	}
+
+	template<typename CompType>
+	std::vector<CompType*> GetAllComponentsByTypeAndTag(EntityTag _tag)
+	{
+		std::vector<CompType*> baseCompList = GetAllComponentsByType<CompType>();
+		std::vector<CompType*> filteredCompList;
+
+		std::copy_if(baseCompList.begin(), baseCompList.end(), std::back_inserter(filteredCompList), [](CompType* _comp) {return _comp->GetEntity().GetTag() == _tag; });
+		
+		return filteredCompList;
 	}
 
 private:

@@ -22,10 +22,10 @@ Registry::~Registry()
 		DeleteEntity(m_allEntities[0]);
 }
 
-Entity* Registry::CreateEntity(std::string _name)
+Entity* Registry::CreateEntity(std::string _name, EntityTag _tag)
 {
 	// Create a new entity and assign it a unique ID
-	Entity* newEntity = new Entity(_name, m_nextUniqueID++);
+	Entity* newEntity = new Entity(_name, m_nextUniqueID++, _tag);
 
 	m_allEntities.push_back(newEntity);
 
