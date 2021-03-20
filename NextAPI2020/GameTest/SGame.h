@@ -21,7 +21,9 @@ public:
 
 	//--- Game Logic Methods ---//
 	void LoadLevel();
+	void CheckCollisions();
 	void TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
+	void SpawnEnemy();
 
 	//--- Setters ---//
 	void SetLevelName(std::string _levelName);
@@ -31,5 +33,7 @@ private:
 	static std::string m_assetFolderPath;
 	std::string m_levelName;
 	std::vector<Entity*> m_levelPieces;
-	Entity* m_tempEnemy;
+	CTransform* m_enemySpawner;
+	float m_timeBetweenEnemies;
+	float m_timeSinceLastEnemy;
 };

@@ -19,6 +19,8 @@ SGame::SGame()
 {
 	m_levelName = "Level_3.txt";
 	m_levelPieces = std::vector<Entity*>();
+	m_timeBetweenEnemies = 1.0f;
+	m_timeSinceLastEnemy = m_timeBetweenEnemies;
 }
 
 SGame::~SGame()
@@ -33,25 +35,7 @@ void SGame::Init()
 {
 	LoadLevel();
 
-	// Create the temp enemy
-	{
-		m_tempEnemy = m_registry.CreateEntity("Enemy", EntityTag::Enemy);
-
-		CTransform* transformComp = m_registry.AddComponent<CTransform>(m_tempEnemy);
-		auto enemySpawnerPos = m_registry.GetAllEntitiesByTags({ EntityTag::EnemySpawn })[0]->GetComponent<CTransform>()->GetPosition();
-		transformComp->SetPosition(enemySpawnerPos);
-		
-		CSprite* spriteComp = m_registry.AddComponent<CSprite>(m_tempEnemy);
-		spriteComp->LoadSprite(".\\GameData\\Sprites\\Enemy_Base.bmp");
-		spriteComp->SetRenderLayer(0.0f);
-
-		CBoxCollider* boxCollider = m_registry.AddComponent<CBoxCollider>(m_tempEnemy);
-		boxCollider->SetBaseDimensions(Vec2(5.0f, 5.0f));
-		boxCollider->AddCollisionListener(std::bind(&SGame::TriggerEnemyDirectionChange, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
-
-		CPathFollower* pathFollowerComp = m_registry.AddComponent<CPathFollower>(m_tempEnemy);
-		pathFollowerComp->SetMovementSpeed(250.0f);
-	}
+	m_enemySpawner = m_registry.GetAllEntitiesByTags({ EntityTag::EnemySpawn })[0]->GetComponent<CTransform>();
 
 	m_registry.InitAll();
 
@@ -63,39 +47,17 @@ void SGame::Init()
 
 void SGame::Update(float _deltaTime)
 {
-	if (App::GetController().GetLeftThumbStickY() < -0.5f)
-	{
-		m_tempEnemy->GetComponent<CTransform>()->SetPosition(m_tempEnemy->GetComponent<CTransform>()->GetPosition() + Vec2::Up());
-	}
-	if (App::GetController().GetLeftThumbStickY() > 0.5f)
-	{
-		m_tempEnemy->GetComponent<CTransform>()->SetPosition(m_tempEnemy->GetComponent<CTransform>()->GetPosition() + Vec2::Down());
-	}
+	float dtSeconds = _deltaTime / 1000.0f;
 
 	m_registry.UpdateAll(_deltaTime);
 
-	// Grab all of the colliders and check for collisions between them
-	std::vector<CBoxCollider*> colliders = m_registry.GetAllComponentsByType<CBoxCollider>();
-	if (colliders.size() > 1)
+	CheckCollisions();
+
+	m_timeSinceLastEnemy += dtSeconds;
+	if (m_timeSinceLastEnemy >= m_timeBetweenEnemies)
 	{
-		for (unsigned int i = 0; i < colliders.size(); i++)
-		{
-			for (unsigned int j = 0; j < colliders.size(); j++)
-			{
-				auto collider1 = &colliders[i];
-				auto collider2 = &colliders[j];
-
-				if (*collider1 == *collider2)
-					continue;
-
-				Vec2 overlap;
-				if (CBoxCollider::CheckCollision(*collider1, *collider2, overlap))
-				{
-					(*collider1)->OnCollision(*collider2, overlap);
-					(*collider2)->OnCollision(*collider1, overlap);
-				}
-			}
-		}
+		m_timeSinceLastEnemy = 0.0f;
+		SpawnEnemy();
 	}
 }
 
@@ -128,6 +90,33 @@ void SGame::LoadLevel()
 	loader.LoadLevel(levelInfo, m_registry, m_levelPieces);
 }
 
+void SGame::CheckCollisions()
+{
+	// Grab all of the colliders and check for collisions between them
+	std::vector<CBoxCollider*> colliders = m_registry.GetAllComponentsByType<CBoxCollider>();
+	if (colliders.size() > 1)
+	{
+		for (unsigned int i = 0; i < colliders.size(); i++)
+		{
+			for (unsigned int j = 0; j < colliders.size(); j++)
+			{
+				auto collider1 = &colliders[i];
+				auto collider2 = &colliders[j];
+
+				if (*collider1 == *collider2)
+					continue;
+
+				Vec2 overlap;
+				if (CBoxCollider::CheckCollision(*collider1, *collider2, overlap))
+				{
+					(*collider1)->OnCollision(*collider2, overlap);
+					(*collider2)->OnCollision(*collider1, overlap);
+				}
+			}
+		}
+	}
+}
+
 void SGame::TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 {
 	// Figure out which object is the enemy and which is the path direction changer
@@ -137,6 +126,28 @@ void SGame::TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2
 	// Tell the enemy to start moving in the new direction
 	Vec2 newDirection = directionChanger->GetComponent<CTile>()->GetMovementDirection();
 	enemy->GetComponent<CPathFollower>()->SetMovementDirection(newDirection);
+}
+
+void SGame::SpawnEnemy()
+{
+	auto enemy = m_registry.CreateEntity("Enemy", EntityTag::Enemy);
+
+	auto transformComp = m_registry.AddComponent<CTransform>(enemy);
+	transformComp->SetPosition(m_enemySpawner->GetPosition());
+	transformComp->Init();
+
+	auto spriteComp = m_registry.AddComponent<CSprite>(enemy);
+	spriteComp->LoadSprite(".\\GameData\\Sprites\\Enemy_Base.bmp");
+	spriteComp->SetRenderLayer(0.0f);
+	spriteComp->Init();
+
+	auto boxCollider = m_registry.AddComponent<CBoxCollider>(enemy);
+	boxCollider->SetBaseDimensions(Vec2(5.0f, 5.0f));
+	boxCollider->Init();
+
+	auto pathFollowerComp = m_registry.AddComponent<CPathFollower>(enemy);
+	pathFollowerComp->SetMovementSpeed(250.0f);
+	pathFollowerComp->Init();
 }
 
 
