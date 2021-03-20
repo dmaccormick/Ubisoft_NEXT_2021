@@ -190,6 +190,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="CTransform.h" />
+    <ClInclude Include="CTurretAimer.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="Registry.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTransform.cpp" />
+    <ClCompile Include="CTurretAimer.cpp" />
     <ClCompile Include="Entity.cpp" />
     <ClCompile Include="GameTest.cpp" />
     <ClCompile Include="LevelLoader.cpp" />

@@ -45,9 +45,9 @@ void CSprite::Update(float _deltaTime)
 
 
 //--- Methods ---//
-void CSprite::LoadSprite(std::string _filename, int _numCols, int _numRows, float _renderLayer)
+void CSprite::LoadSprite(const char* _fileName, int _numCols, int _numRows, float _renderLayer)
 {
-	m_sprite = App::CreateSprite(_filename.c_str(), _numCols, _numRows);
+	m_sprite = App::CreateSprite(_fileName, _numCols, _numRows);
 }
 
 void CSprite::CreateAnimation(unsigned int _id, float _speed, const std::vector<int>& _frames)

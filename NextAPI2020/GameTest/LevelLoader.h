@@ -13,7 +13,7 @@
 struct LevelInfo
 {
 	std::string m_levelDataPath = "";
-	std::string m_levelTilesetPath = "";
+	const char* m_levelTilesetPath = "";
 	Vec2 m_topLeftLoc = Vec2::Zero();
 	float m_tileSize = 0.0f;
 };

@@ -6,6 +6,7 @@
 // Internal includes
 #include "Scene.h"
 #include "CBoxCollider.h"
+#include "CTurretAimer.h"
 
 class SGame : public Scene
 {
@@ -31,10 +32,11 @@ public:
 
 private:
 	//--- Private Data ---//
-	static std::string m_assetFolderPath;
 	std::string m_levelName;
 	std::vector<Entity*> m_levelPieces;
 	CTransform* m_enemySpawner;
 	float m_timeBetweenEnemies;
 	float m_timeSinceLastEnemy;
+	CTurretAimer* m_testTurret;
+	std::vector<Entity*> m_enemies;
 };

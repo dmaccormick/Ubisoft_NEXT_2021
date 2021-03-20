@@ -9,15 +9,12 @@
 #include "CBoxCollider.h"
 #include "CPathFollower.h"
 
-//--- Statics ---//
-std::string SGame::m_assetFolderPath = ".\\GameData\\";
-
 
 
 //--- Constructors and Destructor ---//
 SGame::SGame()
 {
-	m_levelName = "Level_3.txt";
+	m_levelName = "Level_1.txt";
 	m_levelPieces = std::vector<Entity*>();
 	m_timeBetweenEnemies = 1.0f;
 	m_timeSinceLastEnemy = m_timeBetweenEnemies;
@@ -33,11 +30,28 @@ SGame::~SGame()
 //--- Scene Interface ---//
 void SGame::Init()
 {
+	// Create the test turret entity
+	{
+		auto turret = m_registry.CreateEntity("Turret");
+
+		CTransform* transformComp = m_registry.AddComponent<CTransform>(turret);
+		transformComp->SetPosition(400.0f, 400.0f);
+		transformComp->Init();
+
+		CSprite* spriteComp = m_registry.AddComponent<CSprite>(turret);
+		spriteComp->LoadSprite(".\\GameData\\Sprites\\Turret_Basic.bmp");
+		spriteComp->SetRenderLayer(-1.0f);
+		spriteComp->Init();
+
+		m_testTurret = m_registry.AddComponent<CTurretAimer>(turret);
+		m_testTurret->SetRange(300.0f);
+	}
+
 	LoadLevel();
+	
+	m_registry.InitAll();
 
 	m_enemySpawner = m_registry.GetAllEntitiesByTags({ EntityTag::EnemySpawn })[0]->GetComponent<CTransform>();
-
-	m_registry.InitAll();
 
 	// Register all of the enemy path objects collision callbacks so the enemies can be notified of when to change movement direction
 	std::vector<CBoxCollider*> pathColliders = m_registry.GetAllComponentsByTypeAndTags<CBoxCollider>({ EntityTag::EnemySpawn, EntityTag::EnemyPath });
@@ -63,6 +77,9 @@ void SGame::Update(float _deltaTime)
 		m_timeSinceLastEnemy = 0.0f;
 		SpawnEnemy();
 	}
+
+	m_enemies = m_registry.GetAllEntitiesByTags({ EntityTag::Enemy });
+	m_testTurret->SetEnemyList(m_enemies);
 }
 
 void SGame::Draw()
@@ -86,8 +103,8 @@ void SGame::LoadLevel()
 {
 	LevelInfo levelInfo;
 	levelInfo.m_topLeftLoc = Vec2(300.0f, 600.0f);
-	levelInfo.m_levelDataPath = m_assetFolderPath + "Levels\\" + m_levelName;
-	levelInfo.m_levelTilesetPath = m_assetFolderPath + "Sprites\\Level_Tiles_1.bmp";
+	levelInfo.m_levelDataPath = ".\\GameData\\Levels\\" + m_levelName;
+	levelInfo.m_levelTilesetPath = ".\\GameData\\Sprites\\Level_Tiles_1.bmp";
 	levelInfo.m_tileSize = 64.0f;
 
 	LevelLoader loader = LevelLoader();
