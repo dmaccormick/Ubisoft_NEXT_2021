@@ -42,7 +42,11 @@ void SGame::Init()
 	// Register all of the enemy path objects collision callbacks so the enemies can be notified of when to change movement direction
 	std::vector<CBoxCollider*> pathColliders = m_registry.GetAllComponentsByTypeAndTags<CBoxCollider>({ EntityTag::EnemySpawn, EntityTag::EnemyPath });
 	for (auto collider : pathColliders)
-		collider->AddCollisionListener(std::bind(&SGame::TriggerEnemyDirectionChange, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3));
+		collider->AddCollisionListener(std::bind(&SGame::TriggerEnemyDirectionChange, this, P_ARG::_1, P_ARG::_2, P_ARG::_3));
+
+	// Register the player base collision callback so the enemies can be destroyed and the player can take the appropriate damage
+	CBoxCollider* playerBase = m_registry.GetAllComponentsByTypeAndTags<CBoxCollider>({ EntityTag::PlayerBase })[0];
+	playerBase->AddCollisionListener(std::bind(&SGame::AttackPlayerBase, this, P_ARG::_1, P_ARG::_2, P_ARG::_3));
 }
 
 void SGame::Update(float _deltaTime)
@@ -117,17 +121,6 @@ void SGame::CheckCollisions()
 	}
 }
 
-void SGame::TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
-{
-	// Figure out which object is the enemy and which is the path direction changer
-	Entity* enemy = (_a->GetEntity()->GetTag() == EntityTag::Enemy) ? _a->GetEntity() : _b->GetEntity();
-	Entity* directionChanger = (enemy == _a->GetEntity()) ? _b->GetEntity() : _a->GetEntity();
-
-	// Tell the enemy to start moving in the new direction
-	Vec2 newDirection = directionChanger->GetComponent<CTile>()->GetMovementDirection();
-	enemy->GetComponent<CPathFollower>()->SetMovementDirection(newDirection);
-}
-
 void SGame::SpawnEnemy()
 {
 	auto enemy = m_registry.CreateEntity("Enemy", EntityTag::Enemy);
@@ -148,6 +141,29 @@ void SGame::SpawnEnemy()
 	auto pathFollowerComp = m_registry.AddComponent<CPathFollower>(enemy);
 	pathFollowerComp->SetMovementSpeed(250.0f);
 	pathFollowerComp->Init();
+}
+
+void SGame::TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
+{
+	// Figure out which object is the enemy and which is the path direction changer
+	Entity* enemy = (_a->GetEntity()->GetTag() == EntityTag::Enemy) ? _a->GetEntity() : _b->GetEntity();
+	Entity* directionChanger = (enemy == _a->GetEntity()) ? _b->GetEntity() : _a->GetEntity();
+
+	// Tell the enemy to start moving in the new direction
+	Vec2 newDirection = directionChanger->GetComponent<CTile>()->GetMovementDirection();
+	enemy->GetComponent<CPathFollower>()->SetMovementDirection(newDirection);
+}
+
+void SGame::AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
+{
+	// Figure out which object is the enemy
+	Entity* enemy = (_a->GetEntity()->GetTag() == EntityTag::Enemy) ? _a->GetEntity() : _b->GetEntity();
+
+	// Delete the enemy since it has reached the player base
+	m_registry.DeleteEntity(enemy);
+
+	// TODO: Cause damage to the player
+	// ...
 }
 
 

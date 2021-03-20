@@ -46,7 +46,7 @@ bool Registry::DeleteEntity(Entity* _entity)
 
 		for (auto comp : attachedComps)
 		{
-			auto compType = std::type_index(typeid(comp));
+			auto compType = std::type_index(typeid(*comp));
 			auto compList = &m_allComps[compType];
 
 			compList->erase(std::remove(compList->begin(), compList->end(), comp), compList->end());
