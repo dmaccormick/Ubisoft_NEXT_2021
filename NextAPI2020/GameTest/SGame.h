@@ -26,7 +26,7 @@ public:
 
 private:
 	//--- Private Data ---//
-	static std::string m_levelFolderPath;
+	static std::string m_assetFolderPath;
 	std::string m_levelName;
 	std::vector<Entity*> m_levelPieces;
 };

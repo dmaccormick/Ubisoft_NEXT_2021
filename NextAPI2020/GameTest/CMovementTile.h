@@ -8,6 +8,8 @@ enum class TileType
 	PlayerBase,
 	TurretArea,
 	TurretBuilt,
+
+	Count
 };
 
 enum class MovementDir
@@ -16,4 +18,5 @@ enum class MovementDir
 	Right,
 	Down,
 	Left,
+	None
 };
