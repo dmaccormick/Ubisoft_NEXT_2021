@@ -22,8 +22,9 @@ public:
 	//--- Game Logic Methods ---//
 	void LoadLevel();
 	void CheckCollisions();
-	void TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 	void SpawnEnemy();
+	void TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
+	void AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 
 	//--- Setters ---//
 	void SetLevelName(std::string _levelName);

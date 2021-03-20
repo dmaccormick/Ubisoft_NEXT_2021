@@ -9,6 +9,9 @@
 #include "CSprite.h"
 #include "Vec2.h"
 
+// Defines
+#define P_ARG std::placeholders // Makes it easier to bind functions for the callbacks
+
 class CBoxCollider : public Component
 {
 public:
