@@ -60,7 +60,7 @@ bool LevelLoader::LoadLevel(const LevelInfo& _levelInfo, Registry& _registry, st
 
 	// The first line should be the indicator for the starting movement direction
 	// This one is special because the spawn indicator is noted by its own symbol and so cannot also have a direction arrow
-	char firstLineChar = tileDescLines[0].at(0);
+	char firstLineChar = firstLine.at(0);
 	Vec2 startingMovementDir = m_tileMapping[firstLineChar].m_movementDir;
 
 	// The rest of the lines should dictate all of the different tiles in the level
@@ -99,6 +99,7 @@ bool LevelLoader::LoadLevel(const LevelInfo& _levelInfo, Registry& _registry, st
 			// Optionally add a box collider component as well
 			Vec2 colliderDimensions = m_tileMapping[tileChar].m_colliderDimenions;
 			if (colliderDimensions != Vec2::Zero())
+			//if (m_tileMapping[tileChar].m_tileType == TileType::EnemySpawn)
 			{
 				auto boxColliderComp = _registry.AddComponent<CBoxCollider>(tileEntity);
 				boxColliderComp->SetBaseDimensions(colliderDimensions);

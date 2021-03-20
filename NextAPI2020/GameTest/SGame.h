@@ -5,6 +5,7 @@
 
 // Internal includes
 #include "Scene.h"
+#include "CBoxCollider.h"
 
 class SGame : public Scene
 {
@@ -20,6 +21,7 @@ public:
 
 	//--- Game Logic Methods ---//
 	void LoadLevel();
+	void TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 
 	//--- Setters ---//
 	void SetLevelName(std::string _levelName);
@@ -29,4 +31,5 @@ private:
 	static std::string m_assetFolderPath;
 	std::string m_levelName;
 	std::vector<Entity*> m_levelPieces;
+	Entity* m_tempEnemy;
 };

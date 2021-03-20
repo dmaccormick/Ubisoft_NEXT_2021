@@ -45,6 +45,9 @@ public:
 		return newComp;
 	}	
 
+
+
+	//--- Getters ---//
 	template<typename CompType>
 	std::vector<CompType*> GetAllComponentsByType()
 	{
@@ -66,15 +69,19 @@ public:
 	}
 
 	template<typename CompType>
-	std::vector<CompType*> GetAllComponentsByTypeAndTag(EntityTag _tag)
+	std::vector<CompType*> GetAllComponentsByTypeAndTags(std::vector<EntityTag> _tags)
 	{
 		std::vector<CompType*> baseCompList = GetAllComponentsByType<CompType>();
 		std::vector<CompType*> filteredCompList;
 
-		std::copy_if(baseCompList.begin(), baseCompList.end(), std::back_inserter(filteredCompList), [](CompType* _comp) {return _comp->GetEntity().GetTag() == _tag; });
+		std::copy_if(baseCompList.begin(), baseCompList.end(), std::back_inserter(filteredCompList), 
+			[&](CompType* _comp) {return std::find(_tags.begin(), _tags.end(), _comp->GetEntity()->GetTag()) != _tags.end(); });
 		
 		return filteredCompList;
 	}
+
+	std::vector<Entity*> GetAllEntitiesByTags(std::vector<EntityTag> _tags) const;
+	std::vector<Entity*> GetAllEntitiesByNames(std::vector<std::string> _names) const;
 
 private:
 	//--- Private Data ---//

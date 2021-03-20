@@ -198,11 +198,11 @@ bool CBoxCollider::CheckCollision1D(const Vec2& _line1, const Vec2& _line2)
 	float line1x = _line1.GetX(), line1y = _line1.GetY();
 	float line2x = _line2.GetX(), line2y = _line2.GetY();
 
-	if (line1x >= line2x && line1x <= line2y) return true;
-	if (line1y >= line2x && line1y <= line2y) return true;
+	if (line1x > line2x && line1x < line2y) return true;
+	if (line1y > line2x && line1y < line2y) return true;
 
-	if (line2x >= line1x && line2x <= line1y) return true;
-	if (line2y >= line1x && line2y <= line1y) return true;
+	if (line2x > line1x && line2x < line1y) return true;
+	if (line2y > line1x && line2y < line1y) return true;
 
 	return false;
 }

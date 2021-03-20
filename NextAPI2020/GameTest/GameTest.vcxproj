@@ -185,6 +185,7 @@
     <ClInclude Include="App\SimpleSprite.h" />
     <ClInclude Include="App\TextureLoader.h" />
     <ClInclude Include="CBoxCollider.h" />
+    <ClInclude Include="CPathFollower.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CSprite.h" />
@@ -208,6 +209,7 @@
     <ClCompile Include="App\SimpleSprite.cpp" />
     <ClCompile Include="App\TextureLoader.cpp" />
     <ClCompile Include="CBoxCollider.cpp" />
+    <ClCompile Include="CPathFollower.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTransform.cpp" />

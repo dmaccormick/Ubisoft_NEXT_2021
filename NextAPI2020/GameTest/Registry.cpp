@@ -22,6 +22,9 @@ Registry::~Registry()
 		DeleteEntity(m_allEntities[0]);
 }
 
+
+
+//--- Methods ---//
 Entity* Registry::CreateEntity(std::string _name, EntityTag _tag)
 {
 	// Create a new entity and assign it a unique ID
@@ -79,4 +82,27 @@ void Registry::UpdateAll(float _deltaTime)
 		for (auto comp : compList.second)
 			comp->Update(_deltaTime);
 	}
+}
+
+
+
+//--- Getters ---//
+std::vector<Entity*> Registry::GetAllEntitiesByTags(std::vector<EntityTag> _tags) const
+{
+	std::vector<Entity*> filteredEntities;
+
+	std::copy_if(m_allEntities.begin(), m_allEntities.end(), std::back_inserter(filteredEntities), 
+		[&](Entity* _ent) {return std::find(_tags.begin(), _tags.end(), _ent->GetTag()) != _tags.end(); });
+
+	return filteredEntities;
+}
+
+std::vector<Entity*> Registry::GetAllEntitiesByNames(std::vector<std::string> _names) const
+{
+	std::vector<Entity*> filteredEntities;
+
+	std::copy_if(m_allEntities.begin(), m_allEntities.end(), std::back_inserter(filteredEntities), 
+		[&](Entity* _ent) {return std::find(_names.begin(), _names.end(), _ent->GetName()) != _names.end(); });
+
+	return filteredEntities;
 }
