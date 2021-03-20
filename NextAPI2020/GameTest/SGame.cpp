@@ -7,7 +7,10 @@
 #include "LevelLoader.h"
 #include "CSprite.h"
 #include "CBoxCollider.h"
-#include "CPathFollower.h"
+#include "CLinearMover.h"
+#include "CProjectile.h"
+#include "CTurretShooter.h"
+#include "CLifetime.h"
 
 
 
@@ -45,6 +48,31 @@ void SGame::Init()
 
 		m_testTurret = m_registry.AddComponent<CTurretAimer>(turret);
 		m_testTurret->SetRange(300.0f);
+
+		CTurretShooter* shooterComp = m_registry.AddComponent<CTurretShooter>(turret);
+		shooterComp->SetFireRate(0.5f);
+		shooterComp->SetProjectilePrefabFunc(std::bind(&SGame::FireBasicProjectile, this, P_ARG::_1, P_ARG::_2));
+	}
+
+	// Create the test turret entity
+	{
+		auto turret = m_registry.CreateEntity("Turret");
+
+		CTransform* transformComp = m_registry.AddComponent<CTransform>(turret);
+		transformComp->SetPosition(600.0f, 500.0f);
+		transformComp->Init();
+
+		CSprite* spriteComp = m_registry.AddComponent<CSprite>(turret);
+		spriteComp->LoadSprite(".\\GameData\\Sprites\\Turret_Basic.bmp");
+		spriteComp->SetRenderLayer(-1.0f);
+		spriteComp->Init();
+
+		m_testTurret2 = m_registry.AddComponent<CTurretAimer>(turret);
+		m_testTurret2->SetRange(300.0f);
+
+		CTurretShooter* shooterComp = m_registry.AddComponent<CTurretShooter>(turret);
+		shooterComp->SetFireRate(0.5f);
+		shooterComp->SetProjectilePrefabFunc(std::bind(&SGame::FireBasicProjectile, this, P_ARG::_1, P_ARG::_2));
 	}
 
 	LoadLevel();
@@ -80,6 +108,7 @@ void SGame::Update(float _deltaTime)
 
 	m_enemies = m_registry.GetAllEntitiesByTags({ EntityTag::Enemy });
 	m_testTurret->SetEnemyList(m_enemies);
+	m_testTurret2->SetEnemyList(m_enemies);
 }
 
 void SGame::Draw()
@@ -155,8 +184,8 @@ void SGame::SpawnEnemy()
 	boxCollider->SetBaseDimensions(Vec2(5.0f, 5.0f));
 	boxCollider->Init();
 
-	auto pathFollowerComp = m_registry.AddComponent<CPathFollower>(enemy);
-	pathFollowerComp->SetMovementSpeed(250.0f);
+	auto pathFollowerComp = m_registry.AddComponent<CLinearMover>(enemy);
+	pathFollowerComp->SetMovementSpeed(50.0f);
 	pathFollowerComp->Init();
 }
 
@@ -166,9 +195,12 @@ void SGame::TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2
 	Entity* enemy = (_a->GetEntity()->GetTag() == EntityTag::Enemy) ? _a->GetEntity() : _b->GetEntity();
 	Entity* directionChanger = (enemy == _a->GetEntity()) ? _b->GetEntity() : _a->GetEntity();
 
+	if (enemy->GetTag() != EntityTag::Enemy)
+		return;
+
 	// Tell the enemy to start moving in the new direction
 	Vec2 newDirection = directionChanger->GetComponent<CTile>()->GetMovementDirection();
-	enemy->GetComponent<CPathFollower>()->SetMovementDirection(newDirection);
+	enemy->GetComponent<CLinearMover>()->SetMovementDirection(newDirection);
 }
 
 void SGame::AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
@@ -183,6 +215,54 @@ void SGame::AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 	// ...
 }
 
+void SGame::FireBasicProjectile(CTransform* _turret, CTransform* _enemy)
+{
+	// Spawn the most basic type of projectile which just flies in a straight line
+	auto basicProjectile = m_registry.CreateEntity("BasicProjectile", EntityTag::BulletPlayer);
+
+	CTransform* transformComp = m_registry.AddComponent<CTransform>(basicProjectile);
+	transformComp->SetPosition(_turret->GetPosition());
+	transformComp->Init();
+
+	CSprite* spriteComp = m_registry.AddComponent<CSprite>(basicProjectile);
+	spriteComp->LoadSprite(".\\GameData\\Sprites\\Projectile_Base.bmp");
+	spriteComp->SetRenderLayer(-5.0f);
+	spriteComp->Init();
+
+	CLinearMover* linearMoverComp = m_registry.AddComponent<CLinearMover>(basicProjectile);
+	linearMoverComp->SetMovementSpeed(300.0f);
+	linearMoverComp->SetMovementDirection(_enemy->GetPosition() - _turret->GetPosition());
+	linearMoverComp->Init();
+
+	CBoxCollider* boxColliderComp = m_registry.AddComponent<CBoxCollider>(basicProjectile);
+	boxColliderComp->SetBaseDimensions(10.0f, 10.0f);
+	boxColliderComp->AddCollisionListener(std::bind(&SGame::DamageEnemy, this, P_ARG::_1, P_ARG::_2, P_ARG::_3));
+	boxColliderComp->Init();
+
+	CProjectile* projectileComp = m_registry.AddComponent<CProjectile>(basicProjectile);
+	projectileComp->SetDamage(10.0f);
+	projectileComp->Init();
+
+	CLifetime* lifetimeComp = m_registry.AddComponent<CLifetime>(basicProjectile);
+	lifetimeComp->SetMaxLifetime(5.0f);
+	lifetimeComp->Init();
+}
+
+void SGame::DamageEnemy(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
+{
+	// Figure out which object is the enemy and which is the bullet
+	Entity* enemy = (_a->GetEntity()->GetTag() == EntityTag::Enemy) ? _a->GetEntity() : _b->GetEntity();
+	Entity* bullet = (enemy == _a->GetEntity()) ? _b->GetEntity() : _a->GetEntity();
+
+	if (enemy->GetTag() != EntityTag::Enemy || bullet->GetTag() != EntityTag::BulletPlayer)
+		return;
+
+	// TODO: Damage the enemy
+	// ...
+
+	// Delete the bullet since it collided with the enemy
+	m_registry.DeleteEntity(bullet);
+}
 
 
 //--- Setters ---//

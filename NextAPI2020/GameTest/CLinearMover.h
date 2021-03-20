@@ -5,12 +5,12 @@
 #include "Vec2.h"
 #include "CTransform.h"
 
-class CPathFollower : public Component
+class CLinearMover : public Component
 {
 public:
 	//--- Constructors and Destructor ---//
-	CPathFollower();
-	virtual ~CPathFollower();
+	CLinearMover();
+	virtual ~CLinearMover();
 
 	//--- Component Interface ---//
 	virtual void Init() override;

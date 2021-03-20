@@ -15,6 +15,9 @@ enum class EntityTag
 	EnemySpawn,	
 	EnemyPath,
 
+	BulletPlayer,
+	BulletEnemy,
+
 	None,
 	Count
 };

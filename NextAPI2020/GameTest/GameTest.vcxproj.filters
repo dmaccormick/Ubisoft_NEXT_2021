@@ -42,10 +42,22 @@
     <ClCompile Include="CTile.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
-    <ClCompile Include="CPathFollower.cpp">
+    <ClCompile Include="CTurretAimer.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
-    <ClCompile Include="CTurretAimer.cpp">
+    <ClCompile Include="CLinearMover.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CTurretShooter.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CProjectile.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CHealth.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CLifetime.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -98,10 +110,22 @@
     <ClInclude Include="CTile.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
-    <ClInclude Include="CPathFollower.h">
+    <ClInclude Include="CTurretAimer.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
-    <ClInclude Include="CTurretAimer.h">
+    <ClInclude Include="CLinearMover.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CTurretShooter.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CProjectile.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CHealth.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CLifetime.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>

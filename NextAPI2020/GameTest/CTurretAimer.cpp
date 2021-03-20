@@ -26,7 +26,7 @@ CTurretAimer::~CTurretAimer()
 //--- Component Interface ---//
 void CTurretAimer::Init()
 {
-	m_transform = m_entity->GetComponent<CTransform>();
+	m_transform = GetComponent<CTransform>();
 }
 
 void CTurretAimer::Update(float _deltaTime)
@@ -95,7 +95,7 @@ void CTurretAimer::SetRange(float _range)
 
 
 //--- Getters ---//
-CTransform* CTurretAimer::GetCurrentTarget() const
+CTransform* CTurretAimer::GetTarget() const
 {
 	return m_currentTarget;
 }

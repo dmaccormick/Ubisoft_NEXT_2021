@@ -25,7 +25,7 @@ CBoxCollider::~CBoxCollider()
 //--- Component Interface ---//
 void CBoxCollider::Init()
 {
-	m_transform = m_entity->GetComponent<CTransform>();
+	m_transform = GetComponent<CTransform>();
 }
 
 void CBoxCollider::Update(float _deltaTime)

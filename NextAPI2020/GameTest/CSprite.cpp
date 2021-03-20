@@ -26,7 +26,7 @@ CSprite::~CSprite()
 //--- Component Interface ---//
 void CSprite::Init()
 {
-	m_transform = m_entity->GetComponent<CTransform>();
+	m_transform = GetComponent<CTransform>();
 }
 
 void CSprite::Update(float _deltaTime)

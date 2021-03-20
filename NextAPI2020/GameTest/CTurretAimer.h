@@ -27,7 +27,7 @@ public:
 	void SetRange(float _range);
 
 	//--- Getters ---//
-	CTransform* GetCurrentTarget() const;
+	CTransform* GetTarget() const;
 	float GetRange() const;
 
 private:
