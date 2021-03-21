@@ -19,6 +19,7 @@ CTurretAimer::CTurretAimer()
 	m_transform = nullptr;
 	m_enemies = nullptr;
 	m_currentTarget = nullptr;
+	m_radiusIndicator = nullptr;
 	m_range = 0.0f;
 }
 

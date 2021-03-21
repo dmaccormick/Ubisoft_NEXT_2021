@@ -12,7 +12,7 @@ CRadiusIndicator::CRadiusIndicator()
 	m_radiusTransform = nullptr;
 	m_radiusSprite = nullptr;
 	m_spriteRenderLayer = 5.0f;
-	m_radius = m_radius;
+	m_radius = 0.0f;
 	m_color = Color::White();
 }
 

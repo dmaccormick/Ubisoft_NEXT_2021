@@ -12,6 +12,7 @@
 #include "CHealth.h"
 #include "CEnemy.h"
 #include "CRadiusIndicator.h"
+#include "CRadialHealer.h"
 
 //--- Constructors and Destructor ---//
 EnemyFactory::EnemyFactory()
@@ -142,9 +143,14 @@ Entity* EnemyFactory::CreateHealerEnemy() const
 	Entity* enemy = CreateGenericEnemy(EnemyType::Healer);
 
 	CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(enemy);
-	radiusIndicatorComp->SetRadius(100.0f);
 	radiusIndicatorComp->SetColor(Color::Red());
 	radiusIndicatorComp->Init();
+
+	CRadialHealer* radialHealerComp = m_levelRegistry->AddComponent<CRadialHealer>(enemy);
+	radialHealerComp->SetRadius(100.0f);
+	radialHealerComp->SetHealRatePerSecond(15.0f);
+	radialHealerComp->SetTargetEntityTag(EntityTag::Enemy);
+	radialHealerComp->Init();
 	
 	return enemy;
 }

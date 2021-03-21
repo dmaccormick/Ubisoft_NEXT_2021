@@ -43,6 +43,10 @@ void CHealth::Damage(float _damageAmount)
 void CHealth::Heal(float _healAmount)
 {
 	m_currentHealth += _healAmount;
+
+	// Don't go above the max health
+	if (m_currentHealth > m_maxHealth)
+		m_currentHealth = m_maxHealth;
 }
 
 void CHealth::AddOnDestroyCallback(std::function<void(Entity*)> _onDestroyCallback)

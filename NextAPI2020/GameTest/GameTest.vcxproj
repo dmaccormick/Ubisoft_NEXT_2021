@@ -194,6 +194,7 @@
     <ClInclude Include="CLinearMover.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CProjectile.h" />
+    <ClInclude Include="CRadialHealer.h" />
     <ClInclude Include="CRadiusIndicator.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="Component.h" />
@@ -204,6 +205,7 @@
     <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="EnemyType.h" />
     <ClInclude Include="Entity.h" />
+    <ClInclude Include="EntityRadiusChecker.h" />
     <ClInclude Include="LevelLoader.h" />
     <ClInclude Include="Registry.h" />
     <ClInclude Include="Scene.h" />
@@ -234,6 +236,7 @@
     <ClCompile Include="CLifetime.cpp" />
     <ClCompile Include="CLinearMover.cpp" />
     <ClCompile Include="CProjectile.cpp" />
+    <ClCompile Include="CRadialHealer.cpp" />
     <ClCompile Include="CRadiusIndicator.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CTile.cpp" />
