@@ -8,6 +8,11 @@
 // Internal includes
 #include "CTurretAimer.h"
 
+//--- Statics ---//
+const std::vector<Entity*>* CTurretAimer::m_enemies = nullptr;
+
+
+
 //--- Constructors and Destructor ---//
 CTurretAimer::CTurretAimer()
 {

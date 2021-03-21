@@ -186,11 +186,10 @@ void CBoxCollider::GetMinAndMax(Vec2& _min, Vec2& _max) const
 void CBoxCollider::RecalculateMinAndMax(const Vec2& _entityPos)
 {
 	Vec2 offsetPos = _entityPos + m_entityOffset;
-	Vec2 halfDimensions = m_baseDimensions * 0.5f;
-	halfDimensions *= m_transform->GetScale();
+	Vec2 halfDimensions = m_baseDimensions * 0.5f * m_transform->GetScale();
 
-	m_max = offsetPos + Vec2(halfDimensions.GetX(), halfDimensions.GetY());
-	m_min = offsetPos - Vec2(halfDimensions.GetX(), halfDimensions.GetY());
+	m_max = offsetPos + halfDimensions;
+	m_min = offsetPos - halfDimensions;
 }
 
 bool CBoxCollider::CheckCollision1D(const Vec2& _line1, const Vec2& _line2)

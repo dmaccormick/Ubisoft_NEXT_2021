@@ -23,7 +23,7 @@ public:
 	void SelectNewTarget();
 
 	//--- Setters ---//
-	void SetEnemyList(const std::vector<Entity*>& _enemies);
+	static void SetEnemyList(const std::vector<Entity*>& _enemies);
 	void SetRange(float _range);
 
 	//--- Getters ---//
@@ -32,8 +32,8 @@ public:
 
 private:
 	//--- Private Data ---//
+	static const std::vector<Entity*>* m_enemies;
 	CTransform* m_transform;
-	const std::vector<Entity*>* m_enemies;
 	CTransform* m_currentTarget;
 	float m_range;
 };

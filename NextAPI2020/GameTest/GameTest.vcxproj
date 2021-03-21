@@ -185,6 +185,7 @@
     <ClInclude Include="App\SimpleSprite.h" />
     <ClInclude Include="App\TextureLoader.h" />
     <ClInclude Include="CBoxCollider.h" />
+    <ClInclude Include="CButton.h" />
     <ClInclude Include="CHealth.h" />
     <ClInclude Include="CLifetime.h" />
     <ClInclude Include="CLinearMover.h" />
@@ -214,6 +215,7 @@
     <ClCompile Include="App\SimpleSprite.cpp" />
     <ClCompile Include="App\TextureLoader.cpp" />
     <ClCompile Include="CBoxCollider.cpp" />
+    <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CHealth.cpp" />
     <ClCompile Include="CLifetime.cpp" />
     <ClCompile Include="CLinearMover.cpp" />

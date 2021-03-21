@@ -28,6 +28,7 @@ public:
 	void AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 	void FireBasicProjectile(CTransform* _turret, CTransform* _enemy);
 	void DamageEnemy(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
+	void PlaceTower(Entity* _callingButton);
 
 	//--- Setters ---//
 	void SetLevelName(std::string _levelName);
@@ -39,7 +40,5 @@ private:
 	CTransform* m_enemySpawner;
 	float m_timeBetweenEnemies;
 	float m_timeSinceLastEnemy;
-	CTurretAimer* m_testTurret;
-	CTurretAimer* m_testTurret2;
 	std::vector<Entity*> m_enemies;
 };

@@ -23,7 +23,7 @@ LevelLoader::LevelLoader()
 		{'v',	TileInfo(TileType::EnemyPath,	Vec2::Down(),	Vec2(5.0f, 32.0f),	EntityTag::EnemyPath)},
 		{'<',	TileInfo(TileType::EnemyPath,	Vec2::Left(),	Vec2(32.0f, 5.0f),	EntityTag::EnemyPath)},
 		{'P',	TileInfo(TileType::PlayerBase,	Vec2::Zero(),	Vec2(32.0f, 32.0f),	EntityTag::PlayerBase)},
-		{'o',	TileInfo(TileType::TurretArea,	Vec2::Zero(),	Vec2::Zero(),		EntityTag::None)}
+		{'o',	TileInfo(TileType::TurretArea,	Vec2::Zero(),	Vec2::Zero(),		EntityTag::TurretBuildArea)}
 	};
 }
 
