@@ -32,7 +32,8 @@ public:
 	void AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 	void FireBasicProjectile(CTransform* _turret, CTransform* _enemy);
 	void DamageEnemy(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
-	void PlaceTower(Entity* _callingButton);
+	void KillEnemy(Entity* _entity);
+	void PlaceTurret(Entity* _callingButton);
 	void GameOver(Entity* _playerEntity);
 
 	//--- Setters ---//
@@ -45,6 +46,7 @@ private:
 	CTransform* m_enemySpawner;
 	float m_timeBetweenEnemies;
 	float m_timeSinceLastEnemy;
+	float m_turretBuildCost;
 	std::vector<Entity*> m_enemies;
 	Entity* m_player;
 	CBank* m_playerBank;

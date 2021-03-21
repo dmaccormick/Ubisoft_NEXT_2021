@@ -187,6 +187,7 @@
     <ClInclude Include="CBank.h" />
     <ClInclude Include="CBoxCollider.h" />
     <ClInclude Include="CButton.h" />
+    <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CHealth.h" />
     <ClInclude Include="CLabel.h" />
     <ClInclude Include="CLifetime.h" />
@@ -220,6 +221,7 @@
     <ClCompile Include="CBank.cpp" />
     <ClCompile Include="CBoxCollider.cpp" />
     <ClCompile Include="CButton.cpp" />
+    <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CHealth.cpp" />
     <ClCompile Include="CLabel.cpp" />
     <ClCompile Include="CLifetime.cpp" />

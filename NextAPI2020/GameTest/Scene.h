@@ -3,6 +3,9 @@
 // Internal includes
 #include "Registry.h"
 
+// Defines
+#define P_ARG std::placeholders // Makes it easier to bind functions for callbacks
+
 class Scene
 {
 public:

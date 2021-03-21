@@ -42,9 +42,6 @@
     <ClCompile Include="CTile.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
-    <ClCompile Include="CTurretAimer.cpp">
-      <Filter>Expanded Framework\ECS\Components</Filter>
-    </ClCompile>
     <ClCompile Include="CLinearMover.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
@@ -67,6 +64,12 @@
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
     <ClCompile Include="CBank.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemy.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CTurretAimer.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -119,9 +122,6 @@
     <ClInclude Include="CTile.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
-    <ClInclude Include="CTurretAimer.h">
-      <Filter>Expanded Framework\ECS\Components</Filter>
-    </ClInclude>
     <ClInclude Include="CLinearMover.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
@@ -147,6 +147,12 @@
       <Filter>Expanded Framework\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="CBank.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CEnemy.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CTurretAimer.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>

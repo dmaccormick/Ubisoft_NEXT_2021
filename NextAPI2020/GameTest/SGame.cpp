@@ -15,8 +15,7 @@
 #include "CButton.h"
 #include "CLabel.h"
 #include "CBank.h"
-
-
+#include "CEnemy.h"
 
 //--- Constructors and Destructor ---//
 SGame::SGame()
@@ -25,11 +24,11 @@ SGame::SGame()
 	m_levelPieces = std::vector<Entity*>();
 	m_timeBetweenEnemies = 1.0f;
 	m_timeSinceLastEnemy = m_timeBetweenEnemies;
+	m_turretBuildCost = 100.0f;
 }
 
 SGame::~SGame()
 {
-
 }
 
 
@@ -116,7 +115,7 @@ void SGame::LoadLevel()
 	{
 		CButton* button = m_registry.AddComponent<CButton>(towerBuildLoc);
 		button->SetDimensions(Vec2(32.0f, 32.0f));
-		button->AddOnClickedCallback(std::bind(&SGame::PlaceTower, this, P_ARG::_1));
+		button->AddOnClickedCallback(std::bind(&SGame::PlaceTurret, this, P_ARG::_1));
 		button->SetColor(Color::Yellow());
 		button->Init();
 
@@ -140,7 +139,7 @@ void SGame::SetupPlayer()
 	m_playerHealth->AddOnDestroyCallback(std::bind(&SGame::GameOver, this, P_ARG::_1));
 
 	m_playerBank = m_registry.AddComponent<CBank>(m_player);
-	m_playerBank->SetStartMoney(100.0f);
+	m_playerBank->SetStartMoney(500.0f);
 
 	m_playerMoneyLabel = m_registry.AddComponent<CLabel>(m_player);
 	m_playerMoneyLabel->SetColor(Color::Yellow());
@@ -206,6 +205,11 @@ void SGame::SpawnEnemy()
 	CHealth* healthComp = m_registry.AddComponent<CHealth>(enemy);
 	healthComp->SetMaxHealth(25.0f);
 	healthComp->Init();
+	healthComp->AddOnDestroyCallback(std::bind(&SGame::KillEnemy, this, P_ARG::_1));
+
+	CEnemy* enemyComp = m_registry.AddComponent<CEnemy>(enemy);
+	enemyComp->SetDamage(100.0f);
+	enemyComp->SetRewardAmount(50.0f);
 }
 
 void SGame::TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
@@ -230,11 +234,11 @@ void SGame::AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 	if (enemy->GetTag() != EntityTag::Enemy)
 		return;
 
+	// Cause damage to the player
+	m_playerHealth->Damage(enemy->GetComponent<CEnemy>()->GetDamage());
+
 	// Delete the enemy since it has reached the player base
 	m_registry.DeleteEntity(enemy);
-
-	// TODO: Cause damage to the player
-	// ...
 }
 
 void SGame::FireBasicProjectile(CTransform* _turret, CTransform* _enemy)
@@ -283,44 +287,55 @@ void SGame::DamageEnemy(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 	float bulletDmg = bullet->GetComponent<CProjectile>()->GetDamage();
 	enemy->GetComponent<CHealth>()->Damage(bulletDmg);
 
-	m_playerBank->AddMoney(200.0f);
-	m_playerHealth->Heal(30.0f);
-
 	// Delete the bullet since it collided with the enemy
 	m_registry.DeleteEntity(bullet);
 }
 
-void SGame::PlaceTower(Entity* _callingButton)
+void SGame::KillEnemy(Entity* _enemy)
 {
-	// Build a tower on top of the build location
-	auto turret = m_registry.CreateEntity("Turret");
+	// Give the player the correct amount of money
+	CEnemy* enemyComp = _enemy->GetComponent<CEnemy>();
+	m_playerBank->AddMoney(enemyComp->GetRewardAmount());
+}
 
-	CTransform* transformComp = m_registry.AddComponent<CTransform>(turret);
-	transformComp->SetPosition(_callingButton->GetComponent<CTransform>()->GetPosition());
-	transformComp->Init();
+void SGame::PlaceTurret(Entity* _callingButton)
+{
+	if (m_playerBank->GetMoney() >= m_turretBuildCost)
+	{
+		// Charge the player the cost to build it
+		m_playerBank->RemoveMoney(m_turretBuildCost);
 
-	CSprite* spriteComp = m_registry.AddComponent<CSprite>(turret);
-	spriteComp->LoadSprite(".\\GameData\\Sprites\\Turret_Basic.bmp");
-	spriteComp->SetRenderLayer(-1.0f);
-	spriteComp->Init();
+		// Build a tower on top of the build location
+		auto turret = m_registry.CreateEntity("Turret");
 
-	CTurretAimer* turretAimerComp = m_registry.AddComponent<CTurretAimer>(turret);
-	turretAimerComp->SetRange(300.0f);
-	turretAimerComp->Init();
+		CTransform* transformComp = m_registry.AddComponent<CTransform>(turret);
+		transformComp->SetPosition(_callingButton->GetComponent<CTransform>()->GetPosition());
+		transformComp->Init();
 
-	CTurretShooter* shooterComp = m_registry.AddComponent<CTurretShooter>(turret);
-	shooterComp->SetFireRate(0.5f);
-	shooterComp->SetProjectilePrefabFunc(std::bind(&SGame::FireBasicProjectile, this, P_ARG::_1, P_ARG::_2));
-	shooterComp->Init();
+		CSprite* spriteComp = m_registry.AddComponent<CSprite>(turret);
+		spriteComp->LoadSprite(".\\GameData\\Sprites\\Turret_Basic.bmp");
+		spriteComp->SetRenderLayer(-1.0f);
+		spriteComp->Init();
 
-	// Disable the button now that the tower has been placed
-	_callingButton->GetComponent<CButton>()->SetActive(false);
-	_callingButton->GetComponent<CLabel>()->SetActive(false);
+		CTurretAimer* turretComp = m_registry.AddComponent<CTurretAimer>(turret);
+		turretComp->SetRange(300.0f);
+		turretComp->Init();
+
+		CTurretShooter* shooterComp = m_registry.AddComponent<CTurretShooter>(turret);
+		shooterComp->SetFireRate(0.5f);
+		shooterComp->SetProjectilePrefabFunc(std::bind(&SGame::FireBasicProjectile, this, P_ARG::_1, P_ARG::_2));
+		shooterComp->Init();
+
+		// Disable the button now that the tower has been placed
+		_callingButton->GetComponent<CButton>()->SetActive(false);
+		_callingButton->GetComponent<CLabel>()->SetActive(false);
+	}
 }
 
 void SGame::GameOver(Entity* _playerEntity)
 {
 	// TODO: Load the game over scene
+	int x = 5;
 }
 
 

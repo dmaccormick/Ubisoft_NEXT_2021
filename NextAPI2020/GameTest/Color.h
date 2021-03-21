@@ -2,6 +2,7 @@
 
 struct Color
 {
+	//--- Constructors ---//
 	Color()
 	{
 		r = 1.0f;
@@ -18,13 +19,14 @@ struct Color
 		a = _a;
 	}
 
+	//--- Methods ---//
 	static Color Red()		{ return Color(1.0f, 0.0f, 0.0f, 1.0f); }
 	static Color Blue()		{ return Color(0.0f, 1.0f, 0.0f, 1.0f); }
 	static Color Green()	{ return Color(0.0f, 0.0f, 1.0f, 1.0f); }
-
 	static Color Yellow()	{ return Color(1.0f, 1.0f, 0.0f, 1.0f); }
 	static Color Cyan()		{ return Color(0.0f, 1.0f, 1.0f, 1.0f); }
 	static Color Magenta()	{ return Color(1.0f, 0.0f, 1.0f, 1.0f); }
 
+	//--- Public Data ---//
 	float r, g, b, a;
 };
