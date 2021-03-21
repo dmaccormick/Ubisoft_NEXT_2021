@@ -42,6 +42,7 @@ class WaveSpawner
 {
 public:
 	//--- Constructors and Destructor ---//
+	WaveSpawner() {}
 	WaveSpawner(Registry& _levelRegistry, CTransform* _enemySpawnerLoc, std::function<void(Entity*)> _onKillCallback);
 	~WaveSpawner();
 
@@ -55,6 +56,7 @@ public:
 
 	//--- Getters ---//
 	int GetCurrentWaveNumber() const;
+	int GetNumWaves() const;
 	int GetEnemyCountRemaining() const;
 	bool GetAllWavesComplete() const;
 

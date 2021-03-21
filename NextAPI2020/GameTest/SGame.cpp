@@ -38,6 +38,7 @@ SGame::SGame()
 
 SGame::~SGame()
 {
+	delete m_waveSpawner;
 }
 
 
@@ -51,8 +52,6 @@ void SGame::Init()
 	
 	m_registry.InitAll();
 
-	m_enemySpawner = m_registry.GetAllEntitiesByTags({ EntityTag::EnemySpawn })[0]->GetComponent<CTransform>();
-
 	// Register all of the enemy path objects collision callbacks so the enemies can be notified of when to change movement direction
 	std::vector<CBoxCollider*> pathColliders = m_registry.GetAllComponentsByTypeAndTags<CBoxCollider>({ EntityTag::EnemySpawn, EntityTag::EnemyPath });
 	for (auto collider : pathColliders)
@@ -61,6 +60,11 @@ void SGame::Init()
 	// Register the player base collision callback so the enemies can be destroyed and the player can take the appropriate damage
 	CBoxCollider* playerBase = m_registry.GetAllComponentsByTypeAndTags<CBoxCollider>({ EntityTag::PlayerBase })[0];
 	playerBase->AddCollisionListener(std::bind(&SGame::AttackPlayerBase, this, P_ARG::_1, P_ARG::_2, P_ARG::_3));
+
+	// Init the wave spawner
+	auto enemySpawner = m_registry.GetAllEntitiesByTags({ EntityTag::EnemySpawn })[0]->GetComponent<CTransform>();
+	m_waveSpawner = new WaveSpawner(m_registry, enemySpawner, std::bind(&SGame::KillEnemy, this, P_ARG::_1));
+	m_waveSpawner->StartNextWave();
 }
 
 void SGame::Update(float _deltaTime)
@@ -74,21 +78,22 @@ void SGame::Update(float _deltaTime)
 	// Update the player UI
 	m_playerHealthLabel->SetText("HEALTH: " + std::to_string(m_playerHealth->GetHealthRounded()));
 	m_playerMoneyLabel->SetText("MONEY: " + std::to_string(m_playerBank->GetMoneyRounded()));
+	m_waveNumberLabel->SetText("WAVE: " + std::to_string(m_waveSpawner->GetCurrentWaveNumber()) + "/" + std::to_string(m_waveSpawner->GetNumWaves()));
+	m_enemiesLeftLabel->SetText("ENEMIES: " + std::to_string(m_waveSpawner->GetEnemyCountRemaining()));
 
 	// Look for and handle any collisions
 	CheckCollisions();
 
-	// Spawn enemies according to the timer
-	m_timeSinceLastEnemy += dtSeconds;
-	if (m_timeSinceLastEnemy >= m_timeBetweenEnemies)
-	{
-		m_timeSinceLastEnemy = 0.0f;
-		SpawnEnemy();
-	}
+	// Update the wave spawner
+	m_waveSpawner->Update(_deltaTime);
 
 	// Update the list of targets for the turrets to focus on
 	m_enemies = m_registry.GetAllEntitiesByTags({ EntityTag::Enemy });
 	CTurretAimer::SetEnemyList(m_enemies);
+
+	// If all of the waves have been defeated, the player has won
+	if (m_waveSpawner->GetAllWavesComplete())
+		m_victoryState = VictoryState::Victory;
 
 	// Load the end screen if the game has finished
 	// Go back to the main menu if the button was pressed
@@ -172,14 +177,26 @@ void SGame::SetupPlayer()
 	m_playerMoneyLabel = m_registry.AddComponent<CLabel>(m_player);
 	m_playerMoneyLabel->SetColor(Color::Yellow());
 	m_playerMoneyLabel->SetFont(Font::TIMES_ROMAN_24);
-	m_playerMoneyLabel->SetOffset(Vec2(332.0f, 100.0f));
+	m_playerMoneyLabel->SetOffset(Vec2(332.0f, 95.0f));
 	m_playerMoneyLabel->SetText("MONEY: 100");
 
 	m_playerHealthLabel = m_registry.AddComponent<CLabel>(m_player);
 	m_playerHealthLabel->SetColor(Color::Magenta());
 	m_playerHealthLabel->SetFont(Font::TIMES_ROMAN_24);
-	m_playerHealthLabel->SetOffset(Vec2(564.0f, 100.0f));
+	m_playerHealthLabel->SetOffset(Vec2(564.0f, 95.0f));
 	m_playerHealthLabel->SetText("HEALTH: 500");
+
+	m_waveNumberLabel = m_registry.AddComponent<CLabel>(m_player);
+	m_waveNumberLabel->SetColor(Color::Cyan());
+	m_waveNumberLabel->SetFont(Font::TIMES_ROMAN_24);
+	m_waveNumberLabel->SetOffset(Vec2(332.0f, 650.0f));
+	m_waveNumberLabel->SetText("WAVE: 1/3");
+
+	m_enemiesLeftLabel = m_registry.AddComponent<CLabel>(m_player);
+	m_enemiesLeftLabel->SetColor(Color::Cyan());
+	m_enemiesLeftLabel->SetFont(Font::TIMES_ROMAN_24);
+	m_enemiesLeftLabel->SetOffset(Vec2(564.0f, 650.0f));
+	m_enemiesLeftLabel->SetText("ENEMIES: 10");
 }
 
 void SGame::CreateQuitToMenuButton()
@@ -227,37 +244,6 @@ void SGame::CheckCollisions()
 			}
 		}
 	}
-}
-
-void SGame::SpawnEnemy()
-{
-	auto enemy = m_registry.CreateEntity("Enemy", EntityTag::Enemy);
-
-	CTransform* transformComp = m_registry.AddComponent<CTransform>(enemy);
-	transformComp->SetPosition(m_enemySpawner->GetPosition());
-	transformComp->Init();
-
-	CSprite* spriteComp = m_registry.AddComponent<CSprite>(enemy);
-	spriteComp->LoadSprite(".\\GameData\\Sprites\\Enemy_Base.bmp");
-	spriteComp->SetRenderLayer(0.0f);
-	spriteComp->Init();
-
-	CBoxCollider* boxCollider = m_registry.AddComponent<CBoxCollider>(enemy);
-	boxCollider->SetBaseDimensions(Vec2(5.0f, 5.0f));
-	boxCollider->Init();
-
-	CLinearMover* linearMoverComp = m_registry.AddComponent<CLinearMover>(enemy);
-	linearMoverComp->SetMovementSpeed(50.0f);
-	linearMoverComp->Init();
-
-	CHealth* healthComp = m_registry.AddComponent<CHealth>(enemy);
-	healthComp->SetMaxHealth(25.0f);
-	healthComp->Init();
-	healthComp->AddOnDestroyCallback(std::bind(&SGame::KillEnemy, this, P_ARG::_1));
-
-	CEnemy* enemyComp = m_registry.AddComponent<CEnemy>(enemy);
-	enemyComp->SetDamage(100.0f);
-	enemyComp->SetRewardAmount(50.0f);
 }
 
 void SGame::TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)

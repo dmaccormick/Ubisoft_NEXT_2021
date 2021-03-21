@@ -64,17 +64,19 @@ WaveSpawner::~WaveSpawner()
 //--- Methods ---//
 void WaveSpawner::Update(float _deltaTime)
 {
-	if (m_currentWaveNumber != -1 && m_stillSpawning)
+	if (!m_allWavesComplete && m_currentWaveNumber != -1 && m_stillSpawning)
 	{
-		// If enough time has passed, we should spawn this sub-waves enemy and move to the next one
+		// If enough time has passed, we should spawn this subwave's enemy and move to the next one
 		float dtSeconds = _deltaTime / 1000.0f;
 		m_timeSinceLastSpawn += dtSeconds;
 
 		Wave* currentWave = &m_waves[m_currentWaveNumber];
 		SubWave* currentSubWave = &currentWave->m_subwaves[m_currentSubwaveNumber];
 
-		if (dtSeconds > currentSubWave->m_delay)
+		if (m_timeSinceLastSpawn > currentSubWave->m_delay)
 		{
+			m_timeSinceLastSpawn = 0.0f;
+
 			// Spawn the enemy and store it in the list so we can keep track
 			m_spawnedEnemies.push_back(currentSubWave->m_enemyPrefabFunc());
 			m_currentSubwaveNumber++;
@@ -92,6 +94,9 @@ void WaveSpawner::StartNextWave()
 	m_currentSubwaveNumber = 0;
 	m_stillSpawning = true;
 	m_timeSinceLastSpawn = 0.0f;
+
+	if (m_currentWaveNumber >= m_waves.size())
+		m_allWavesComplete = true;
 }
 
 void WaveSpawner::OnEnemyDestroy(Entity* _enemy)
@@ -136,6 +141,7 @@ Entity* WaveSpawner::CreateBasicEnemy()
 	CEnemy* enemyComp = m_levelRegistry->AddComponent<CEnemy>(enemy);
 	enemyComp->SetDamage(100.0f);
 	enemyComp->SetRewardAmount(50.0f);
+	enemyComp->Init();
 
 	return enemy;
 }
@@ -146,6 +152,11 @@ Entity* WaveSpawner::CreateBasicEnemy()
 int WaveSpawner::GetCurrentWaveNumber() const
 {
 	return m_currentWaveNumber;
+}
+
+int WaveSpawner::GetNumWaves() const
+{
+	return static_cast<int>(m_waves.size());
 }
 
 int WaveSpawner::GetEnemyCountRemaining() const

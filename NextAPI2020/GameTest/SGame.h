@@ -12,6 +12,7 @@
 #include "CHealth.h"
 #include "SEndScreen.h"
 #include "VictoryState.h"
+#include "WaveSpawner.h"
 
 class SGame : public Scene
 {
@@ -30,7 +31,6 @@ public:
 	void SetupPlayer();
 	void CreateQuitToMenuButton();
 	void CheckCollisions();
-	void SpawnEnemy();
 	void TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 	void AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 	void FireBasicProjectile(CTransform* _turret, CTransform* _enemy);
@@ -47,7 +47,6 @@ private:
 	//--- Private Data ---//
 	static std::string m_levelName;
 	std::vector<Entity*> m_levelPieces;
-	CTransform* m_enemySpawner;
 	float m_timeBetweenEnemies;
 	float m_timeSinceLastEnemy;
 	float m_turretBuildCost;
@@ -57,6 +56,9 @@ private:
 	CLabel* m_playerMoneyLabel;
 	CHealth* m_playerHealth;
 	CLabel* m_playerHealthLabel;
+	CLabel* m_waveNumberLabel;
+	CLabel* m_enemiesLeftLabel;
 	VictoryState m_victoryState;
 	bool m_quitToMenu;
+	WaveSpawner* m_waveSpawner;
 };
