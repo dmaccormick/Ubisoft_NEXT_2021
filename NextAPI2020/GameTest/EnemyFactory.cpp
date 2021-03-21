@@ -29,9 +29,18 @@ EnemyFactory::EnemyFactory(CTransform* _enemySpawnerLoc, Registry& _levelRegistr
 	m_spawnerOnKillCallback = _spawnerOnKillCallback;
 
 	m_enemyDescs = {
-		{EnemyType::Basic,	EnemyDesc("EnemyBasic",		50.0f,	100.0f, 25.0f, 50.0f, Vec2(5.0f, 5.0f))},
-		{EnemyType::Fast,	EnemyDesc("EnemyFast",		75.0f,	50.0f,	15.0f, 50.0f, Vec2(4.0f, 4.0f))},
-		{EnemyType::Strong,	EnemyDesc("EnemyStrong",	20.0f,	200.0f, 50.0f, 50.0f, Vec2(8.0f, 8.0f))}
+		{EnemyType::Basic,		EnemyDesc("EnemyBasic",		50.0f,	100.0f, 25.0f,	50.0f, Vec2(5.0f, 5.0f))},
+
+		{EnemyType::Fast,		EnemyDesc("EnemyFast",		75.0f,	50.0f,	15.0f,	75.0f, Vec2(4.0f, 4.0f))},
+		{EnemyType::Strong,		EnemyDesc("EnemyStrong",	20.0f,	200.0f, 50.0f,	75.0f, Vec2(8.0f, 8.0f))},
+
+		{EnemyType::Healer,		EnemyDesc("EnemyHealer",	30.0f,	150.0f, 75.0f,	100.0f, Vec2(12.0f, 12.0f))},
+		{EnemyType::Speeder,	EnemyDesc("EnemySpeeder",	30.0f,	150.0f, 75.0f,	100.0f, Vec2(12.0f, 12.0f))},
+		{EnemyType::Shooter,	EnemyDesc("EnemyShooter",	30.0f,	150.0f, 75.0f,	100.0f, Vec2(12.0f, 12.0f))},
+		{EnemyType::EMP,		EnemyDesc("EnemyEMP",		30.0f,	150.0f, 75.0f,	100.0f, Vec2(12.0f, 12.0f))},
+		{EnemyType::Bomber,		EnemyDesc("EnemyBomber",	30.0f,	150.0f, 75.0f,	100.0f, Vec2(12.0f, 12.0f))},
+
+		{EnemyType::Boss,		EnemyDesc("EnemyBoss",		10.0f,	500.0f, 500.0f, 500.0f, Vec2(20.0f, 20.0f))}
 	};
 }
 
@@ -48,9 +57,21 @@ Entity* EnemyFactory::CreateEnemy(EnemyType _type) const
 	{
 		case EnemyType::Fast:
 			return CreateFastEnemy();
-
 		case EnemyType::Strong:
 			return CreateStrongEnemy();
+			
+		case EnemyType::Healer:
+			return CreateHealerEnemy();
+		case EnemyType::Speeder:
+			return CreateSpeederEnemy();
+		case EnemyType::Shooter:
+			return CreateShooterEnemy();
+		case EnemyType::EMP:
+			return CreateEMPEnemy();
+		case EnemyType::Bomber:
+			return CreateBomberEnemy();
+		case EnemyType::Boss:
+			return CreateBossEnemy();
 
 		case EnemyType::Basic:
 		default:
@@ -70,6 +91,7 @@ Entity* EnemyFactory::CreateGenericEnemy(EnemyType _enemyType) const
 
 	CTransform* transformComp = m_levelRegistry->AddComponent<CTransform>(enemy);
 	transformComp->SetPosition(m_enemySpawnerLoc->GetPosition());
+	transformComp->SetScale(1.5f);
 	transformComp->Init();
 
 	CSprite* spriteComp = m_levelRegistry->AddComponent<CSprite>(enemy);
@@ -116,30 +138,42 @@ Entity* EnemyFactory::CreateStrongEnemy() const
 
 Entity* EnemyFactory::CreateHealerEnemy() const
 {
-	return nullptr;
+	Entity* enemy = CreateGenericEnemy(EnemyType::Healer);
+	
+	return enemy;
 }
 
 Entity* EnemyFactory::CreateSpeederEnemy() const
 {
-	return nullptr;
+	Entity* enemy = CreateGenericEnemy(EnemyType::Speeder);
+
+	return enemy;
 }
 
 Entity* EnemyFactory::CreateShooterEnemy() const
 {
-	return nullptr;
+	Entity* enemy = CreateGenericEnemy(EnemyType::Shooter);
+
+	return enemy;
 }
 
 Entity* EnemyFactory::CreateEMPEnemy() const
 {
-	return nullptr;
+	Entity* enemy = CreateGenericEnemy(EnemyType::EMP);
+
+	return enemy;
 }
 
 Entity* EnemyFactory::CreateBomberEnemy() const
 {
-	return nullptr;
+	Entity* enemy = CreateGenericEnemy(EnemyType::Bomber);
+
+	return enemy;
 }
 
 Entity* EnemyFactory::CreateBossEnemy() const
 {
-	return nullptr;
+	Entity* enemy = CreateGenericEnemy(EnemyType::Boss);
+
+	return enemy;
 }

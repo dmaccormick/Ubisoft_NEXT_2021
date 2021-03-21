@@ -31,6 +31,12 @@ WaveSpawner::WaveSpawner(CTransform* _enemySpawnerLoc, Registry& _levelRegistry,
 		SubWave(1.0f, EnemyType::Basic),
 		SubWave(1.0f, EnemyType::Fast),
 		SubWave(1.0f, EnemyType::Strong),
+		SubWave(1.0f, EnemyType::Healer),
+		SubWave(1.0f, EnemyType::Speeder),
+		SubWave(1.0f, EnemyType::Shooter),
+		SubWave(1.0f, EnemyType::EMP),
+		SubWave(1.0f, EnemyType::Bomber),
+		SubWave(1.0f, EnemyType::Boss),
 		}));
 
 	// Define the first wave
