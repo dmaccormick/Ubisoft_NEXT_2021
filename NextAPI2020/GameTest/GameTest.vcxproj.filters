@@ -66,6 +66,9 @@
     <ClCompile Include="CLabel.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
+    <ClCompile Include="CBank.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
@@ -142,6 +145,9 @@
     </ClInclude>
     <ClInclude Include="Color.h">
       <Filter>Expanded Framework\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="CBank.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

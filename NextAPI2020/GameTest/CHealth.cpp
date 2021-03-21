@@ -1,6 +1,9 @@
 // Standard header
 #include "stdafx.h"
 
+// Standard includes
+#include <math.h>
+
 // Internal includes
 #include "CHealth.h"
 
@@ -91,7 +94,17 @@ void CHealth::SetCurrentHealth(float _currentHealth)
 
 
 //--- Getters ---//
-float CHealth::GetCurrentHealth() const
+float CHealth::GetMaxHealth() const
+{
+	return m_maxHealth;
+}
+
+float CHealth::GetHealth() const
 {
 	return m_currentHealth;
+}
+
+int CHealth::GetHealthRounded() const
+{
+	return (int)rint(m_currentHealth);
 }

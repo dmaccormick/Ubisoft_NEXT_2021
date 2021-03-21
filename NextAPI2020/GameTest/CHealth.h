@@ -29,7 +29,9 @@ public:
 	void SetCurrentHealth(float _currentHealth);
 
 	//--- Getters ---//
-	float GetCurrentHealth() const;
+	float GetMaxHealth() const;
+	float GetHealth() const;
+	int GetHealthRounded() const;
 
 private:
 	//--- Private Data ---//

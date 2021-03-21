@@ -14,6 +14,7 @@
 #include "CHealth.h"
 #include "CButton.h"
 #include "CLabel.h"
+#include "CBank.h"
 
 
 
@@ -37,6 +38,7 @@ SGame::~SGame()
 void SGame::Init()
 {
 	LoadLevel();
+	SetupPlayer();
 	
 	m_registry.InitAll();
 
@@ -69,6 +71,9 @@ void SGame::Update(float _deltaTime)
 
 	m_enemies = m_registry.GetAllEntitiesByTags({ EntityTag::Enemy });
 	CTurretAimer::SetEnemyList(m_enemies);
+
+	m_playerHealthLabel->SetText("HEALTH: " + std::to_string(m_playerHealth->GetHealthRounded()));
+	m_playerMoneyLabel->SetText("MONEY: " + std::to_string(m_playerBank->GetMoneyRounded()));
 }
 
 void SGame::Draw()
@@ -122,6 +127,32 @@ void SGame::LoadLevel()
 		label->SetColor(Color::Yellow());
 		label->SetFont(Font::BASE_8_BY_13);
 	}
+}
+
+void SGame::SetupPlayer()
+{
+	m_player = m_registry.CreateEntity("Player", EntityTag::Player);
+	
+	CTransform* transformComp = m_registry.AddComponent<CTransform>(m_player);
+
+	m_playerHealth = m_registry.AddComponent<CHealth>(m_player);
+	m_playerHealth->SetMaxHealth(500.0f);
+	m_playerHealth->AddOnDestroyCallback(std::bind(&SGame::GameOver, this, P_ARG::_1));
+
+	m_playerBank = m_registry.AddComponent<CBank>(m_player);
+	m_playerBank->SetStartMoney(100.0f);
+
+	m_playerMoneyLabel = m_registry.AddComponent<CLabel>(m_player);
+	m_playerMoneyLabel->SetColor(Color::Yellow());
+	m_playerMoneyLabel->SetFont(Font::TIMES_ROMAN_24);
+	m_playerMoneyLabel->SetOffset(Vec2(332.0f, 100.0f));
+	m_playerMoneyLabel->SetText("MONEY: 100");
+
+	m_playerHealthLabel = m_registry.AddComponent<CLabel>(m_player);
+	m_playerHealthLabel->SetColor(Color::Magenta());
+	m_playerHealthLabel->SetFont(Font::TIMES_ROMAN_24);
+	m_playerHealthLabel->SetOffset(Vec2(564.0f, 100.0f));
+	m_playerHealthLabel->SetText("HEALTH: 500");
 }
 
 void SGame::CheckCollisions()
@@ -252,6 +283,9 @@ void SGame::DamageEnemy(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 	float bulletDmg = bullet->GetComponent<CProjectile>()->GetDamage();
 	enemy->GetComponent<CHealth>()->Damage(bulletDmg);
 
+	m_playerBank->AddMoney(200.0f);
+	m_playerHealth->Heal(30.0f);
+
 	// Delete the bullet since it collided with the enemy
 	m_registry.DeleteEntity(bullet);
 }
@@ -282,6 +316,11 @@ void SGame::PlaceTower(Entity* _callingButton)
 	// Disable the button now that the tower has been placed
 	_callingButton->GetComponent<CButton>()->SetActive(false);
 	_callingButton->GetComponent<CLabel>()->SetActive(false);
+}
+
+void SGame::GameOver(Entity* _playerEntity)
+{
+	// TODO: Load the game over scene
 }
 
 
