@@ -16,6 +16,9 @@ public:
 	virtual void Init() override;
 	virtual void Update(float _deltaTime) override;
 
+	//--- Methods ---//
+	void ApplyMovementModifier(float _modifierAmount);
+
 	//--- Setters ---//
 	void SetMovementDirection(Vec2 _movementDir);
 	void SetMovementSpeed(float _moveSpeed);
@@ -29,4 +32,5 @@ private:
 	CTransform* m_transform;
 	Vec2 m_movementDir;
 	float m_movementSpeed;
+	float m_movementModifier;
 };

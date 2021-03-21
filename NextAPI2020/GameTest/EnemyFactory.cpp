@@ -13,6 +13,7 @@
 #include "CEnemy.h"
 #include "CRadiusIndicator.h"
 #include "CRadialHealer.h"
+#include "CRadialSpeeder.h"
 
 //--- Constructors and Destructor ---//
 EnemyFactory::EnemyFactory()
@@ -160,9 +161,14 @@ Entity* EnemyFactory::CreateSpeederEnemy() const
 	Entity* enemy = CreateGenericEnemy(EnemyType::Speeder);
 
 	CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(enemy);
-	radiusIndicatorComp->SetRadius(100.0f);
 	radiusIndicatorComp->SetColor(Color::Green());
 	radiusIndicatorComp->Init();
+
+	CRadialSpeeder* radialSpeedComp = m_levelRegistry->AddComponent<CRadialSpeeder>(enemy);
+	radialSpeedComp->SetRadius(200.0f);
+	radialSpeedComp->SetSpeedModifier(2.0f);
+	radialSpeedComp->SetTargetEntityTag(EntityTag::Enemy);
+	radialSpeedComp->Init();
 
 	return enemy;
 }

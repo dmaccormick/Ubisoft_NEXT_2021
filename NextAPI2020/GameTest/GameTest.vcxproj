@@ -195,6 +195,7 @@
     <ClInclude Include="Color.h" />
     <ClInclude Include="CProjectile.h" />
     <ClInclude Include="CRadialHealer.h" />
+    <ClInclude Include="CRadialSpeeder.h" />
     <ClInclude Include="CRadiusIndicator.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="Component.h" />
@@ -237,6 +238,7 @@
     <ClCompile Include="CLinearMover.cpp" />
     <ClCompile Include="CProjectile.cpp" />
     <ClCompile Include="CRadialHealer.cpp" />
+    <ClCompile Include="CRadialSpeeder.cpp" />
     <ClCompile Include="CRadiusIndicator.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CTile.cpp" />

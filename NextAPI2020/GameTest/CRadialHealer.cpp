@@ -9,6 +9,7 @@
 //--- Constructors and Destructor ---//
 CRadialHealer::CRadialHealer()
 {
+	m_transform = nullptr;
 	m_radiusIndicator = nullptr;
 	m_healRatePerSecond = 0.0f;
 	m_targetTag = EntityTag::None;
@@ -58,11 +59,4 @@ void CRadialHealer::SetTargetEntityTag(EntityTag _targetTag)
 void CRadialHealer::SetRadius(float _radius)
 {
 	m_radius = _radius;
-}
-
-
-//--- Utility Functions ---//
-bool CRadialHealer::IsEntityInRange(CHealth* _healthComp) const
-{
-	return false;
 }

@@ -10,6 +10,7 @@ CLinearMover::CLinearMover()
 	m_transform = nullptr;
 	m_movementDir = Vec2::Zero();
 	m_movementSpeed = 0.0f;
+	m_movementModifier = 1.0f;
 }
 
 CLinearMover::~CLinearMover()
@@ -31,8 +32,19 @@ void CLinearMover::Update(float _deltaTime)
 	
 	// Move along the path. Scale the movement by delta time to keep it framerate independent
 	Vec2 pos = m_transform->GetPosition();
-	pos += (m_movementDir * m_movementSpeed * dtSeconds);
+	pos += (m_movementDir * m_movementSpeed * dtSeconds * m_movementModifier);
 	m_transform->SetPosition(pos);
+	
+	// Clear any movement buffs for next frame
+	m_movementModifier = 1.0f;
+}
+
+
+
+//--- Methods ---//
+void CLinearMover::ApplyMovementModifier(float _modifierAmount)
+{
+	m_movementModifier += _modifierAmount;
 }
 
 
