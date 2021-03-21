@@ -34,7 +34,6 @@ public:
 	void CheckCollisions();
 	void TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 	void AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
-	void DamageEnemy(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 	void DamageWithBullet(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 	void KillEnemy(Entity* _entity);
 	void PlaceTurret(Entity* _callingButton);

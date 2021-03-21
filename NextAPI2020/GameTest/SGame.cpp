@@ -279,23 +279,6 @@ void SGame::AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 	m_registry.DeleteEntity(enemy);
 }
 
-void SGame::DamageEnemy(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
-{
-	// Figure out which object is the enemy and which is the bullet
-	Entity* enemy = (_a->GetEntity()->GetTag() == EntityTag::Enemy) ? _a->GetEntity() : _b->GetEntity();
-	Entity* bullet = (enemy == _a->GetEntity()) ? _b->GetEntity() : _a->GetEntity();
-
-	if (enemy->GetTag() != EntityTag::Enemy || bullet->GetTag() != EntityTag::BulletPlayer)
-		return;
-
-	// Damage the enemy
-	float bulletDmg = bullet->GetComponent<CProjectile>()->GetDamage();
-	enemy->GetComponent<CHealth>()->Damage(bulletDmg);
-
-	// Delete the bullet since it collided with the enemy
-	m_registry.DeleteEntity(bullet);
-}
-
 void SGame::DamageWithBullet(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 {
 	Entity* entityA = _a->GetEntity();
