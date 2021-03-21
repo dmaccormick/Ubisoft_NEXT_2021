@@ -9,7 +9,7 @@
 #include "CBoxCollider.h"
 #include "CLinearMover.h"
 #include "CProjectile.h"
-#include "CTurretShooter.h"
+#include "CShooter.h"
 #include "CLifetime.h"
 #include "CHealth.h"
 #include "CButton.h"
@@ -35,11 +35,14 @@ SGame::SGame()
 	m_turretBuildCost = 100.0f;
 	m_victoryState = VictoryState::StillPlaying;
 	m_quitToMenu = false;
+	m_waveSpawner = nullptr;
+	m_projectileFactory = nullptr;
 }
 
 SGame::~SGame()
 {
 	delete m_waveSpawner;
+	delete m_projectileFactory;
 }
 
 
@@ -66,6 +69,10 @@ void SGame::Init()
 	auto enemySpawner = m_registry.GetAllEntitiesByTags({ EntityTag::EnemySpawn })[0]->GetComponent<CTransform>();
 	m_waveSpawner = new WaveSpawner(enemySpawner, m_registry, std::bind(&SGame::KillEnemy, this, P_ARG::_1));
 	m_waveSpawner->StartNextWave();
+
+	// Setup the projectile factory
+	m_projectileFactory = new ProjectileFactory(m_registry, std::bind(&SGame::DamageWithBullet, this, P_ARG::_1, P_ARG::_2, P_ARG::_3));
+	CShooter::SetProjectileFactory(m_projectileFactory);
 }
 
 void SGame::Update(float _deltaTime)
@@ -272,39 +279,6 @@ void SGame::AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 	m_registry.DeleteEntity(enemy);
 }
 
-void SGame::FireBasicProjectile(CTransform* _turret, CTransform* _enemy)
-{
-	// Spawn the most basic type of projectile which just flies in a straight line
-	auto basicProjectile = m_registry.CreateEntity("BasicProjectile", EntityTag::BulletPlayer);
-
-	CTransform* transformComp = m_registry.AddComponent<CTransform>(basicProjectile);
-	transformComp->SetPosition(_turret->GetPosition());
-	transformComp->Init();
-
-	CSprite* spriteComp = m_registry.AddComponent<CSprite>(basicProjectile);
-	spriteComp->LoadSprite(".\\GameData\\Sprites\\Projectile_Base.bmp");
-	spriteComp->SetRenderLayer(-5.0f);
-	spriteComp->Init();
-
-	CLinearMover* linearMoverComp = m_registry.AddComponent<CLinearMover>(basicProjectile);
-	linearMoverComp->SetMovementSpeed(500.0f);
-	linearMoverComp->SetMovementDirection(_enemy->GetPosition() - _turret->GetPosition());
-	linearMoverComp->Init();
-
-	CBoxCollider* boxColliderComp = m_registry.AddComponent<CBoxCollider>(basicProjectile);
-	boxColliderComp->SetBaseDimensions(20.0f, 20.0f);
-	boxColliderComp->AddCollisionListener(std::bind(&SGame::DamageEnemy, this, P_ARG::_1, P_ARG::_2, P_ARG::_3));
-	boxColliderComp->Init();
-
-	CProjectile* projectileComp = m_registry.AddComponent<CProjectile>(basicProjectile);
-	projectileComp->SetDamage(10.0f);
-	projectileComp->Init();
-
-	CLifetime* lifetimeComp = m_registry.AddComponent<CLifetime>(basicProjectile);
-	lifetimeComp->SetMaxLifetime(5.0f);
-	lifetimeComp->Init();
-}
-
 void SGame::DamageEnemy(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 {
 	// Figure out which object is the enemy and which is the bullet
@@ -320,6 +294,41 @@ void SGame::DamageEnemy(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 
 	// Delete the bullet since it collided with the enemy
 	m_registry.DeleteEntity(bullet);
+}
+
+void SGame::DamageWithBullet(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
+{
+	Entity* entityA = _a->GetEntity();
+	Entity* entityB = _b->GetEntity();
+
+	if ((entityA->GetTag() == EntityTag::Enemy && entityB->GetTag() == EntityTag::BulletPlayer) ||
+		(entityA->GetTag() == EntityTag::BulletPlayer && entityB->GetTag() == EntityTag::Enemy))
+	{
+		// A player bullet has hit an enemy. Figure out which is which
+		Entity* enemy = (entityA->GetTag() == EntityTag::Enemy) ? entityA : entityB;
+		Entity* playerBullet = (enemy == entityA) ? entityB : entityA;
+
+		// Damage the enemy
+		float playerBulletDmg = playerBullet->GetComponent<CProjectile>()->GetDamage();
+		enemy->GetComponent<CHealth>()->Damage(playerBulletDmg);
+
+		// Delete the bullet since it collided
+		m_registry.DeleteEntity(playerBullet);
+	}
+	else if ((entityA->GetTag() == EntityTag::Turret && entityB->GetTag() == EntityTag::BulletEnemy) ||
+		(entityA->GetTag() == EntityTag::BulletEnemy && entityB->GetTag() == EntityTag::Turret))
+	{
+		// An enemy bullet has hit a player turret. Figure out which is which
+		Entity* turret = (entityA->GetTag() == EntityTag::Turret) ? entityA : entityB;
+		Entity* enemyBullet = (turret == entityA) ? entityB : entityA;
+		
+		// Damage the player turret
+		float enemyBulletDmg = enemyBullet->GetComponent<CProjectile>()->GetDamage();
+		turret->GetComponent<CHealth>()->Damage(enemyBulletDmg);
+
+		// Delete the bullet since it collided
+		m_registry.DeleteEntity(enemyBullet);
+	}
 }
 
 void SGame::KillEnemy(Entity* _enemy)
@@ -358,14 +367,18 @@ void SGame::PlaceTurret(Entity* _callingButton)
 		aimerComp->SetTargetEntityTag(EntityTag::Enemy);
 		aimerComp->Init();
 
-		CTurretShooter* shooterComp = m_registry.AddComponent<CTurretShooter>(turret);
+		CShooter* shooterComp = m_registry.AddComponent<CShooter>(turret);
 		shooterComp->SetFireRate(0.5f);
-		shooterComp->SetProjectilePrefabFunc(std::bind(&SGame::FireBasicProjectile, this, P_ARG::_1, P_ARG::_2));
+		shooterComp->SetBulletTag(EntityTag::BulletPlayer);
 		shooterComp->Init();
 
 		CHealth* healthComp = m_registry.AddComponent<CHealth>(turret);
 		healthComp->SetMaxHealth(100.0f);
 		healthComp->Init();
+
+		CBoxCollider* boxColliderComp = m_registry.AddComponent<CBoxCollider>(turret);
+		boxColliderComp->SetBaseDimensions(32.0f, 32.0f);
+		boxColliderComp->Init();
 
 		// Disable the button now that the tower has been placed
 		_callingButton->GetComponent<CButton>()->SetActive(false);

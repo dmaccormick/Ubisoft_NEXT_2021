@@ -42,9 +42,6 @@
     <ClCompile Include="CLinearMover.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
-    <ClCompile Include="CTurretShooter.cpp">
-      <Filter>Expanded Framework\ECS\Components</Filter>
-    </ClCompile>
     <ClCompile Include="CProjectile.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
@@ -99,6 +96,12 @@
     <ClCompile Include="CRadialAimer.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
+    <ClCompile Include="ProjectileFactory.cpp">
+      <Filter>Expanded Framework\Game Logic Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="CShooter.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
@@ -147,9 +150,6 @@
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
     <ClInclude Include="CLinearMover.h">
-      <Filter>Expanded Framework\ECS\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="CTurretShooter.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
     <ClInclude Include="CProjectile.h">
@@ -216,6 +216,15 @@
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
     <ClInclude Include="CRadialAimer.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileFactory.h">
+      <Filter>Expanded Framework\Game Logic Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectileTypes.h">
+      <Filter>Expanded Framework\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="CShooter.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>

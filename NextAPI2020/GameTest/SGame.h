@@ -13,6 +13,7 @@
 #include "SEndScreen.h"
 #include "VictoryState.h"
 #include "WaveSpawner.h"
+#include "ProjectileFactory.h"
 
 class SGame : public Scene
 {
@@ -33,8 +34,8 @@ public:
 	void CheckCollisions();
 	void TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 	void AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
-	void FireBasicProjectile(CTransform* _turret, CTransform* _enemy);
 	void DamageEnemy(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
+	void DamageWithBullet(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 	void KillEnemy(Entity* _entity);
 	void PlaceTurret(Entity* _callingButton);
 	void GameOver(Entity* _playerEntity);
@@ -61,4 +62,5 @@ private:
 	VictoryState m_victoryState;
 	bool m_quitToMenu;
 	WaveSpawner* m_waveSpawner;
+	ProjectileFactory* m_projectileFactory;
 };

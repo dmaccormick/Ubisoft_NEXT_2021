@@ -17,7 +17,7 @@
 #include "CRadialEMP.h"
 #include "CRadialDamager.h"
 #include "CRadialAimer.h"
-#include "CTurretShooter.h"
+#include "CShooter.h"
 
 //--- Constructors and Destructor ---//
 EnemyFactory::EnemyFactory()
@@ -165,7 +165,7 @@ Entity* EnemyFactory::CreateSpeederEnemy() const
 	Entity* enemy = CreateGenericEnemy(EnemyType::Speeder);
 
 	CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(enemy);
-	radiusIndicatorComp->SetColor(Color::Green());
+	radiusIndicatorComp->SetColor(Color::Green(0.5f));
 	radiusIndicatorComp->Init();
 
 	CRadialSpeeder* radialSpeedComp = m_levelRegistry->AddComponent<CRadialSpeeder>(enemy);
@@ -190,9 +190,11 @@ Entity* EnemyFactory::CreateShooterEnemy() const
 	aimerComp->SetTargetEntityTag(EntityTag::Turret);
 	aimerComp->Init();
 
-	/*CTurretShooter* shooterComp = m_levelRegistry->AddComponent<CTurretShooter>(enemy);
+	CShooter* shooterComp = m_levelRegistry->AddComponent<CShooter>(enemy);
 	shooterComp->SetFireRate(1.0f);
-	shooterComp->SetProjectilePrefabFunc(nullptr);*/
+	shooterComp->SetBulletTag(EntityTag::BulletEnemy);
+	shooterComp->SetBulletDmg(25.0f);
+	shooterComp->Init();
 
 	return enemy;
 }
