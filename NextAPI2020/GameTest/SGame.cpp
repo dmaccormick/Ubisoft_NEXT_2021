@@ -13,6 +13,7 @@
 #include "CLifetime.h"
 #include "CHealth.h"
 #include "CButton.h"
+#include "CLabel.h"
 
 
 
@@ -82,6 +83,11 @@ void SGame::Draw()
 	std::vector<CButton*> buttons = m_registry.GetAllComponentsByType<CButton>();
 	for (auto button : buttons)
 		button->Draw();
+
+	// Draw all of the labels
+	std::vector<CLabel*> labels = m_registry.GetAllComponentsByType<CLabel>();
+	for (auto label : labels)
+		label->Draw();
 }
 
 
@@ -106,7 +112,15 @@ void SGame::LoadLevel()
 		CButton* button = m_registry.AddComponent<CButton>(towerBuildLoc);
 		button->SetDimensions(Vec2(32.0f, 32.0f));
 		button->AddOnClickedCallback(std::bind(&SGame::PlaceTower, this, P_ARG::_1));
+		button->SetColor(Color::Yellow());
 		button->Init();
+
+		CLabel* label = m_registry.AddComponent<CLabel>(towerBuildLoc);
+		label->SetText("Build");
+		label->SetOffset(Vec2(-20.0f, -5.0f));
+		label->Init();
+		label->SetColor(Color::Yellow());
+		label->SetFont(Font::BASE_8_BY_13);
 	}
 }
 
@@ -267,6 +281,7 @@ void SGame::PlaceTower(Entity* _callingButton)
 
 	// Disable the button now that the tower has been placed
 	_callingButton->GetComponent<CButton>()->SetActive(false);
+	_callingButton->GetComponent<CLabel>()->SetActive(false);
 }
 
 

@@ -187,8 +187,10 @@
     <ClInclude Include="CBoxCollider.h" />
     <ClInclude Include="CButton.h" />
     <ClInclude Include="CHealth.h" />
+    <ClInclude Include="CLabel.h" />
     <ClInclude Include="CLifetime.h" />
     <ClInclude Include="CLinearMover.h" />
+    <ClInclude Include="Color.h" />
     <ClInclude Include="CProjectile.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="Component.h" />
@@ -217,6 +219,7 @@
     <ClCompile Include="CBoxCollider.cpp" />
     <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CHealth.cpp" />
+    <ClCompile Include="CLabel.cpp" />
     <ClCompile Include="CLifetime.cpp" />
     <ClCompile Include="CLinearMover.cpp" />
     <ClCompile Include="CProjectile.cpp" />

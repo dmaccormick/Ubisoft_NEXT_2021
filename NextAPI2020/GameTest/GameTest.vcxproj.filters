@@ -63,6 +63,9 @@
     <ClCompile Include="CButton.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
+    <ClCompile Include="CLabel.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
@@ -133,6 +136,12 @@
     </ClInclude>
     <ClInclude Include="CButton.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CLabel.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Color.h">
+      <Filter>Expanded Framework\Utilities</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

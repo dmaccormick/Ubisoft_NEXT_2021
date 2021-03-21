@@ -7,6 +7,7 @@
 #include "Component.h"
 #include "Vec2.h"
 #include "CTransform.h"
+#include "Color.h"
 
 class CButton : public Component
 {
@@ -28,6 +29,7 @@ public:
 	//--- Setters ---//
 	void SetDimensions(Vec2 _dimensions);
 	void SetActive(bool _active);
+	void SetColor(Color _color);
 
 	//--- Getters ---//
 	Vec2 GetDimensions() const;
@@ -41,6 +43,7 @@ private:
 	Vec2 m_dimensions;
 	Vec2 m_min;
 	Vec2 m_max;
+	Color m_color;
 
 	//--- Utility Functions ---//
 	void RecalulateMinAndMax();

@@ -13,6 +13,7 @@ CButton::CButton()
 	m_dimensions = Vec2::Zero();
 	m_min = Vec2::Zero();
 	m_max = Vec2::Zero();
+	m_color = Color();
 }
 
 CButton::~CButton()
@@ -86,10 +87,10 @@ void CButton::Draw(float _r, float _g, float _b) const
 	if (m_active)
 	{
 		glDisable(GL_DEPTH_TEST);
-		App::DrawLine(m_min.GetX(), m_min.GetY(), m_max.GetX(), m_min.GetY(), _r, _g, _b);
-		App::DrawLine(m_max.GetX(), m_min.GetY(), m_max.GetX(), m_max.GetY(), _r, _g, _b);
-		App::DrawLine(m_max.GetX(), m_max.GetY(), m_min.GetX(), m_max.GetY(), _r, _g, _b);
-		App::DrawLine(m_min.GetX(), m_max.GetY(), m_min.GetX(), m_min.GetY(), _r, _g, _b);
+		App::DrawLine(m_min.GetX(), m_min.GetY(), m_max.GetX(), m_min.GetY(), m_color.r, m_color.g, m_color.b);
+		App::DrawLine(m_max.GetX(), m_min.GetY(), m_max.GetX(), m_max.GetY(), m_color.r, m_color.g, m_color.b);
+		App::DrawLine(m_max.GetX(), m_max.GetY(), m_min.GetX(), m_max.GetY(), m_color.r, m_color.g, m_color.b);
+		App::DrawLine(m_min.GetX(), m_max.GetY(), m_min.GetX(), m_min.GetY(), m_color.r, m_color.g, m_color.b);
 		glEnable(GL_DEPTH_TEST);
 	}
 }
@@ -107,6 +108,10 @@ void CButton::SetActive(bool _active)
 	m_active = _active;
 }
 
+void CButton::SetColor(Color _color)
+{
+	m_color = _color;
+}
 
 
 //--- Getters ---//
