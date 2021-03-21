@@ -5,9 +5,12 @@
 
 class SceneManager
 {
-public:
-	//--- Constructors and Destructor ---//
+protected:
+	//--- Protected Constructor for Singleton ---//
 	SceneManager();
+
+public:
+	//--- Destructor ---//
 	~SceneManager();
 
 	//--- Methods ---//
@@ -22,7 +25,11 @@ public:
 	void DrawActiveScene();
 	void UnloadActiveScene();
 
+	//--- Getters ---//
+	static SceneManager* GetInstance();
+
 private:
-	//--- Data ---//
+	//--- Private Data ---//
+	static SceneManager* m_instance;
 	Scene* m_activeScene;
 };

@@ -16,15 +16,24 @@
 #include "CLabel.h"
 #include "CBank.h"
 #include "CEnemy.h"
+#include "SEndScreen.h"
+#include "SceneManager.h"
+#include "SMenu.h"
+
+//--- Statics ---//
+std::string SGame::m_levelName = "Level_1.txt";
+
+
 
 //--- Constructors and Destructor ---//
 SGame::SGame()
 {
-	m_levelName = "Level_1.txt";
 	m_levelPieces = std::vector<Entity*>();
 	m_timeBetweenEnemies = 1.0f;
 	m_timeSinceLastEnemy = m_timeBetweenEnemies;
 	m_turretBuildCost = 100.0f;
+	m_victoryState = VictoryState::StillPlaying;
+	m_quitToMenu = false;
 }
 
 SGame::~SGame()
@@ -37,6 +46,7 @@ SGame::~SGame()
 void SGame::Init()
 {
 	LoadLevel();
+	CreateQuitToMenuButton();
 	SetupPlayer();
 	
 	m_registry.InitAll();
@@ -55,12 +65,20 @@ void SGame::Init()
 
 void SGame::Update(float _deltaTime)
 {
+	// Convert the delta time from ms to s
 	float dtSeconds = _deltaTime / 1000.0f;
 
+	// Update all of the components in the registry`
 	m_registry.UpdateAll(_deltaTime);
 
+	// Update the player UI
+	m_playerHealthLabel->SetText("HEALTH: " + std::to_string(m_playerHealth->GetHealthRounded()));
+	m_playerMoneyLabel->SetText("MONEY: " + std::to_string(m_playerBank->GetMoneyRounded()));
+
+	// Look for and handle any collisions
 	CheckCollisions();
 
+	// Spawn enemies according to the timer
 	m_timeSinceLastEnemy += dtSeconds;
 	if (m_timeSinceLastEnemy >= m_timeBetweenEnemies)
 	{
@@ -68,11 +86,21 @@ void SGame::Update(float _deltaTime)
 		SpawnEnemy();
 	}
 
+	// Update the list of targets for the turrets to focus on
 	m_enemies = m_registry.GetAllEntitiesByTags({ EntityTag::Enemy });
 	CTurretAimer::SetEnemyList(m_enemies);
 
-	m_playerHealthLabel->SetText("HEALTH: " + std::to_string(m_playerHealth->GetHealthRounded()));
-	m_playerMoneyLabel->SetText("MONEY: " + std::to_string(m_playerBank->GetMoneyRounded()));
+	// Load the end screen if the game has finished
+	// Go back to the main menu if the button was pressed
+	if (m_victoryState != VictoryState::StillPlaying)
+	{
+		SEndScreen::SetVictoryState(m_victoryState);
+		SceneManager::GetInstance()->LoadScene<SEndScreen>();
+	}
+	else if (m_quitToMenu)
+	{
+		SceneManager::GetInstance()->LoadScene<SMenu>();
+	}
 }
 
 void SGame::Draw()
@@ -81,7 +109,7 @@ void SGame::Draw()
 	std::vector<CSprite*> sprites = m_registry.GetAllComponentsByType<CSprite>();
 	std::sort(sprites.begin(), sprites.end(), [](CSprite* _a, CSprite* _b) {return _a->GetRenderLayer() > _b->GetRenderLayer(); });
 	for (auto sprite : sprites)
-		sprite->DrawSprite();
+		sprite->Draw();
 
 	// Draw all of the buttons
 	std::vector<CButton*> buttons = m_registry.GetAllComponentsByType<CButton>();
@@ -152,6 +180,26 @@ void SGame::SetupPlayer()
 	m_playerHealthLabel->SetFont(Font::TIMES_ROMAN_24);
 	m_playerHealthLabel->SetOffset(Vec2(564.0f, 100.0f));
 	m_playerHealthLabel->SetText("HEALTH: 500");
+}
+
+void SGame::CreateQuitToMenuButton()
+{
+	// Place the quit to menu button
+	auto menuButton = m_registry.CreateEntity("MenuButton");
+
+	CTransform* transformComp = m_registry.AddComponent<CTransform>(menuButton);
+	transformComp->SetPosition(75.0f, 710.0f);
+
+	CButton* buttonComp = m_registry.AddComponent<CButton>(menuButton);
+	buttonComp->SetDimensions(Vec2(100.0f, 50.0f));
+	buttonComp->SetColor(Color::Red());
+	buttonComp->AddOnClickedCallback(std::bind(&SGame::QuitToMenu, this, P_ARG::_1));
+
+	CLabel* labelComp = m_registry.AddComponent<CLabel>(menuButton);
+	labelComp->SetText("QUIT TO MENU");
+	labelComp->SetColor(Color::Red());
+	labelComp->SetOffset(Vec2(-40.0f, -5.0f));
+	labelComp->SetFont(Font::HELVETICA_10);
 }
 
 void SGame::CheckCollisions()
@@ -256,12 +304,12 @@ void SGame::FireBasicProjectile(CTransform* _turret, CTransform* _enemy)
 	spriteComp->Init();
 
 	CLinearMover* linearMoverComp = m_registry.AddComponent<CLinearMover>(basicProjectile);
-	linearMoverComp->SetMovementSpeed(300.0f);
+	linearMoverComp->SetMovementSpeed(500.0f);
 	linearMoverComp->SetMovementDirection(_enemy->GetPosition() - _turret->GetPosition());
 	linearMoverComp->Init();
 
 	CBoxCollider* boxColliderComp = m_registry.AddComponent<CBoxCollider>(basicProjectile);
-	boxColliderComp->SetBaseDimensions(10.0f, 10.0f);
+	boxColliderComp->SetBaseDimensions(20.0f, 20.0f);
 	boxColliderComp->AddCollisionListener(std::bind(&SGame::DamageEnemy, this, P_ARG::_1, P_ARG::_2, P_ARG::_3));
 	boxColliderComp->Init();
 
@@ -334,8 +382,12 @@ void SGame::PlaceTurret(Entity* _callingButton)
 
 void SGame::GameOver(Entity* _playerEntity)
 {
-	// TODO: Load the game over scene
-	int x = 5;
+	m_victoryState = VictoryState::Loss;
+}
+
+void SGame::QuitToMenu(Entity* _callingButton)
+{
+	m_quitToMenu = true;
 }
 
 

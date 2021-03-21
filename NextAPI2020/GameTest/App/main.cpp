@@ -95,7 +95,7 @@ void InitGL()
 	StartCounter();
 	gLastTime = GetCounter();
 	// Set "clearing" or background color
-	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+	glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
 
 	// Added GL depth testing
 	glEnable(GL_DEPTH_TEST);
@@ -158,6 +158,7 @@ void Idle()
 
 		if (App::IsKeyPressed(APP_QUIT_KEY))
 		{		
+			Shutdown();
 			exit(0);
 		}
 		gUpdateDeltaTime.Start();

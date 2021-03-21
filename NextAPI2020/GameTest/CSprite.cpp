@@ -55,7 +55,7 @@ void CSprite::CreateAnimation(unsigned int _id, float _speed, const std::vector<
 	m_sprite->CreateAnimation(_id, _speed, _frames);
 }
 
-void CSprite::DrawSprite()
+void CSprite::Draw()
 {
 	m_sprite->Draw();
 }

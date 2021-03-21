@@ -10,6 +10,8 @@
 #include "CLabel.h"
 #include "CBank.h"
 #include "CHealth.h"
+#include "SEndScreen.h"
+#include "VictoryState.h"
 
 class SGame : public Scene
 {
@@ -26,6 +28,7 @@ public:
 	//--- Game Logic Methods ---//
 	void LoadLevel();
 	void SetupPlayer();
+	void CreateQuitToMenuButton();
 	void CheckCollisions();
 	void SpawnEnemy();
 	void TriggerEnemyDirectionChange(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
@@ -35,13 +38,14 @@ public:
 	void KillEnemy(Entity* _entity);
 	void PlaceTurret(Entity* _callingButton);
 	void GameOver(Entity* _playerEntity);
+	void QuitToMenu(Entity* _callingButton);
 
 	//--- Setters ---//
-	void SetLevelName(std::string _levelName);
+	static void SetLevelName(std::string _levelName);
 
 private:
 	//--- Private Data ---//
-	std::string m_levelName;
+	static std::string m_levelName;
 	std::vector<Entity*> m_levelPieces;
 	CTransform* m_enemySpawner;
 	float m_timeBetweenEnemies;
@@ -53,4 +57,6 @@ private:
 	CLabel* m_playerMoneyLabel;
 	CHealth* m_playerHealth;
 	CLabel* m_playerHealthLabel;
+	VictoryState m_victoryState;
+	bool m_quitToMenu;
 };

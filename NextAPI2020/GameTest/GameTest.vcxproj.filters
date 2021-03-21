@@ -72,6 +72,12 @@
     <ClCompile Include="CTurretAimer.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
+    <ClCompile Include="SEndScreen.cpp">
+      <Filter>Expanded Framework\Scene Management\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SMenu.cpp">
+      <Filter>Expanded Framework\Scene Management\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
@@ -154,6 +160,15 @@
     </ClInclude>
     <ClInclude Include="CTurretAimer.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SEndScreen.h">
+      <Filter>Expanded Framework\Scene Management\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="VictoryState.h">
+      <Filter>Expanded Framework\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="SMenu.h">
+      <Filter>Expanded Framework\Scene Management\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

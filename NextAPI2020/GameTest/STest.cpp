@@ -130,7 +130,7 @@ void STest::Draw()
 	std::sort(sprites.begin(), sprites.end(), [](CSprite* _a, CSprite* _b) {return _a->GetRenderLayer() > _b->GetRenderLayer(); });
 
 	for (auto sprite : sprites)
-		sprite->DrawSprite();
+		sprite->Draw();
 
 	// Grab all of the colliders and check for collisions between them
 	std::vector<CBoxCollider*> colliders = m_registry.GetAllComponentsByType<CBoxCollider>();

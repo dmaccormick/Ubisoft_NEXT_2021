@@ -4,6 +4,9 @@
 // Internal includes
 #include "SceneManager.h"
 
+//--- Statics ---//
+SceneManager* SceneManager::m_instance = nullptr;
+
 
 
 //--- Constructors and Destructor ---//
@@ -39,4 +42,15 @@ void SceneManager::UpdateActiveScene(float _deltaTime)
 void SceneManager::DrawActiveScene()
 {
 	m_activeScene->Draw();
+}
+
+
+
+//--- Getters ---//
+SceneManager* SceneManager::GetInstance()
+{
+	if (m_instance == nullptr)
+		m_instance = new SceneManager();
+
+	return m_instance;
 }
