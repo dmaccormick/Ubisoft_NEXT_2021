@@ -150,7 +150,7 @@ Entity* EnemyFactory::CreateHealerEnemy() const
 
 	CRadialHealer* radialHealerComp = m_levelRegistry->AddComponent<CRadialHealer>(enemy);
 	radialHealerComp->SetRadius(100.0f);
-	radialHealerComp->SetHealRatePerSecond(15.0f);
+	radialHealerComp->SetHealRatePerSecond(5.0f);
 	radialHealerComp->SetTargetEntityTag(EntityTag::Enemy);
 	radialHealerComp->Init();
 	

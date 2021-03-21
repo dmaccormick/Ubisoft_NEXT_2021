@@ -23,10 +23,17 @@ CHealth::~CHealth()
 //--- Component Interface ---//
 void CHealth::Init()
 {
+	// Attach the health label which will be used to show the current and max HP of the object
+	m_healthLabel = m_registry->AddComponent<CLabel>(m_entity);
+	m_healthLabel->SetFont(Font::BASE_8_BY_13);
+	m_healthLabel->SetColor(Color::White());
+	m_healthLabel->SetOffset(Vec2(-22.5f, 20.0f));
+	m_healthLabel->Init();
 }
 
 void CHealth::Update(float _deltaTime)
 {
+	m_healthLabel->SetText(MakeHealthString());
 }
 
 
@@ -103,6 +110,11 @@ float CHealth::GetMaxHealth() const
 	return m_maxHealth;
 }
 
+int CHealth::GetMaxHealthRounded() const
+{
+	return (int)rint(m_maxHealth);
+}
+
 float CHealth::GetHealth() const
 {
 	return m_currentHealth;
@@ -111,4 +123,12 @@ float CHealth::GetHealth() const
 int CHealth::GetHealthRounded() const
 {
 	return (int)rint(m_currentHealth);
+}
+
+
+
+//--- Utility Methods ---//
+std::string CHealth::MakeHealthString() const
+{
+	return std::to_string(GetHealthRounded()) + "/" + std::to_string(GetMaxHealthRounded());
 }

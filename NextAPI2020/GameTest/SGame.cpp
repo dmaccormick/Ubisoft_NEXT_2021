@@ -366,6 +366,10 @@ void SGame::PlaceTurret(Entity* _callingButton)
 		shooterComp->SetProjectilePrefabFunc(std::bind(&SGame::FireBasicProjectile, this, P_ARG::_1, P_ARG::_2));
 		shooterComp->Init();
 
+		CHealth* healthComp = m_registry.AddComponent<CHealth>(turret);
+		healthComp->SetMaxHealth(100.0f);
+		healthComp->Init();
+
 		// Disable the button now that the tower has been placed
 		_callingButton->GetComponent<CButton>()->SetActive(false);
 		_callingButton->GetComponent<CLabel>()->SetActive(false);

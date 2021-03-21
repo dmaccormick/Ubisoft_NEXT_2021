@@ -5,6 +5,7 @@
 
 // Internal includes
 #include "Component.h"
+#include "CLabel.h"
 
 class CHealth : public Component
 {
@@ -30,12 +31,17 @@ public:
 
 	//--- Getters ---//
 	float GetMaxHealth() const;
+	int GetMaxHealthRounded() const;
 	float GetHealth() const;
 	int GetHealthRounded() const;
 
 private:
 	//--- Private Data ---//
 	std::vector<std::function<void(Entity*)>> m_onDestroyCallbacks;
+	CLabel* m_healthLabel;
 	float m_maxHealth;
 	float m_currentHealth;
+
+	//--- Utility Functions ---//
+	std::string MakeHealthString() const;
 };
