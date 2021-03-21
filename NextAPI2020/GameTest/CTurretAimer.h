@@ -6,6 +6,7 @@
 // Internal includes
 #include "Component.h"
 #include "CTransform.h"
+#include "CRadiusIndicator.h"
 
 class CTurretAimer : public Component
 {
@@ -34,6 +35,7 @@ private:
 	//--- Private Data ---//
 	static const std::vector<Entity*>* m_enemies;
 	CTransform* m_transform;
+	CRadiusIndicator* m_radiusIndicator;
 	CTransform* m_currentTarget;
 	float m_range;
 };

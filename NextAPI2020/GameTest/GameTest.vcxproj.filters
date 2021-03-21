@@ -84,6 +84,9 @@
     <ClCompile Include="EnemyFactory.cpp">
       <Filter>Expanded Framework\Game Logic Managers</Filter>
     </ClCompile>
+    <ClCompile Include="CRadiusIndicator.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
@@ -184,6 +187,9 @@
     </ClInclude>
     <ClInclude Include="EnemyType.h">
       <Filter>Expanded Framework\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="CRadiusIndicator.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

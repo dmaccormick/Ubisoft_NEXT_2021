@@ -11,6 +11,7 @@
 #include "CLinearMover.h"
 #include "CHealth.h"
 #include "CEnemy.h"
+#include "CRadiusIndicator.h"
 
 //--- Constructors and Destructor ---//
 EnemyFactory::EnemyFactory()
@@ -139,6 +140,11 @@ Entity* EnemyFactory::CreateStrongEnemy() const
 Entity* EnemyFactory::CreateHealerEnemy() const
 {
 	Entity* enemy = CreateGenericEnemy(EnemyType::Healer);
+
+	CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(enemy);
+	radiusIndicatorComp->SetRadius(100.0f);
+	radiusIndicatorComp->SetColor(Color::Red());
+	radiusIndicatorComp->Init();
 	
 	return enemy;
 }
@@ -147,12 +153,22 @@ Entity* EnemyFactory::CreateSpeederEnemy() const
 {
 	Entity* enemy = CreateGenericEnemy(EnemyType::Speeder);
 
+	CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(enemy);
+	radiusIndicatorComp->SetRadius(100.0f);
+	radiusIndicatorComp->SetColor(Color::Green());
+	radiusIndicatorComp->Init();
+
 	return enemy;
 }
 
 Entity* EnemyFactory::CreateShooterEnemy() const
 {
 	Entity* enemy = CreateGenericEnemy(EnemyType::Shooter);
+
+	CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(enemy);
+	radiusIndicatorComp->SetRadius(100.0f);
+	radiusIndicatorComp->SetColor(Color::Yellow());
+	radiusIndicatorComp->Init();
 
 	return enemy;
 }
@@ -161,12 +177,22 @@ Entity* EnemyFactory::CreateEMPEnemy() const
 {
 	Entity* enemy = CreateGenericEnemy(EnemyType::EMP);
 
+	CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(enemy);
+	radiusIndicatorComp->SetRadius(100.0f);
+	radiusIndicatorComp->SetColor(Color::Blue());
+	radiusIndicatorComp->Init();
+
 	return enemy;
 }
 
 Entity* EnemyFactory::CreateBomberEnemy() const
 {
 	Entity* enemy = CreateGenericEnemy(EnemyType::Bomber);
+
+	CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(enemy);
+	radiusIndicatorComp->SetRadius(100.0f);
+	radiusIndicatorComp->SetColor(Color::Brown());
+	radiusIndicatorComp->Init();
 
 	return enemy;
 }

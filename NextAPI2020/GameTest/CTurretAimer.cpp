@@ -32,10 +32,13 @@ CTurretAimer::~CTurretAimer()
 void CTurretAimer::Init()
 {
 	m_transform = GetComponent<CTransform>();
+	m_radiusIndicator = GetComponent<CRadiusIndicator>();
 }
 
 void CTurretAimer::Update(float _deltaTime)
 {
+	m_radiusIndicator->SetRadius(m_range);
+
 	SelectNewTarget();
 	FaceTarget();
 }

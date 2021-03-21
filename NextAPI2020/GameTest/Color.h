@@ -20,12 +20,15 @@ struct Color
 	}
 
 	//--- Methods ---//
-	static Color Red()		{ return Color(1.0f, 0.0f, 0.0f, 1.0f); }
-	static Color Green()	{ return Color(0.0f, 1.0f, 0.0f, 1.0f); }
-	static Color Blue()		{ return Color(0.0f, 0.0f, 1.0f, 1.0f); }
-	static Color Yellow()	{ return Color(1.0f, 1.0f, 0.0f, 1.0f); }
-	static Color Cyan()		{ return Color(0.0f, 1.0f, 1.0f, 1.0f); }
-	static Color Magenta()	{ return Color(1.0f, 0.0f, 1.0f, 1.0f); }
+	static Color White	(float _a = 1.0f)	{ return Color(1.0f, 1.0f, 1.0f, _a); }
+	static Color Black	(float _a = 1.0f)	{ return Color(0.0f, 0.0f, 0.0f, _a); }
+	static Color Red	(float _a = 1.0f)	{ return Color(1.0f, 0.0f, 0.0f, _a); }
+	static Color Green	(float _a = 1.0f)	{ return Color(0.0f, 1.0f, 0.0f, _a); }
+	static Color Blue	(float _a = 1.0f)	{ return Color(0.0f, 0.0f, 1.0f, _a); }
+	static Color Yellow	(float _a = 1.0f)	{ return Color(1.0f, 1.0f, 0.0f, _a); }
+	static Color Cyan	(float _a = 1.0f)	{ return Color(0.0f, 1.0f, 1.0f, _a); }
+	static Color Magenta(float _a = 1.0f)	{ return Color(1.0f, 0.0f, 1.0f, _a); }
+	static Color Brown	(float _a = 1.0f)	{ return Color(0.7f, 0.5f, 0.0f, _a); }
 
 	//--- Public Data ---//
 	float r, g, b, a;

@@ -194,6 +194,7 @@
     <ClInclude Include="CLinearMover.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CProjectile.h" />
+    <ClInclude Include="CRadiusIndicator.h" />
     <ClInclude Include="CTile.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="CSprite.h" />
@@ -233,6 +234,7 @@
     <ClCompile Include="CLifetime.cpp" />
     <ClCompile Include="CLinearMover.cpp" />
     <ClCompile Include="CProjectile.cpp" />
+    <ClCompile Include="CRadiusIndicator.cpp" />
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTransform.cpp" />

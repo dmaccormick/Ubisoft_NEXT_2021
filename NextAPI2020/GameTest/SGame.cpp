@@ -19,6 +19,7 @@
 #include "SEndScreen.h"
 #include "SceneManager.h"
 #include "SMenu.h"
+#include "CRadiusIndicator.h"
 
 //--- Statics ---//
 std::string SGame::m_levelName = "Level_1.txt";
@@ -351,8 +352,13 @@ void SGame::PlaceTurret(Entity* _callingButton)
 		spriteComp->SetRenderLayer(-1.0f);
 		spriteComp->Init();
 
+		CRadiusIndicator* radiusIndicatorComp = m_registry.AddComponent<CRadiusIndicator>(turret);
+		radiusIndicatorComp->SetColor(Color::White());
+		radiusIndicatorComp->SetRenderLayer(-0.5f);
+		radiusIndicatorComp->Init();
+
 		CTurretAimer* turretComp = m_registry.AddComponent<CTurretAimer>(turret);
-		turretComp->SetRange(300.0f);
+		turretComp->SetRange(100.0f);
 		turretComp->Init();
 
 		CTurretShooter* shooterComp = m_registry.AddComponent<CTurretShooter>(turret);
