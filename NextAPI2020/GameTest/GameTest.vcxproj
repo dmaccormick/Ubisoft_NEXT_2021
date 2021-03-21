@@ -213,6 +213,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Vec2.h" />
     <ClInclude Include="VictoryState.h" />
+    <ClInclude Include="WaveSpawner.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App\app.cpp" />
@@ -251,6 +252,7 @@
     <ClCompile Include="STest.cpp" />
     <ClCompile Include="SGame.cpp" />
     <ClCompile Include="Vec2.cpp" />
+    <ClCompile Include="WaveSpawner.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

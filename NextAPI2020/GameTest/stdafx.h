@@ -10,6 +10,5 @@
 #include <stdio.h>
 #include <tchar.h>
 
-
-
-// TODO: reference additional headers your program requires here
+// Defines
+#define P_ARG std::placeholders // Makes it easier to bind functions for callbacks

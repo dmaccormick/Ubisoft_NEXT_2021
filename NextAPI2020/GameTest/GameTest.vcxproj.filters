@@ -36,9 +36,6 @@
     <ClCompile Include="SGame.cpp">
       <Filter>Expanded Framework\Scene Management\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="LevelLoader.cpp">
-      <Filter>Expanded Framework\Utilities</Filter>
-    </ClCompile>
     <ClCompile Include="CTile.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
@@ -77,6 +74,12 @@
     </ClCompile>
     <ClCompile Include="SMenu.cpp">
       <Filter>Expanded Framework\Scene Management\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelLoader.cpp">
+      <Filter>Expanded Framework\Game Logic Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="WaveSpawner.cpp">
+      <Filter>Expanded Framework\Game Logic Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,9 +124,6 @@
     </ClInclude>
     <ClInclude Include="SGame.h">
       <Filter>Expanded Framework\Scene Management\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelLoader.h">
-      <Filter>Expanded Framework\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="CTile.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
@@ -170,6 +170,12 @@
     <ClInclude Include="SMenu.h">
       <Filter>Expanded Framework\Scene Management\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="LevelLoader.h">
+      <Filter>Expanded Framework\Game Logic Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="WaveSpawner.h">
+      <Filter>Expanded Framework\Game Logic Managers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -198,6 +204,9 @@
     </Filter>
     <Filter Include="Expanded Framework\Utilities">
       <UniqueIdentifier>{da52ab5e-37f7-4b51-b629-189749e45dd3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Expanded Framework\Game Logic Managers">
+      <UniqueIdentifier>{20d7c97f-66cf-4f14-8a35-c33cb8721f91}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>
