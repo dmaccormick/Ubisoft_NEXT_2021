@@ -9,6 +9,7 @@ CEnemy::CEnemy()
 {
 	m_rewardAmount = 0.0f;
 	m_damage = 0.0f;
+	m_enemyType = EnemyType::Basic;
 }
 
 CEnemy::~CEnemy()
@@ -39,6 +40,11 @@ void CEnemy::SetDamage(float _damage)
 	m_damage = _damage;
 }
 
+void CEnemy::SetEnemyType(EnemyType _enemyType)
+{
+	m_enemyType = _enemyType;
+}
+
 
 
 //--- Getters ---//
@@ -50,4 +56,9 @@ float CEnemy::GetRewardAmount() const
 float CEnemy::GetDamage() const
 {
 	return m_damage;
+}
+
+EnemyType CEnemy::GetEnemyType() const
+{
+	return m_enemyType;
 }

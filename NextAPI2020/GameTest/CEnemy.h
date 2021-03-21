@@ -2,6 +2,7 @@
 
 // Internal includes
 #include "Component.h"
+#include "EnemyType.h"
 
 class CEnemy : public Component
 {
@@ -17,13 +18,16 @@ public:
 	//--- Setters ---//
 	void SetRewardAmount(float _reward);
 	void SetDamage(float _damage);
+	void SetEnemyType(EnemyType _enemyType);
 
 	//--- Getters ---//
 	float GetRewardAmount() const;
 	float GetDamage() const;
+	EnemyType GetEnemyType() const;
 
 private:
 	//--- Private Data ---//
 	float m_rewardAmount;
 	float m_damage;
+	EnemyType m_enemyType;
 };

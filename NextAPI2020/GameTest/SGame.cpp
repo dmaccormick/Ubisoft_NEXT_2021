@@ -63,7 +63,7 @@ void SGame::Init()
 
 	// Init the wave spawner
 	auto enemySpawner = m_registry.GetAllEntitiesByTags({ EntityTag::EnemySpawn })[0]->GetComponent<CTransform>();
-	m_waveSpawner = new WaveSpawner(m_registry, enemySpawner, std::bind(&SGame::KillEnemy, this, P_ARG::_1));
+	m_waveSpawner = new WaveSpawner(enemySpawner, m_registry, std::bind(&SGame::KillEnemy, this, P_ARG::_1));
 	m_waveSpawner->StartNextWave();
 }
 

@@ -8,23 +8,25 @@
 // Internal includes
 #include "Registry.h"
 #include "CTransform.h"
+#include "EnemyFactory.h"
+#include "EnemyType.h"
 
 struct SubWave
 {
 	SubWave()
 	{
 		m_delay = 0.0f;
-		m_enemyPrefabFunc = nullptr;
+		m_enemyType = EnemyType::Basic;
 	}
 
-	SubWave(float _delay, std::function<Entity*()> _enemyPrefabFunc)
+	SubWave(float _delay, EnemyType _enemyType)
 	{
 		m_delay = _delay;
-		m_enemyPrefabFunc = _enemyPrefabFunc;
+		m_enemyType = _enemyType;
 	}
 
 	float m_delay;
-	std::function<Entity*()> m_enemyPrefabFunc;
+	EnemyType m_enemyType;
 };
 
 struct Wave
@@ -42,17 +44,14 @@ class WaveSpawner
 {
 public:
 	//--- Constructors and Destructor ---//
-	WaveSpawner() {}
-	WaveSpawner(Registry& _levelRegistry, CTransform* _enemySpawnerLoc, std::function<void(Entity*)> _onKillCallback);
+	WaveSpawner();
+	WaveSpawner(CTransform* _enemySpawnerLoc, Registry& _levelRegistry, std::function<void(Entity*)> _onKillCallback);
 	~WaveSpawner();
 
 	//--- Methods ---//
 	void Update(float _deltaTime);
 	void StartNextWave();
 	void OnEnemyDestroy(Entity* _enemy);
-
-	//--- Enemy Prefab Functions ---//
-	Entity* CreateBasicEnemy();
 
 	//--- Getters ---//
 	int GetCurrentWaveNumber() const;
@@ -62,7 +61,7 @@ public:
 
 private:
 	//--- Private Data ---//
-	Registry* m_levelRegistry;
+	EnemyFactory m_enemyFactory;
 	CTransform* m_enemySpawnerLoc;
 	std::vector<Entity*> m_spawnedEnemies;
 	std::vector<Wave> m_waves;
@@ -71,5 +70,4 @@ private:
 	bool m_stillSpawning;
 	float m_timeSinceLastSpawn;
 	bool m_allWavesComplete;
-	std::function<void(Entity*)> m_enemyOnKillCallback;
 };
