@@ -52,7 +52,7 @@ WaveSpawner::WaveSpawner(Registry& _levelRegistry, CTransform* _enemySpawnerLoc,
 		SubWave(0.5f, std::bind(&WaveSpawner::CreateBasicEnemy, this)),
 		SubWave(0.5f, std::bind(&WaveSpawner::CreateBasicEnemy, this)),
 		SubWave(0.5f, std::bind(&WaveSpawner::CreateBasicEnemy, this))
-		}));
+	}));
 }
 
 WaveSpawner::~WaveSpawner()
