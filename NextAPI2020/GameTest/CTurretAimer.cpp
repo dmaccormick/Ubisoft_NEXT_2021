@@ -21,6 +21,7 @@ CTurretAimer::CTurretAimer()
 	m_currentTarget = nullptr;
 	m_radiusIndicator = nullptr;
 	m_range = 0.0f;
+	m_deactivated = false;
 }
 
 CTurretAimer::~CTurretAimer()
@@ -38,10 +39,23 @@ void CTurretAimer::Init()
 
 void CTurretAimer::Update(float _deltaTime)
 {
-	m_radiusIndicator->SetRadius(m_range);
+	// Normally, look for and aim at targets
+	// If deactivated, can no longer aim. Also, spin wildly to provide feedback
+	if (!m_deactivated)
+	{
+		m_radiusIndicator->SetRadius(m_range);
+		m_radiusIndicator->SetColor(Color(m_radiusIndicator->GetColor(), 0.2f));
 
-	SelectNewTarget();
-	FaceTarget();
+		SelectNewTarget();
+		FaceTarget();
+	}
+	else
+	{
+		m_currentTarget = nullptr;
+		m_radiusIndicator->SetColor(Color(m_radiusIndicator->GetColor(), 0.0f));
+		m_transform->SetRotation(m_transform->GetRotation() + 0.2f);
+		m_deactivated = false;
+	}
 }
 
 
@@ -86,6 +100,11 @@ void CTurretAimer::SelectNewTarget()
 
 		m_currentTarget = closestTarget;
 	}
+}
+
+void CTurretAimer::Deactivate()
+{
+	m_deactivated = true;
 }
 
 

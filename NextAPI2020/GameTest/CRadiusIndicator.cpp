@@ -85,6 +85,14 @@ void CRadiusIndicator::SetRenderLayer(float _renderLayer)
 
 
 
+//--- Getters ---//
+Color CRadiusIndicator::GetColor() const
+{
+	return m_color;
+}
+
+
+
 //--- Utility Functions ---//
 float CRadiusIndicator::CalculateSpriteScale() const
 {

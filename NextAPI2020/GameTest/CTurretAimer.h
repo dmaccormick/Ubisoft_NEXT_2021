@@ -22,6 +22,7 @@ public:
 	//--- Methods ---//
 	void FaceTarget();
 	void SelectNewTarget();
+	void Deactivate();
 
 	//--- Setters ---//
 	static void SetEnemyList(const std::vector<Entity*>& _enemies);
@@ -38,4 +39,5 @@ private:
 	CRadiusIndicator* m_radiusIndicator;
 	CTransform* m_currentTarget;
 	float m_range;
+	bool m_deactivated;
 };

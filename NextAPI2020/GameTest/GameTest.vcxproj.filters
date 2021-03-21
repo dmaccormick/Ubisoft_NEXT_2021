@@ -93,6 +93,9 @@
     <ClCompile Include="CRadialSpeeder.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
+    <ClCompile Include="CRadialEMP.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
@@ -204,6 +207,9 @@
       <Filter>Expanded Framework\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="CRadialSpeeder.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CRadialEMP.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>

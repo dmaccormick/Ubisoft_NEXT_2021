@@ -19,6 +19,15 @@ struct Color
 		a = _a;
 	}
 
+	Color(Color& _other, float _a)
+	{
+		r = _other.r;
+		g = _other.g;
+		b = _other.b;
+
+		a = _a;
+	}
+
 	//--- Methods ---//
 	static Color White	(float _a = 1.0f)	{ return Color(1.0f, 1.0f, 1.0f, _a); }
 	static Color Black	(float _a = 1.0f)	{ return Color(0.0f, 0.0f, 0.0f, _a); }

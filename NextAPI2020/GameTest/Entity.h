@@ -16,6 +16,7 @@ enum class EntityTag
 	EnemyPath,
 
 	TurretBuildArea,
+	Turret,
 
 	BulletPlayer,
 	BulletEnemy,

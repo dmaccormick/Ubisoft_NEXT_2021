@@ -341,7 +341,7 @@ void SGame::PlaceTurret(Entity* _callingButton)
 		m_playerBank->RemoveMoney(m_turretBuildCost);
 
 		// Build a tower on top of the build location
-		auto turret = m_registry.CreateEntity("Turret");
+		auto turret = m_registry.CreateEntity("Turret", EntityTag::Turret);
 
 		CTransform* transformComp = m_registry.AddComponent<CTransform>(turret);
 		transformComp->SetPosition(_callingButton->GetComponent<CTransform>()->GetPosition());
@@ -353,7 +353,7 @@ void SGame::PlaceTurret(Entity* _callingButton)
 		spriteComp->Init();
 
 		CRadiusIndicator* radiusIndicatorComp = m_registry.AddComponent<CRadiusIndicator>(turret);
-		radiusIndicatorComp->SetColor(Color::White());
+		radiusIndicatorComp->SetColor(Color::White(0.2f));
 		radiusIndicatorComp->SetRenderLayer(-0.5f);
 		radiusIndicatorComp->Init();
 

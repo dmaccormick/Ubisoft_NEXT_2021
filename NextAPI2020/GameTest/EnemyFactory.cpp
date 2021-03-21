@@ -14,6 +14,7 @@
 #include "CRadiusIndicator.h"
 #include "CRadialHealer.h"
 #include "CRadialSpeeder.h"
+#include "CRadialEMP.h"
 
 //--- Constructors and Destructor ---//
 EnemyFactory::EnemyFactory()
@@ -178,7 +179,6 @@ Entity* EnemyFactory::CreateShooterEnemy() const
 	Entity* enemy = CreateGenericEnemy(EnemyType::Shooter);
 
 	CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(enemy);
-	radiusIndicatorComp->SetRadius(100.0f);
 	radiusIndicatorComp->SetColor(Color::Yellow());
 	radiusIndicatorComp->Init();
 
@@ -190,9 +190,13 @@ Entity* EnemyFactory::CreateEMPEnemy() const
 	Entity* enemy = CreateGenericEnemy(EnemyType::EMP);
 
 	CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(enemy);
-	radiusIndicatorComp->SetRadius(100.0f);
 	radiusIndicatorComp->SetColor(Color::Blue());
 	radiusIndicatorComp->Init();
+
+	CRadialEMP* radialEMP = m_levelRegistry->AddComponent<CRadialEMP>(enemy);
+	radialEMP->SetRadius(75.0f);
+	radialEMP->SetTargetEntityTag(EntityTag::Turret);
+	radialEMP->Init();
 
 	return enemy;
 }

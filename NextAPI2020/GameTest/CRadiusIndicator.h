@@ -28,6 +28,9 @@ public:
 	void SetColor(Color _color);
 	void SetRenderLayer(float _renderLayer);
 
+	//--- Getters ---//
+	Color GetColor() const;
+
 private:
 	//--- Private Data ---//
 	Entity* m_radiusEntity;
