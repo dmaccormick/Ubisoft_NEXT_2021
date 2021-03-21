@@ -88,10 +88,6 @@ void SGame::Update(float _deltaTime)
 	// Update the wave spawner
 	m_waveSpawner->Update(_deltaTime);
 
-	// Update the list of targets for the turrets to focus on
-	m_enemies = m_registry.GetAllEntitiesByTags({ EntityTag::Enemy });
-	CTurretAimer::SetEnemyList(m_enemies);
-
 	// If all of the waves have been defeated, the player has won
 	if (m_waveSpawner->GetAllWavesComplete())
 		m_victoryState = VictoryState::Victory;
@@ -357,9 +353,10 @@ void SGame::PlaceTurret(Entity* _callingButton)
 		radiusIndicatorComp->SetRenderLayer(-0.5f);
 		radiusIndicatorComp->Init();
 
-		CTurretAimer* turretComp = m_registry.AddComponent<CTurretAimer>(turret);
-		turretComp->SetRange(100.0f);
-		turretComp->Init();
+		CRadialAimer* aimerComp = m_registry.AddComponent<CRadialAimer>(turret);
+		aimerComp->SetRadius(100.0f);
+		aimerComp->SetTargetEntityTag(EntityTag::Enemy);
+		aimerComp->Init();
 
 		CTurretShooter* shooterComp = m_registry.AddComponent<CTurretShooter>(turret);
 		shooterComp->SetFireRate(0.5f);

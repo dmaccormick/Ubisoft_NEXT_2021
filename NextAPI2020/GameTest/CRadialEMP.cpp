@@ -3,7 +3,7 @@
 
 // Internal includes
 #include "CRadialEMP.h"
-#include "CTurretAimer.h"
+#include "CRadialAimer.h"
 #include "EntityRadiusChecker.h"
 
 //--- Constructors and Destructor ---//
@@ -33,7 +33,7 @@ void CRadialEMP::Update(float _deltaTime)
 	m_radiusIndicator->SetRadius(m_radius);
 
 	Vec2 center = m_transform->GetPosition();
-	std::vector<CTurretAimer*> aimersInRange = EntityRadiusChecker::GetTaggedComponentsInRange<CTurretAimer>(m_registry, m_targetTag, center, m_radius);
+	std::vector<CRadialAimer*> aimersInRange = EntityRadiusChecker::GetTaggedComponentsInRange<CRadialAimer>(m_registry, m_targetTag, center, m_radius);
 
 	for (auto aimerComp : aimersInRange)
 		aimerComp->Deactivate();

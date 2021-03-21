@@ -203,7 +203,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="CSprite.h" />
     <ClInclude Include="CTransform.h" />
-    <ClInclude Include="CTurretAimer.h" />
+    <ClInclude Include="CRadialAimer.h" />
     <ClInclude Include="CTurretShooter.h" />
     <ClInclude Include="EnemyFactory.h" />
     <ClInclude Include="EnemyType.h" />
@@ -247,7 +247,7 @@
     <ClCompile Include="CSprite.cpp" />
     <ClCompile Include="CTile.cpp" />
     <ClCompile Include="CTransform.cpp" />
-    <ClCompile Include="CTurretAimer.cpp" />
+    <ClCompile Include="CRadialAimer.cpp" />
     <ClCompile Include="CTurretShooter.cpp" />
     <ClCompile Include="EnemyFactory.cpp" />
     <ClCompile Include="Entity.cpp" />

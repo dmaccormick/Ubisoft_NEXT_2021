@@ -21,7 +21,7 @@ CTurretShooter::~CTurretShooter()
 //--- Component Interface ---//
 void CTurretShooter::Init()
 {
-	m_turretAimer = GetComponent<CTurretAimer>();
+	m_turretAimer = GetComponent<CRadialAimer>();
 }
 
 void CTurretShooter::Update(float _deltaTime)

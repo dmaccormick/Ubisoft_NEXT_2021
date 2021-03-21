@@ -8,12 +8,12 @@
 #include "CTransform.h"
 #include "CRadiusIndicator.h"
 
-class CTurretAimer : public Component
+class CRadialAimer : public Component
 {
 public:
 	//--- Constructors and Destructor ---//
-	CTurretAimer();
-	virtual ~CTurretAimer();
+	CRadialAimer();
+	virtual ~CRadialAimer();
 
 	//--- Component Interface ---//
 	virtual void Init() override;
@@ -25,19 +25,19 @@ public:
 	void Deactivate();
 
 	//--- Setters ---//
-	static void SetEnemyList(const std::vector<Entity*>& _enemies);
-	void SetRange(float _range);
+	void SetRadius(float _range);
+	void SetTargetEntityTag(EntityTag _targetTag);
 
 	//--- Getters ---//
 	CTransform* GetTarget() const;
-	float GetRange() const;
+	float GetRadius() const;
 
 private:
 	//--- Private Data ---//
-	static const std::vector<Entity*>* m_enemies;
 	CTransform* m_transform;
 	CRadiusIndicator* m_radiusIndicator;
 	CTransform* m_currentTarget;
-	float m_range;
+	float m_radius;
 	bool m_deactivated;
+	EntityTag m_targetTag;
 };

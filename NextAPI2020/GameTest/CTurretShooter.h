@@ -5,7 +5,7 @@
 
 // Internal includes
 #include "Component.h"
-#include "CTurretAimer.h"
+#include "CRadialAimer.h"
 #include "Vec2.h"
 
 class CTurretShooter : public Component
@@ -28,7 +28,7 @@ public:
 
 private:
 	//--- Private Data ---//
-	CTurretAimer* m_turretAimer;
+	CRadialAimer* m_turretAimer;
 	float m_fireRate;
 	float m_timeSinceLastFire;
 	std::function<void(CTransform*, CTransform*)> m_projectilePrefabFunc;

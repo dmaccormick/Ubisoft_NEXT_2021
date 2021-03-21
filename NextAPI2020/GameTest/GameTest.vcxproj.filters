@@ -66,9 +66,6 @@
     <ClCompile Include="CEnemy.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
-    <ClCompile Include="CTurretAimer.cpp">
-      <Filter>Expanded Framework\ECS\Components</Filter>
-    </ClCompile>
     <ClCompile Include="SEndScreen.cpp">
       <Filter>Expanded Framework\Scene Management\Scenes</Filter>
     </ClCompile>
@@ -97,6 +94,9 @@
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
     <ClCompile Include="CRadialDamager.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CRadialAimer.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
   </ItemGroup>
@@ -176,9 +176,6 @@
     <ClInclude Include="CEnemy.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
-    <ClInclude Include="CTurretAimer.h">
-      <Filter>Expanded Framework\ECS\Components</Filter>
-    </ClInclude>
     <ClInclude Include="SEndScreen.h">
       <Filter>Expanded Framework\Scene Management\Scenes</Filter>
     </ClInclude>
@@ -216,6 +213,9 @@
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
     <ClInclude Include="CRadialDamager.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CRadialAimer.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>
