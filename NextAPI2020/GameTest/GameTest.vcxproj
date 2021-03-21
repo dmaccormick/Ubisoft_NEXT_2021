@@ -194,6 +194,7 @@
     <ClInclude Include="CLinearMover.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CProjectile.h" />
+    <ClInclude Include="CRadialDamager.h" />
     <ClInclude Include="CRadialEMP.h" />
     <ClInclude Include="CRadialHealer.h" />
     <ClInclude Include="CRadialSpeeder.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="CLifetime.cpp" />
     <ClCompile Include="CLinearMover.cpp" />
     <ClCompile Include="CProjectile.cpp" />
+    <ClCompile Include="CRadialDamager.cpp" />
     <ClCompile Include="CRadialEMP.cpp" />
     <ClCompile Include="CRadialHealer.cpp" />
     <ClCompile Include="CRadialSpeeder.cpp" />

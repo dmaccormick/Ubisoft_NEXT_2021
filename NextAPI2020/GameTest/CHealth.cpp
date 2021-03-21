@@ -12,6 +12,7 @@ CHealth::CHealth()
 {
 	m_currentHealth = 0.0f;
 	m_maxHealth = 0.0f;
+	m_healthLabel = nullptr;
 }
 
 CHealth::~CHealth()

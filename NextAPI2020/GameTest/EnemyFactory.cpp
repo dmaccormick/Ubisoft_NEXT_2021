@@ -15,6 +15,7 @@
 #include "CRadialHealer.h"
 #include "CRadialSpeeder.h"
 #include "CRadialEMP.h"
+#include "CRadialDamager.h"
 
 //--- Constructors and Destructor ---//
 EnemyFactory::EnemyFactory()
@@ -182,6 +183,8 @@ Entity* EnemyFactory::CreateShooterEnemy() const
 	radiusIndicatorComp->SetColor(Color::Yellow());
 	radiusIndicatorComp->Init();
 
+	//set radius
+
 	return enemy;
 }
 
@@ -206,9 +209,18 @@ Entity* EnemyFactory::CreateBomberEnemy() const
 	Entity* enemy = CreateGenericEnemy(EnemyType::Bomber);
 
 	CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(enemy);
-	radiusIndicatorComp->SetRadius(100.0f);
 	radiusIndicatorComp->SetColor(Color::Brown());
 	radiusIndicatorComp->Init();
+
+	CRadialDamager* radialDamager = m_levelRegistry->AddComponent<CRadialDamager>(enemy);
+	radialDamager->SetRadius(100.0f);
+	radialDamager->SetTargetEntityTag(EntityTag::Turret);
+	radialDamager->SetDamageAmount(50.0f);
+	radialDamager->Init();
+
+	// This enemy damages the player when it is destroyed, so hook into that event
+	CHealth* enemyHealth = enemy->GetComponent<CHealth>();
+	enemyHealth->AddOnDestroyCallback(std::bind(&CRadialDamager::TriggerDamage, radialDamager, P_ARG::_1));
 
 	return enemy;
 }
