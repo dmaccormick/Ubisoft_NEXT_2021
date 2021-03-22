@@ -1,6 +1,9 @@
 // Standard header
 #include "stdafx.h"
 
+// Standard includes
+#include <cmath>
+
 // Internal includes
 #include "CShooter.h"
 
@@ -12,7 +15,7 @@ ProjectileFactory* CShooter::m_projectileFactory = nullptr;
 //--- Constructors and Destructor ---//
 CShooter::CShooter()
 {
-	m_turretAimer = nullptr;
+	m_aimer = nullptr;
 	m_fireRate = 0.0f;
 	m_timeSinceLastFire = 0.0f;
 	m_bulletTag = EntityTag::BulletPlayer;
@@ -31,12 +34,13 @@ CShooter::~CShooter()
 //--- Component Interface ---//
 void CShooter::Init()
 {
-	m_turretAimer = GetComponent<CRadialAimer>();
+	m_transform = GetComponent<CTransform>();
+	m_aimer = GetComponent<CRadialAimer>();
 }
 
 void CShooter::Update(float _deltaTime)
 {
-	if (m_turretAimer->GetTarget())
+	if (m_aimer->GetTarget())
 	{
 		float dtSeconds = _deltaTime / 1000.0f;
 
@@ -54,11 +58,31 @@ void CShooter::Update(float _deltaTime)
 //--- Methods ---//
 void CShooter::Shoot()
 {
-	// Call the projectile creation function and pass it the spawner turret and target enemy
-	/*if (m_projectilePrefabFunc)
-		m_projectilePrefabFunc(GetComponent<CTransform>(), m_turretAimer->GetTarget());*/
+	Vec2 shooterToTarget = Vec2(m_aimer->GetTarget()->GetPosition()) - m_transform->GetPosition();
+	m_projectileFactory->CreateProjectile(m_bulletTag, m_transform, m_aimer->GetTarget(), shooterToTarget, m_bulletDmg, m_flightEffect, m_destroyEffect);
 
-	m_projectileFactory->CreateProjectile(m_bulletTag, GetComponent<CTransform>(), m_turretAimer->GetTarget(), m_bulletDmg, m_flightEffect, m_destroyEffect);
+	if (m_shootEffect == ProjectileShootEffect::TriShot)
+	{
+		// Spread the shots out
+		float spreadAngle = 30.0f * (3.14159f / 180.0f);
+
+		// Rotate the straight on vector to get the two the additional projectile paths
+		float cosAngle = cos(spreadAngle);
+		float sinAngle = sin(spreadAngle);
+		Vec2 positiveSpreadVec;
+		positiveSpreadVec.SetX(shooterToTarget.GetX() * cosAngle - shooterToTarget.GetY() * sinAngle);
+		positiveSpreadVec.SetY(shooterToTarget.GetX() * sinAngle + shooterToTarget.GetY() * cosAngle);
+
+		float cosAngleNeg = cos(-spreadAngle);
+		float sinAngleNeg = sin(-spreadAngle);
+		Vec2 negativeSpreadVec;
+		negativeSpreadVec.SetX(shooterToTarget.GetX() * cosAngleNeg - shooterToTarget.GetY() * sinAngleNeg);
+		negativeSpreadVec.SetY(shooterToTarget.GetX() * sinAngleNeg + shooterToTarget.GetY() * cosAngleNeg);
+
+		// Spawn the two additional projectiles
+		m_projectileFactory->CreateProjectile(m_bulletTag, m_transform, m_aimer->GetTarget(), positiveSpreadVec, m_bulletDmg, m_flightEffect, m_destroyEffect);
+		m_projectileFactory->CreateProjectile(m_bulletTag, m_transform, m_aimer->GetTarget(), negativeSpreadVec, m_bulletDmg, m_flightEffect, m_destroyEffect);
+	}
 }
 
 
@@ -99,7 +123,10 @@ void CShooter::SetDestroyEffect(ProjectileDestroyEffect _destroyEffect)
 	m_destroyEffect = _destroyEffect;
 }
 
-//void CTurretShooter::SetProjectilePrefabFunc(std::function<void(CTransform*, CTransform*)> _projectilePrefabFunc)
-//{
-//	m_projectilePrefabFunc = _projectilePrefabFunc;
-//}
+
+
+//--- Getters ---//
+float CShooter::GetFireRate() const
+{
+	return m_fireRate;
+}

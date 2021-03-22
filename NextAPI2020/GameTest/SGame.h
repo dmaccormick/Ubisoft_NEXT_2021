@@ -14,40 +14,8 @@
 #include "VictoryState.h"
 #include "WaveSpawner.h"
 #include "ProjectileFactory.h"
-
-enum class PlayerAbility
-{
-	Heal,
-	Damage,
-	Slow,
-
-	Count,
-	None
-};
-
-struct PlayerAbilityDesc
-{
-	PlayerAbilityDesc()
-	{
-		m_cost = 0.0f;
-		m_name = "";
-		m_color = Color::White();
-		m_radius = 0.0f;
-	}
-
-	PlayerAbilityDesc(float _cost, std::string _name, Color _color, float _radius)
-	{
-		m_cost = _cost;
-		m_name = _name;
-		m_color = _color;
-		m_radius = _radius;
-	}
-
-	float m_cost;
-	std::string m_name;
-	Color m_color;
-	float m_radius;
-};
+#include "PlayerAbility.h"
+#include "PlayerUpgrade.h"
 
 class SGame : public Scene
 {
@@ -78,6 +46,8 @@ public:
 	void CreateAbilityReticle(Entity* _callingButton);
 	void TriggerAbility();
 	void CancelAbility();
+	void CreateUpgradeUI();
+	void PurchaseUpgrade(Entity* _callingButton);
 
 	//--- Setters ---//
 	static void SetLevelName(std::string _levelName);
@@ -88,7 +58,6 @@ private:
 	std::vector<Entity*> m_levelPieces;
 	float m_timeBetweenEnemies;
 	float m_timeSinceLastEnemy;
-	float m_turretBuildCost;
 	std::map<Entity*, Entity*> m_turretPlacements;
 	Entity* m_player;
 	CBank* m_playerBank;
@@ -104,4 +73,14 @@ private:
 	Entity* m_abilityReticle;
 	PlayerAbility m_currentAbility;
 	std::map<PlayerAbility, PlayerAbilityDesc> m_abilityDescs;
+	std::map<PlayerUpgrade, PlayerUpgradeDesc> m_upgradeDescs;
+
+	float m_turretRadius;
+	float m_turretFireRate;
+	float m_turretDamage;
+	float m_turretHealth;
+	float m_turretBuildCost;
+	ProjectileShootEffect m_turretShootEffect;
+	ProjectileFlightEffect m_turretFlightEffect;
+	ProjectileDestroyEffect m_turretDestroyEffect;
 };

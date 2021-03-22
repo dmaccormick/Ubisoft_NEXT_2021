@@ -8,6 +8,9 @@
 #include "CLifetime.h"
 #include "CProjectile.h"
 #include "CLinearMover.h"
+#include "CHomingProjectile.h"
+#include "CRadiusIndicator.h"
+#include "CRadialDamager.h"
 
 //--- Constructors and Destructor ---//
 ProjectileFactory::ProjectileFactory(Registry& _levelRegistry, std::function<void(CBoxCollider*, CBoxCollider*, Vec2&)> _gameCollisionCallback)
@@ -23,7 +26,7 @@ ProjectileFactory::~ProjectileFactory()
 
 
 //--- Methods ---//
-Entity* ProjectileFactory::CreateProjectile(EntityTag _bulletTag, CTransform* _turret, CTransform* _target, float _damage, ProjectileFlightEffect _flightEffect, ProjectileDestroyEffect _destroyEffect)
+Entity* ProjectileFactory::CreateProjectile(EntityTag _bulletTag, CTransform* _turret, CTransform* _target, Vec2 _movementDir, float _damage, ProjectileFlightEffect _flightEffect, ProjectileDestroyEffect _destroyEffect)
 {
 	auto projectile = m_levelRegistry->CreateEntity("BasicProjectile", _bulletTag);
 
@@ -50,23 +53,31 @@ Entity* ProjectileFactory::CreateProjectile(EntityTag _bulletTag, CTransform* _t
 	projectileComp->SetDamage(10.0f);
 	projectileComp->Init();
 
-	// Configure the flight style
-	if (_flightEffect == ProjectileFlightEffect::Basic)
+	CLinearMover* linearMoverComp = m_levelRegistry->AddComponent<CLinearMover>(projectile);
+	linearMoverComp->SetMovementSpeed(500.0f);
+	linearMoverComp->SetMovementDirection(_movementDir);
+	linearMoverComp->Init();
+
+	// Optionally add homing
+	if (_flightEffect == ProjectileFlightEffect::Homing)
 	{
-		CLinearMover* linearMoverComp = m_levelRegistry->AddComponent<CLinearMover>(projectile);
-		linearMoverComp->SetMovementSpeed(500.0f);
-		linearMoverComp->SetMovementDirection(_target->GetPosition() - _turret->GetPosition());
-		linearMoverComp->Init();
-	}
-	else
-	{
-		// TODO: Add homing
+		CHomingProjectile* homingComp = m_levelRegistry->AddComponent<CHomingProjectile>(projectile);
+		homingComp->SetTarget(_target);
+		homingComp->Init();
 	}
 
-	// Configure the destruction effect
+	// Optionally add splash damage
 	if (_destroyEffect == ProjectileDestroyEffect::Splash)
 	{
-		// TODO: Add splash
+		CRadiusIndicator* radiusIndicatorComp = m_levelRegistry->AddComponent<CRadiusIndicator>(projectile);
+		radiusIndicatorComp->SetColor(Color::Brown());
+		radiusIndicatorComp->Init();
+
+		CRadialDamager* radialDamager = m_levelRegistry->AddComponent<CRadialDamager>(projectile);
+		radialDamager->SetRadius(30.0f);
+		radialDamager->SetTargetEntityTag(EntityTag::Enemy);
+		radialDamager->SetDamageAmount(50.0f);
+		radialDamager->Init();
 	}
 
 	return projectile;

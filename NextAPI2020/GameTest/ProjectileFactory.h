@@ -18,7 +18,7 @@ public:
 	~ProjectileFactory();
 
 	//--- Enemy Prefab Methods ---//
-	Entity* CreateProjectile(EntityTag _bulletTag, CTransform* _turret, CTransform* _target, float _damage, ProjectileFlightEffect _flightEffect, ProjectileDestroyEffect _destroyEffect);
+	Entity* CreateProjectile(EntityTag _bulletTag, CTransform* _turret, CTransform* _target, Vec2 _moveDir, float _damage, ProjectileFlightEffect _flightEffect, ProjectileDestroyEffect _destroyEffect);
 
 private:
 	//--- Private Data ---//

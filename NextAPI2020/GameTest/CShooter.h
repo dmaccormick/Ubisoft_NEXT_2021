@@ -31,12 +31,15 @@ public:
 	void SetShootEffect(ProjectileShootEffect _shootEffect);
 	void SetFlightEffect(ProjectileFlightEffect _flightEffect);
 	void SetDestroyEffect(ProjectileDestroyEffect _destroyEffect);
-	//void SetProjectilePrefabFunc(std::function<void(CTransform*, CTransform*)> _projectilePrefabFunc);
+
+	//--- Getters ---//
+	float GetFireRate() const;
 
 private:
 	//--- Private Data ---//
 	static ProjectileFactory* m_projectileFactory;
-	CRadialAimer* m_turretAimer;
+	CTransform* m_transform;
+	CRadialAimer* m_aimer;
 	float m_fireRate;
 	float m_timeSinceLastFire;
 	EntityTag m_bulletTag;
@@ -44,5 +47,4 @@ private:
 	ProjectileShootEffect m_shootEffect;
 	ProjectileFlightEffect m_flightEffect;
 	ProjectileDestroyEffect m_destroyEffect;
-	//std::function<void(CTransform*, CTransform*)> m_projectilePrefabFunc;
 };

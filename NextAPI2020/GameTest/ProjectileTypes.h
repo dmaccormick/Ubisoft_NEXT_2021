@@ -3,7 +3,7 @@
 enum class ProjectileShootEffect
 {
 	Basic,
-	Fan_3,
+	TriShot,
 
 	Count
 };

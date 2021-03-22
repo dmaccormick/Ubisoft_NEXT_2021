@@ -92,10 +92,12 @@ void CHealth::Destroy()
 
 
 //--- Setters ---//
-void CHealth::SetMaxHealth(float _maxHealth)
+void CHealth::SetMaxHealth(float _maxHealth, bool _fullyHeal)
 {
 	m_maxHealth = _maxHealth;
-	m_currentHealth = m_maxHealth;
+
+	if (_fullyHeal)
+		m_currentHealth = m_maxHealth;
 }
 
 void CHealth::SetCurrentHealth(float _currentHealth)

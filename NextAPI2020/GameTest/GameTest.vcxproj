@@ -189,6 +189,7 @@
     <ClInclude Include="CButton.h" />
     <ClInclude Include="CEnemy.h" />
     <ClInclude Include="CHealth.h" />
+    <ClInclude Include="CHomingProjectile.h" />
     <ClInclude Include="CLabel.h" />
     <ClInclude Include="CLifetime.h" />
     <ClInclude Include="CLinearMover.h" />
@@ -211,6 +212,8 @@
     <ClInclude Include="Entity.h" />
     <ClInclude Include="EntityRadiusChecker.h" />
     <ClInclude Include="LevelLoader.h" />
+    <ClInclude Include="PlayerAbility.h" />
+    <ClInclude Include="PlayerUpgrade.h" />
     <ClInclude Include="ProjectileFactory.h" />
     <ClInclude Include="ProjectileTypes.h" />
     <ClInclude Include="Registry.h" />
@@ -238,6 +241,7 @@
     <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CEnemy.cpp" />
     <ClCompile Include="CHealth.cpp" />
+    <ClCompile Include="CHomingProjectile.cpp" />
     <ClCompile Include="CLabel.cpp" />
     <ClCompile Include="CLifetime.cpp" />
     <ClCompile Include="CLinearMover.cpp" />

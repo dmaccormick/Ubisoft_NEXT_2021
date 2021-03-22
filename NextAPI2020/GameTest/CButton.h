@@ -29,6 +29,7 @@ public:
 	//--- Setters ---//
 	void SetDimensions(Vec2 _dimensions);
 	void SetActive(bool _active);
+	void SetInteractable(bool _interactable);
 	void SetColor(Color _color);
 
 	//--- Getters ---//
@@ -40,6 +41,7 @@ private:
 	std::vector<std::function<void(Entity*)>> m_onClickCallbacks;
 	CTransform* m_transform;
 	bool m_active;
+	bool m_interactable;
 	Vec2 m_dimensions;
 	Vec2 m_min;
 	Vec2 m_max;

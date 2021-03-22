@@ -25,48 +25,139 @@ WaveSpawner::WaveSpawner(CTransform* _enemySpawnerLoc, Registry& _levelRegistry,
 	m_timeSinceLastSpawn = 0.0f;
 	m_allWavesComplete = false;
 
-	// Define the test wave
-	// 1 of every enemy
+	//// Define the test wave
+	//// 1 of every enemy
+	//m_waves.push_back(Wave({
+	//	SubWave(1.0f, EnemyType::Basic),
+	//	SubWave(1.0f, EnemyType::Fast),
+	//	SubWave(1.0f, EnemyType::Strong),
+	//	SubWave(1.0f, EnemyType::Healer),
+	//	SubWave(1.0f, EnemyType::Speeder),
+	//	SubWave(1.0f, EnemyType::Shooter),
+	//	SubWave(1.0f, EnemyType::EMP),
+	//	SubWave(1.0f, EnemyType::Bomber),
+	//	SubWave(1.0f, EnemyType::Boss),
+	//	}));
+
+	// Define the first wave
 	m_waves.push_back(Wave({
+		SubWave(1.0f, EnemyType::Basic),
+		SubWave(1.0f, EnemyType::Basic),
+		SubWave(1.0f, EnemyType::Fast),
+		SubWave(1.0f, EnemyType::Basic),
+		SubWave(1.0f, EnemyType::Strong),
+		SubWave(1.0f, EnemyType::Healer),
 		SubWave(1.0f, EnemyType::Basic),
 		SubWave(1.0f, EnemyType::Fast),
 		SubWave(1.0f, EnemyType::Strong),
-		SubWave(1.0f, EnemyType::Healer),
-		SubWave(1.0f, EnemyType::Speeder),
-		SubWave(1.0f, EnemyType::Shooter),
-		SubWave(1.0f, EnemyType::EMP),
-		SubWave(1.0f, EnemyType::Bomber),
-		SubWave(1.0f, EnemyType::Boss),
-		}));
-
-	// Define the first wave
-	// 10 basic enemies, spaced out exactly 1 second apart
-	m_waves.push_back(Wave({
-		SubWave(1.0f, EnemyType::Basic),
-		SubWave(1.0f, EnemyType::Basic),
-		SubWave(1.0f, EnemyType::Basic),
-		SubWave(1.0f, EnemyType::Basic),
-		SubWave(1.0f, EnemyType::Basic),
-		SubWave(1.0f, EnemyType::Basic),
-		SubWave(1.0f, EnemyType::Basic),
-		SubWave(1.0f, EnemyType::Basic),
-		SubWave(1.0f, EnemyType::Basic),
+		SubWave(1.0f, EnemyType::Fast),
 		SubWave(1.0f, EnemyType::Basic)
 	}));
 
 	// Define the second wave
-	// 10 basic enemies, spaced out 0.5 seconds apart
 	m_waves.push_back(Wave({
+		SubWave(0.5f, EnemyType::Speeder),
+		SubWave(0.5f, EnemyType::Basic),
+		SubWave(0.5f, EnemyType::Strong),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Healer),
 		SubWave(0.5f, EnemyType::Basic),
 		SubWave(0.5f, EnemyType::Basic),
-		SubWave(0.5f, EnemyType::Basic),
-		SubWave(0.5f, EnemyType::Basic),
-		SubWave(0.5f, EnemyType::Basic),
-		SubWave(0.5f, EnemyType::Basic),
-		SubWave(0.5f, EnemyType::Basic),
-		SubWave(0.5f, EnemyType::Basic),
-		SubWave(0.5f, EnemyType::Basic),
+		SubWave(0.5f, EnemyType::EMP),
+		SubWave(0.5f, EnemyType::Bomber),
 		SubWave(0.5f, EnemyType::Basic)
+	}));
+
+	// Define the third wave
+	m_waves.push_back(Wave({
+		SubWave(0.5f, EnemyType::Speeder),
+		SubWave(0.5f, EnemyType::Shooter),
+		SubWave(0.5f, EnemyType::Strong),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Shooter),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::EMP),
+		SubWave(0.5f, EnemyType::Bomber),
+		SubWave(0.5f, EnemyType::Shooter),
+		SubWave(0.5f, EnemyType::Speeder),
+		SubWave(0.5f, EnemyType::Basic),
+		SubWave(0.5f, EnemyType::Strong),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Shooter),
+		SubWave(0.5f, EnemyType::Basic),
+		SubWave(0.5f, EnemyType::EMP),
+		SubWave(0.5f, EnemyType::Bomber),
+		SubWave(0.5f, EnemyType::Healer)
+	}));
+
+	// Define the fourth wave
+	m_waves.push_back(Wave({
+		SubWave(0.5f, EnemyType::Speeder),
+		SubWave(0.5f, EnemyType::Bomber),
+		SubWave(0.5f, EnemyType::Strong),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Shooter),
+		SubWave(0.5f, EnemyType::Basic),
+		SubWave(0.5f, EnemyType::EMP),
+		SubWave(0.5f, EnemyType::Bomber),
+		SubWave(0.5f, EnemyType::Shooter),
+		SubWave(0.5f, EnemyType::Speeder),
+		SubWave(0.5f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Strong),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Basic),
+		SubWave(0.5f, EnemyType::EMP),
+		SubWave(0.5f, EnemyType::Bomber),
+		SubWave(0.5f, EnemyType::Healer)
+	}));
+
+	// Define the fifth wave
+	m_waves.push_back(Wave({
+		SubWave(0.5f, EnemyType::Speeder),
+		SubWave(0.5f, EnemyType::Bomber),
+		SubWave(0.5f, EnemyType::Strong),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Shooter),
+		SubWave(0.5f, EnemyType::Basic),
+		SubWave(0.5f, EnemyType::EMP),
+		SubWave(0.5f, EnemyType::Bomber),
+		SubWave(0.5f, EnemyType::Shooter),
+		SubWave(0.5f, EnemyType::Speeder),
+		SubWave(0.5f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Strong),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Basic),
+		SubWave(0.5f, EnemyType::EMP),
+		SubWave(0.5f, EnemyType::Bomber),
+		SubWave(3.0f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Speeder),
+		SubWave(0.5f, EnemyType::Bomber),
+		SubWave(0.5f, EnemyType::Strong),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Shooter),
+		SubWave(0.5f, EnemyType::Basic),
+		SubWave(0.5f, EnemyType::EMP),
+		SubWave(0.5f, EnemyType::Bomber),
+		SubWave(0.5f, EnemyType::Shooter),
+		SubWave(0.5f, EnemyType::Speeder),
+		SubWave(0.5f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Strong),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Healer),
+		SubWave(0.5f, EnemyType::Fast),
+		SubWave(0.5f, EnemyType::Basic),
+		SubWave(0.5f, EnemyType::EMP),
+		SubWave(0.5f, EnemyType::Bomber),
+		SubWave(0.5f, EnemyType::Boss)
 	}));
 }
 

@@ -105,6 +105,9 @@
     <ClCompile Include="CMouseFollower.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
+    <ClCompile Include="CHomingProjectile.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
@@ -231,6 +234,15 @@
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
     <ClInclude Include="CMouseFollower.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAbility.h">
+      <Filter>Expanded Framework\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerUpgrade.h">
+      <Filter>Expanded Framework\Utilities</Filter>
+    </ClInclude>
+    <ClInclude Include="CHomingProjectile.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>

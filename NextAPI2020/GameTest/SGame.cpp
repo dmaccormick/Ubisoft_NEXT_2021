@@ -37,17 +37,36 @@ SGame::SGame()
 	m_levelPieces = std::vector<Entity*>();
 	m_timeBetweenEnemies = 1.0f;
 	m_timeSinceLastEnemy = m_timeBetweenEnemies;
-	m_turretBuildCost = 100.0f;
 	m_victoryState = VictoryState::StillPlaying;
 	m_quitToMenu = false;
 	m_waveSpawner = nullptr;
 	m_projectileFactory = nullptr;
 	m_currentAbility = PlayerAbility::None;
 
+	m_turretRadius = 100.0f;
+	m_turretFireRate = 0.5f;
+	m_turretDamage = 50.0f;
+	m_turretHealth = 100.0f;
+	m_turretBuildCost = 100.0f;
+	m_turretShootEffect = ProjectileShootEffect::Basic;
+	m_turretFlightEffect = ProjectileFlightEffect::Basic;
+	m_turretDestroyEffect = ProjectileDestroyEffect::Count;
+
 	m_abilityDescs = { 
 		{PlayerAbility::Heal,	PlayerAbilityDesc(50.0f, "Heal",	Color::Red(),	200.0f)}, 
 		{PlayerAbility::Slow,	PlayerAbilityDesc(100.0f, "Slow",	Color::Green(),	150.0f)},
 		{PlayerAbility::Damage, PlayerAbilityDesc(75.0f, "Damage",	Color::Brown(),	100.0f)}
+	};
+
+	m_upgradeDescs = {
+		{PlayerUpgrade::RadiusUp,	PlayerUpgradeDesc(500.0f, "x2 Turret Radius")},
+		{PlayerUpgrade::FireRateUp, PlayerUpgradeDesc(500.0f, "x2 Turret Fire Rate")},
+		{PlayerUpgrade::DamageUp,	PlayerUpgradeDesc(500.0f, "x2 Turret Damage")},
+		{PlayerUpgrade::HealthUp,	PlayerUpgradeDesc(500.0f, "x2 Turret Health")},
+		{PlayerUpgrade::CostDown,	PlayerUpgradeDesc(500.0f, "1/2 Turret Build Cost")},
+		{PlayerUpgrade::TriShot,	PlayerUpgradeDesc(500.0f, "Tri-Shot")},
+		{PlayerUpgrade::Homing,		PlayerUpgradeDesc(500.0f, "Bullet Homing")},
+		{PlayerUpgrade::Splash,		PlayerUpgradeDesc(500.0f, "Bullet Splash Damage")}
 	};
 }
 
@@ -66,6 +85,7 @@ void SGame::Init()
 	CreateQuitToMenuButton();
 	SetupPlayer();
 	CreateAbilityUI();
+	CreateUpgradeUI();
 	
 	m_registry.InitAll();
 
@@ -319,6 +339,11 @@ void SGame::DamageWithBullet(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 		float playerBulletDmg = playerBullet->GetComponent<CProjectile>()->GetDamage();
 		enemy->GetComponent<CHealth>()->Damage(playerBulletDmg);
 
+		// If the bullet has splash damage, we should also trigger that
+		auto splashDmg = playerBullet->GetComponent<CRadialDamager>();
+		if (splashDmg)
+			splashDmg->TriggerDamage(playerBullet);
+
 		// Delete the bullet since it collided
 		m_registry.DeleteEntity(playerBullet);
 	}
@@ -371,17 +396,21 @@ void SGame::PlaceTurret(Entity* _callingButton)
 			radiusIndicatorComp->Init();
 
 			CRadialAimer* aimerComp = m_registry.AddComponent<CRadialAimer>(turret);
-			aimerComp->SetRadius(100.0f);
+			aimerComp->SetRadius(m_turretRadius);
 			aimerComp->SetTargetEntityTag(EntityTag::Enemy);
 			aimerComp->Init();
 
 			CShooter* shooterComp = m_registry.AddComponent<CShooter>(turret);
-			shooterComp->SetFireRate(0.5f);
+			shooterComp->SetFireRate(m_turretFireRate);
 			shooterComp->SetBulletTag(EntityTag::BulletPlayer);
+			shooterComp->SetShootEffect(m_turretShootEffect);
+			shooterComp->SetFlightEffect(m_turretFlightEffect);
+			shooterComp->SetDestroyEffect(m_turretDestroyEffect);
+			shooterComp->SetBulletDmg(m_turretDamage);
 			shooterComp->Init();
 
 			CHealth* healthComp = m_registry.AddComponent<CHealth>(turret);
-			healthComp->SetMaxHealth(100.0f);
+			healthComp->SetMaxHealth(m_turretHealth);
 			healthComp->AddOnDestroyCallback(std::bind(&SGame::OnTurretDestroyed, this, P_ARG::_1));
 			healthComp->Init();
 
@@ -430,7 +459,7 @@ void SGame::QuitToMenu(Entity* _callingButton)
 
 void SGame::CreateAbilityUI()
 {
-	Vec2 firstButtonLocation = Vec2(100.0f, 500.0f);
+	Vec2 firstButtonLocation = Vec2(150.0f, 500.0f);
 	Vec2 individualOffset = Vec2(0.0f, 60.0f);
 
 	// Create the label
@@ -443,7 +472,7 @@ void SGame::CreateAbilityUI()
 
 		CLabel* labelComp = m_registry.AddComponent<CLabel>(abilityLabel);
 		labelComp->SetText("REUSABLE ABILITIES");
-		labelComp->SetOffset(Vec2(-50.0f, 0.0f));
+		labelComp->SetOffset(Vec2(-100.0f, 0.0f));
 		labelComp->Init();
 	}
 
@@ -452,7 +481,6 @@ void SGame::CreateAbilityUI()
 	{
 		PlayerAbility ability = (PlayerAbility)i;
 
-		// Place the quit to menu button
 		auto abilityButton = m_registry.CreateEntity(std::to_string(i));
 
 		CTransform* transformComp = m_registry.AddComponent<CTransform>(abilityButton);
@@ -460,7 +488,7 @@ void SGame::CreateAbilityUI()
 		transformComp->SetPosition(buttonPos);
 
 		CButton* buttonComp = m_registry.AddComponent<CButton>(abilityButton);
-		buttonComp->SetDimensions(Vec2(100.0f, 50.0f));
+		buttonComp->SetDimensions(Vec2(200.0f, 50.0f));
 		buttonComp->SetColor(m_abilityDescs[ability].m_color);
 		buttonComp->AddOnClickedCallback(std::bind(&SGame::CreateAbilityReticle, this, P_ARG::_1));
 
@@ -572,6 +600,176 @@ void SGame::CancelAbility()
 	m_registry.DeleteEntity(m_abilityReticle);
 	m_abilityReticle = nullptr;
 	m_currentAbility = PlayerAbility::None;
+}
+
+void SGame::CreateUpgradeUI()
+{
+	Vec2 firstButtonLocation = Vec2(900.0f, 500.0f);
+	Vec2 individualOffset = Vec2(0.0f, 60.0f);
+
+	// Create the label
+	{
+		auto upgradeLabel = m_registry.CreateEntity("UpgradeLabel");
+
+		CTransform* transformComp = m_registry.AddComponent<CTransform>(upgradeLabel);
+		transformComp->SetPosition(firstButtonLocation + individualOffset);
+		transformComp->Init();
+
+		CLabel* labelComp = m_registry.AddComponent<CLabel>(upgradeLabel);
+		labelComp->SetText("ONE-TIME UPGRADES");
+		labelComp->SetOffset(Vec2(-100.0f, 0.0f));
+		labelComp->Init();
+	}
+
+	// Create the upgrade buttons
+	for (int i = 0; i < (int)PlayerUpgrade::Count; i++)
+	{
+		PlayerUpgrade upgrade = (PlayerUpgrade)i;
+
+		// Place the quit to menu button
+		auto upgradeButton = m_registry.CreateEntity(std::to_string(i));
+
+		CTransform* transformComp = m_registry.AddComponent<CTransform>(upgradeButton);
+		Vec2 buttonPos = firstButtonLocation - (individualOffset * (float)i);
+		transformComp->SetPosition(buttonPos);
+
+		CButton* buttonComp = m_registry.AddComponent<CButton>(upgradeButton);
+		buttonComp->SetDimensions(Vec2(200.0f, 50.0f));
+		buttonComp->SetColor(Color::Green());
+		buttonComp->AddOnClickedCallback(std::bind(&SGame::PurchaseUpgrade, this, P_ARG::_1));
+
+		CLabel* labelComp = m_registry.AddComponent<CLabel>(upgradeButton);
+		int costAsInt = (int)rint(m_upgradeDescs[upgrade].m_cost);
+		labelComp->SetText(m_upgradeDescs[upgrade].m_name + " (" + std::to_string(costAsInt) + ")");
+		labelComp->SetColor(Color::Green());
+		labelComp->SetOffset(Vec2(-40.0f, -5.0f));
+		labelComp->SetFont(Font::HELVETICA_10);
+	}
+}
+
+void SGame::PurchaseUpgrade(Entity* _callingButton)
+{
+	m_turretRadius = 100.0f;
+	m_turretFireRate = 0.5f;
+	m_turretDamage = 50.0f;
+	m_turretHealth = 100.0f;
+	m_turretBuildCost = 100.0f;
+	m_turretShootEffect = ProjectileShootEffect::Basic;
+	m_turretFlightEffect = ProjectileFlightEffect::Basic;
+	m_turretDestroyEffect = ProjectileDestroyEffect::Count;
+
+	// Figure out the upgrade that was purchased based on the name of the button
+	int buttonId = std::stoi(_callingButton->GetName());
+	PlayerUpgrade upgrade = (PlayerUpgrade)buttonId;
+
+	// Try to buy the upgrade
+	if (m_playerBank->GetMoney() >= m_upgradeDescs[upgrade].m_cost)
+	{
+		// Charge the player
+		m_playerBank->RemoveMoney(m_upgradeDescs[upgrade].m_cost);
+
+		// Perform the upgrade
+		switch (upgrade)
+		{
+			case PlayerUpgrade::RadiusUp:
+			{
+				auto turretAimers = m_registry.GetAllComponentsByTypeAndTags<CRadialAimer>({ EntityTag::Turret });
+
+				// Double the turret radii
+				m_turretRadius *= 2.0f;
+				for (auto aimer : turretAimers)
+					aimer->SetRadius(m_turretRadius);
+				
+				break;
+			}
+
+			case PlayerUpgrade::FireRateUp:
+			{
+				auto turretShooters = m_registry.GetAllComponentsByTypeAndTags<CShooter>({ EntityTag::Turret });
+
+				// Half the fire rate (shoots twice as fast)
+				m_turretFireRate *= 0.5f;
+				for (auto shooter : turretShooters)
+					shooter->SetFireRate(m_turretFireRate);
+
+				break;
+			}
+
+			case PlayerUpgrade::DamageUp:
+			{
+				auto turretShooters = m_registry.GetAllComponentsByTypeAndTags<CShooter>({ EntityTag::Turret });
+
+				// Double the damage
+				m_turretDamage *= 2.0f;
+				for (auto shooter : turretShooters)
+					shooter->SetBulletDmg(m_turretDamage);
+
+				break;
+			}
+
+			case PlayerUpgrade::HealthUp:
+			{
+				auto turretHealthComps = m_registry.GetAllComponentsByTypeAndTags<CHealth>({ EntityTag::Turret });
+
+				// Double the health
+				m_turretHealth *= 2.0f;
+				for (auto healthComp : turretHealthComps)
+					healthComp->SetMaxHealth(m_turretHealth, false);
+
+				break;
+			}
+			
+			case PlayerUpgrade::CostDown:
+			{
+				m_turretBuildCost *= 0.5f;
+				break;
+			}
+
+			case PlayerUpgrade::TriShot:
+			{
+				auto turretShooters = m_registry.GetAllComponentsByTypeAndTags<CShooter>({ EntityTag::Turret });
+
+				// Make the turret shoot three bullets at a time
+				m_turretShootEffect = ProjectileShootEffect::TriShot;
+				for (auto shooter : turretShooters)
+					shooter->SetShootEffect(ProjectileShootEffect::TriShot);
+
+				break;
+			}
+
+			case PlayerUpgrade::Homing:
+			{
+				auto turretShooters = m_registry.GetAllComponentsByTypeAndTags<CShooter>({ EntityTag::Turret });
+
+				// Make the projectiles home towards their targets
+				m_turretFlightEffect = ProjectileFlightEffect::Homing;
+				for (auto shooter : turretShooters)
+					shooter->SetFlightEffect(ProjectileFlightEffect::Homing);
+
+				break;
+			}
+
+			case PlayerUpgrade::Splash:
+			{
+				auto turretShooters = m_registry.GetAllComponentsByTypeAndTags<CShooter>({ EntityTag::Turret });
+
+				// Make the projectiles cause splash damage when they hit their targets
+				m_turretDestroyEffect = ProjectileDestroyEffect::Splash;
+				for (auto shooter : turretShooters)
+					shooter->SetDestroyEffect(ProjectileDestroyEffect::Splash);
+
+				break;
+			}
+
+			default:
+				break;
+		}
+
+		// Disable the button to prevent the upgrade from being used again
+		_callingButton->GetComponent<CButton>()->SetInteractable(false);
+		_callingButton->GetComponent<CButton>()->SetColor(Color::Red());
+		_callingButton->GetComponent<CLabel>()->SetColor(Color::Red());
+	}
 }
 
 

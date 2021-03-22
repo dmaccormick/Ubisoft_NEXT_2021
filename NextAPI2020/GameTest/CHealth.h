@@ -26,7 +26,7 @@ public:
 	void Destroy();
 
 	//--- Setters ---//
-	void SetMaxHealth(float _maxHealth);
+	void SetMaxHealth(float _maxHealth, bool m_fullyHeal = true);
 	void SetCurrentHealth(float _currentHealth);
 
 	//--- Getters ---//

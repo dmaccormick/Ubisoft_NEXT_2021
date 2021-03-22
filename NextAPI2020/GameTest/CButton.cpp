@@ -10,6 +10,7 @@ CButton::CButton()
 {
 	m_transform = nullptr;
 	m_active = true;
+	m_interactable = true;
 	m_dimensions = Vec2::Zero();
 	m_min = Vec2::Zero();
 	m_max = Vec2::Zero();
@@ -32,7 +33,7 @@ void CButton::Update(float _deltaTime)
 {
 	// If the button is active, check for a mouse click within the bounds of the button
 	// If there is one, trigger the click callbacks
-	if (m_active)
+	if (m_active && m_interactable)
 	{
 		RecalulateMinAndMax();
 
@@ -111,6 +112,11 @@ void CButton::SetActive(bool _active)
 void CButton::SetColor(Color _color)
 {
 	m_color = _color;
+}
+
+void CButton::SetInteractable(bool _interactable)
+{
+	m_interactable = _interactable;
 }
 
 
