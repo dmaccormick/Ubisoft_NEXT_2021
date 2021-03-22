@@ -170,7 +170,7 @@ Entity* EnemyFactory::CreateSpeederEnemy() const
 
 	CRadialSpeeder* radialSpeedComp = m_levelRegistry->AddComponent<CRadialSpeeder>(enemy);
 	radialSpeedComp->SetRadius(200.0f);
-	radialSpeedComp->SetSpeedModifier(2.0f);
+	radialSpeedComp->SetSpeedModifier(1.0f); // Increases by 100%, so doubling
 	radialSpeedComp->SetTargetEntityTag(EntityTag::Enemy);
 	radialSpeedComp->Init();
 

@@ -20,6 +20,11 @@
 #include "SceneManager.h"
 #include "SMenu.h"
 #include "CRadiusIndicator.h"
+#include "CMouseFollower.h"
+#include "CRadialHealer.h"
+#include "CRadialDamager.h"
+#include "EntityRadiusChecker.h"
+#include "CRadialSpeeder.h"
 
 //--- Statics ---//
 std::string SGame::m_levelName = "Level_1.txt";
@@ -37,6 +42,13 @@ SGame::SGame()
 	m_quitToMenu = false;
 	m_waveSpawner = nullptr;
 	m_projectileFactory = nullptr;
+	m_currentAbility = PlayerAbility::None;
+
+	m_abilityDescs = { 
+		{PlayerAbility::Heal,	PlayerAbilityDesc(50.0f, "Heal",	Color::Red(),	200.0f)}, 
+		{PlayerAbility::Slow,	PlayerAbilityDesc(100.0f, "Slow",	Color::Green(),	150.0f)},
+		{PlayerAbility::Damage, PlayerAbilityDesc(75.0f, "Damage",	Color::Brown(),	100.0f)}
+	};
 }
 
 SGame::~SGame()
@@ -53,6 +65,7 @@ void SGame::Init()
 	LoadLevel();
 	CreateQuitToMenuButton();
 	SetupPlayer();
+	CreateAbilityUI();
 	
 	m_registry.InitAll();
 
@@ -91,6 +104,15 @@ void SGame::Update(float _deltaTime)
 
 	// Look for and handle any collisions
 	CheckCollisions();
+
+	// Update the ability
+	if (m_abilityReticle != nullptr)
+	{
+		if (App::IsKeyPressed(/*VK_LBUTTON*/ VK_SPACE))
+			TriggerAbility();
+		else if (App::IsKeyPressed(VK_RBUTTON))
+			CancelAbility();
+	}
 
 	// Update the wave spawner
 	m_waveSpawner->Update(_deltaTime);
@@ -323,7 +345,7 @@ void SGame::KillEnemy(Entity* _enemy)
 
 void SGame::PlaceTurret(Entity* _callingButton)
 {
-	if (m_playerBank->GetMoney() >= m_turretBuildCost)
+	if (!m_abilityReticle && m_playerBank->GetMoney() >= m_turretBuildCost)
 	{
 		// Charge the player the cost to build it
 		m_playerBank->RemoveMoney(m_turretBuildCost);
@@ -336,7 +358,7 @@ void SGame::PlaceTurret(Entity* _callingButton)
 		transformComp->Init();
 
 		CSprite* spriteComp = m_registry.AddComponent<CSprite>(turret);
-		spriteComp->LoadSprite(".\\GameData\\Sprites\\Turret_Basic.bmp");
+		spriteComp->LoadSprite(".\\GameData\\Sprites\\Turret.bmp");
 		spriteComp->SetRenderLayer(-1.0f);
 		spriteComp->Init();
 
@@ -377,6 +399,138 @@ void SGame::GameOver(Entity* _playerEntity)
 void SGame::QuitToMenu(Entity* _callingButton)
 {
 	m_quitToMenu = true;
+}
+
+void SGame::CreateAbilityUI()
+{
+	Vec2 startingLocation = Vec2(100.0f, 500.0f);
+	Vec2 individualOffset = Vec2(0.0f, 60.0f);
+
+	// Create the ability buttons
+	for (int i = 0; i < (int)PlayerAbility::Count; i++)
+	{
+		PlayerAbility ability = (PlayerAbility)i;
+
+		// Place the quit to menu button
+		auto abilityButton = m_registry.CreateEntity(std::to_string(i));
+
+		CTransform* transformComp = m_registry.AddComponent<CTransform>(abilityButton);
+		Vec2 buttonPos = startingLocation + (individualOffset * (float)i);
+		transformComp->SetPosition(buttonPos);
+
+		CButton* buttonComp = m_registry.AddComponent<CButton>(abilityButton);
+		buttonComp->SetDimensions(Vec2(100.0f, 50.0f));
+		buttonComp->SetColor(m_abilityDescs[ability].m_color);
+		buttonComp->AddOnClickedCallback(std::bind(&SGame::CreateAbilityReticle, this, P_ARG::_1));
+
+		CLabel* labelComp = m_registry.AddComponent<CLabel>(abilityButton);
+		int costAsInt = (int)rint(m_abilityDescs[ability].m_cost);
+		labelComp->SetText(m_abilityDescs[ability].m_name + " (" + std::to_string(costAsInt) + ")");
+		labelComp->SetColor(m_abilityDescs[ability].m_color);
+		labelComp->SetOffset(Vec2(-40.0f, -5.0f));
+		labelComp->SetFont(Font::HELVETICA_10);
+	}
+}
+
+void SGame::CreateAbilityReticle(Entity* _callingButton)
+{
+	if (!m_abilityReticle)
+	{
+		// Figure out the ability that was called based on the name of the button
+		int buttonId = std::stoi(_callingButton->GetName());
+		m_currentAbility = (PlayerAbility)buttonId;
+
+		// If the player has enough money to trigger the ability, go ahead and spawn the reticle
+		if (m_playerBank->GetMoney() >= m_abilityDescs[m_currentAbility].m_cost)
+		{
+			m_playerBank->RemoveMoney(m_abilityDescs[m_currentAbility].m_cost);
+
+			m_abilityReticle = m_registry.CreateEntity("Reticle");
+
+			CTransform* transformComp = m_registry.AddComponent<CTransform>(m_abilityReticle);
+			transformComp->Init();
+
+			CMouseFollower* mouseFollowerComp = m_registry.AddComponent<CMouseFollower>(m_abilityReticle);
+			mouseFollowerComp->Init();
+
+			CRadiusIndicator* radiusIndicatorComp = m_registry.AddComponent<CRadiusIndicator>(m_abilityReticle);
+			radiusIndicatorComp->SetColor(m_abilityDescs[m_currentAbility].m_color);
+			radiusIndicatorComp->SetRadius(m_abilityDescs[m_currentAbility].m_radius);
+			radiusIndicatorComp->Init();
+		}
+	}	
+}
+
+void SGame::TriggerAbility()
+{
+	Vec2 abilityCenter = m_abilityReticle->GetComponent<CTransform>()->GetPosition();
+	float abilityRadius = m_abilityDescs[m_currentAbility].m_radius;
+
+	switch (m_currentAbility)
+	{
+		case PlayerAbility::Heal:
+		{
+			auto turretsInRange = EntityRadiusChecker::GetTaggedComponentsInRange<CHealth>(&m_registry, EntityTag::Turret, abilityCenter, abilityRadius);
+			
+			for (auto turret : turretsInRange)
+				turret->Heal(50.0f);
+
+			break;
+		}
+
+		case PlayerAbility::Damage:
+		{
+			auto enemiesInRange = EntityRadiusChecker::GetTaggedComponentsInRange<CHealth>(&m_registry, EntityTag::Enemy, abilityCenter, abilityRadius);
+
+			for (auto enemy : enemiesInRange)
+				enemy->Damage(50.0f);
+
+			break;
+		}
+
+		case PlayerAbility::Slow:
+		{
+			// Place a slow field onto the ground that lasts for 3 seconds
+			auto slowField = m_registry.CreateEntity("SlowField");
+
+			CTransform* transformComp = m_registry.AddComponent<CTransform>(slowField);
+			transformComp->SetPosition(m_abilityReticle->GetComponent<CTransform>()->GetPosition());
+			transformComp->Init();
+
+			CRadiusIndicator* radiusIndicatorComp = m_registry.AddComponent<CRadiusIndicator>(slowField);
+			radiusIndicatorComp->SetColor(m_abilityDescs[m_currentAbility].m_color);
+			radiusIndicatorComp->Init();
+
+			CRadialSpeeder* radialSpeedComp = m_registry.AddComponent<CRadialSpeeder>(slowField);
+			radialSpeedComp->SetRadius(m_abilityDescs[m_currentAbility].m_radius);
+			radialSpeedComp->SetSpeedModifier(-0.5f);
+			radialSpeedComp->SetTargetEntityTag(EntityTag::Enemy);
+			radialSpeedComp->Init();
+
+			CLifetime* lifetimeComp = m_registry.AddComponent<CLifetime>(slowField);
+			lifetimeComp->SetMaxLifetime(3.0f);
+			lifetimeComp->Init();
+		}
+
+		default:
+			break;
+	}
+
+	// No ability equipped now
+	m_registry.DeleteEntity(m_abilityReticle);
+	m_abilityReticle = nullptr;
+	m_currentAbility = PlayerAbility::None;
+}
+
+void SGame::CancelAbility()
+{
+	// Refund the player their money
+	m_playerBank->AddMoney(m_abilityDescs[m_currentAbility].m_cost);
+
+	// No ability equipped now
+	m_registry.DeleteEntity(m_abilityReticle);
+	m_abilityReticle = nullptr;
+	m_currentAbility = PlayerAbility::None;
 }
 
 

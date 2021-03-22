@@ -15,6 +15,40 @@
 #include "WaveSpawner.h"
 #include "ProjectileFactory.h"
 
+enum class PlayerAbility
+{
+	Heal,
+	Damage,
+	Slow,
+
+	Count,
+	None
+};
+
+struct PlayerAbilityDesc
+{
+	PlayerAbilityDesc()
+	{
+		m_cost = 0.0f;
+		m_name = "";
+		m_color = Color::White();
+		m_radius = 0.0f;
+	}
+
+	PlayerAbilityDesc(float _cost, std::string _name, Color _color, float _radius)
+	{
+		m_cost = _cost;
+		m_name = _name;
+		m_color = _color;
+		m_radius = _radius;
+	}
+
+	float m_cost;
+	std::string m_name;
+	Color m_color;
+	float m_radius;
+};
+
 class SGame : public Scene
 {
 public:
@@ -39,6 +73,10 @@ public:
 	void PlaceTurret(Entity* _callingButton);
 	void GameOver(Entity* _playerEntity);
 	void QuitToMenu(Entity* _callingButton);
+	void CreateAbilityUI();
+	void CreateAbilityReticle(Entity* _callingButton);
+	void TriggerAbility();
+	void CancelAbility();
 
 	//--- Setters ---//
 	static void SetLevelName(std::string _levelName);
@@ -62,4 +100,7 @@ private:
 	bool m_quitToMenu;
 	WaveSpawner* m_waveSpawner;
 	ProjectileFactory* m_projectileFactory;
+	Entity* m_abilityReticle;
+	PlayerAbility m_currentAbility;
+	std::map<PlayerAbility, PlayerAbilityDesc> m_abilityDescs;
 };

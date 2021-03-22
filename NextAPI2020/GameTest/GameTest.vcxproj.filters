@@ -102,6 +102,9 @@
     <ClCompile Include="CShooter.cpp">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClCompile>
+    <ClCompile Include="CMouseFollower.cpp">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="App\app.h" />
@@ -225,6 +228,9 @@
       <Filter>Expanded Framework\Utilities</Filter>
     </ClInclude>
     <ClInclude Include="CShooter.h">
+      <Filter>Expanded Framework\ECS\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="CMouseFollower.h">
       <Filter>Expanded Framework\ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>

@@ -192,6 +192,7 @@
     <ClInclude Include="CLabel.h" />
     <ClInclude Include="CLifetime.h" />
     <ClInclude Include="CLinearMover.h" />
+    <ClInclude Include="CMouseFollower.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="CProjectile.h" />
     <ClInclude Include="CRadialDamager.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="CLabel.cpp" />
     <ClCompile Include="CLifetime.cpp" />
     <ClCompile Include="CLinearMover.cpp" />
+    <ClCompile Include="CMouseFollower.cpp" />
     <ClCompile Include="CProjectile.cpp" />
     <ClCompile Include="CRadialDamager.cpp" />
     <ClCompile Include="CRadialEMP.cpp" />
