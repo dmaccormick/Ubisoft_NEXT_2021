@@ -650,15 +650,6 @@ void SGame::CreateUpgradeUI()
 
 void SGame::PurchaseUpgrade(Entity* _callingButton)
 {
-	m_turretRadius = 100.0f;
-	m_turretFireRate = 0.5f;
-	m_turretDamage = 50.0f;
-	m_turretHealth = 100.0f;
-	m_turretBuildCost = 100.0f;
-	m_turretShootEffect = ProjectileShootEffect::Basic;
-	m_turretFlightEffect = ProjectileFlightEffect::Basic;
-	m_turretDestroyEffect = ProjectileDestroyEffect::Count;
-
 	// Figure out the upgrade that was purchased based on the name of the button
 	int buttonId = std::stoi(_callingButton->GetName());
 	PlayerUpgrade upgrade = (PlayerUpgrade)buttonId;
