@@ -184,6 +184,8 @@ void SGame::LoadLevel()
 		label->Init();
 		label->SetColor(Color::Yellow());
 		label->SetFont(Font::BASE_8_BY_13);
+
+		m_turretPlacements[towerBuildLoc] = nullptr;
 	}
 }
 
@@ -351,43 +353,68 @@ void SGame::PlaceTurret(Entity* _callingButton)
 		m_playerBank->RemoveMoney(m_turretBuildCost);
 
 		// Build a tower on top of the build location
-		auto turret = m_registry.CreateEntity("Turret", EntityTag::Turret);
+		{
+			auto turret = m_registry.CreateEntity("Turret", EntityTag::Turret);
 
-		CTransform* transformComp = m_registry.AddComponent<CTransform>(turret);
-		transformComp->SetPosition(_callingButton->GetComponent<CTransform>()->GetPosition());
-		transformComp->Init();
+			CTransform* transformComp = m_registry.AddComponent<CTransform>(turret);
+			transformComp->SetPosition(_callingButton->GetComponent<CTransform>()->GetPosition());
+			transformComp->Init();
 
-		CSprite* spriteComp = m_registry.AddComponent<CSprite>(turret);
-		spriteComp->LoadSprite(".\\GameData\\Sprites\\Turret.bmp");
-		spriteComp->SetRenderLayer(-1.0f);
-		spriteComp->Init();
+			CSprite* spriteComp = m_registry.AddComponent<CSprite>(turret);
+			spriteComp->LoadSprite(".\\GameData\\Sprites\\Turret.bmp");
+			spriteComp->SetRenderLayer(-1.0f);
+			spriteComp->Init();
 
-		CRadiusIndicator* radiusIndicatorComp = m_registry.AddComponent<CRadiusIndicator>(turret);
-		radiusIndicatorComp->SetColor(Color::White(0.2f));
-		radiusIndicatorComp->SetRenderLayer(-0.5f);
-		radiusIndicatorComp->Init();
+			CRadiusIndicator* radiusIndicatorComp = m_registry.AddComponent<CRadiusIndicator>(turret);
+			radiusIndicatorComp->SetColor(Color::White(0.2f));
+			radiusIndicatorComp->SetRenderLayer(-0.5f);
+			radiusIndicatorComp->Init();
 
-		CRadialAimer* aimerComp = m_registry.AddComponent<CRadialAimer>(turret);
-		aimerComp->SetRadius(100.0f);
-		aimerComp->SetTargetEntityTag(EntityTag::Enemy);
-		aimerComp->Init();
+			CRadialAimer* aimerComp = m_registry.AddComponent<CRadialAimer>(turret);
+			aimerComp->SetRadius(100.0f);
+			aimerComp->SetTargetEntityTag(EntityTag::Enemy);
+			aimerComp->Init();
 
-		CShooter* shooterComp = m_registry.AddComponent<CShooter>(turret);
-		shooterComp->SetFireRate(0.5f);
-		shooterComp->SetBulletTag(EntityTag::BulletPlayer);
-		shooterComp->Init();
+			CShooter* shooterComp = m_registry.AddComponent<CShooter>(turret);
+			shooterComp->SetFireRate(0.5f);
+			shooterComp->SetBulletTag(EntityTag::BulletPlayer);
+			shooterComp->Init();
 
-		CHealth* healthComp = m_registry.AddComponent<CHealth>(turret);
-		healthComp->SetMaxHealth(100.0f);
-		healthComp->Init();
+			CHealth* healthComp = m_registry.AddComponent<CHealth>(turret);
+			healthComp->SetMaxHealth(100.0f);
+			healthComp->AddOnDestroyCallback(std::bind(&SGame::OnTurretDestroyed, this, P_ARG::_1));
+			healthComp->Init();
 
-		CBoxCollider* boxColliderComp = m_registry.AddComponent<CBoxCollider>(turret);
-		boxColliderComp->SetBaseDimensions(32.0f, 32.0f);
-		boxColliderComp->Init();
+			CBoxCollider* boxColliderComp = m_registry.AddComponent<CBoxCollider>(turret);
+			boxColliderComp->SetBaseDimensions(32.0f, 32.0f);
+			boxColliderComp->Init();
+
+			// Store the turret in the mapping
+			m_turretPlacements[_callingButton] = turret;
+		}
 
 		// Disable the button now that the tower has been placed
 		_callingButton->GetComponent<CButton>()->SetActive(false);
 		_callingButton->GetComponent<CLabel>()->SetActive(false);
+	}
+}
+
+void SGame::OnTurretDestroyed(Entity* _turret)
+{
+	// Find the corresponding placement button and reset it so the player can make another turret in its place
+	for (auto turretPlacement : m_turretPlacements)
+	{
+		if (turretPlacement.second == _turret)
+		{
+			// Reset the tile
+			Entity* turretTile = turretPlacement.first;
+			turretTile->GetComponent<CButton>()->SetActive(true);
+			turretTile->GetComponent<CLabel>()->SetActive(true);
+
+			// Clear the turret from the list since it no longer exists
+			turretPlacement.second = nullptr;
+			return;
+		}
 	}
 }
 
@@ -403,8 +430,22 @@ void SGame::QuitToMenu(Entity* _callingButton)
 
 void SGame::CreateAbilityUI()
 {
-	Vec2 startingLocation = Vec2(100.0f, 500.0f);
+	Vec2 firstButtonLocation = Vec2(100.0f, 500.0f);
 	Vec2 individualOffset = Vec2(0.0f, 60.0f);
+
+	// Create the label
+	{
+		auto abilityLabel = m_registry.CreateEntity("AbilityLabel");
+
+		CTransform* transformComp = m_registry.AddComponent<CTransform>(abilityLabel);
+		transformComp->SetPosition(firstButtonLocation + individualOffset);
+		transformComp->Init();
+
+		CLabel* labelComp = m_registry.AddComponent<CLabel>(abilityLabel);
+		labelComp->SetText("REUSABLE ABILITIES");
+		labelComp->SetOffset(Vec2(-50.0f, 0.0f));
+		labelComp->Init();
+	}
 
 	// Create the ability buttons
 	for (int i = 0; i < (int)PlayerAbility::Count; i++)
@@ -415,7 +456,7 @@ void SGame::CreateAbilityUI()
 		auto abilityButton = m_registry.CreateEntity(std::to_string(i));
 
 		CTransform* transformComp = m_registry.AddComponent<CTransform>(abilityButton);
-		Vec2 buttonPos = startingLocation + (individualOffset * (float)i);
+		Vec2 buttonPos = firstButtonLocation - (individualOffset * (float)i);
 		transformComp->SetPosition(buttonPos);
 
 		CButton* buttonComp = m_registry.AddComponent<CButton>(abilityButton);

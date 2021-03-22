@@ -71,6 +71,7 @@ public:
 	void DamageWithBullet(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap);
 	void KillEnemy(Entity* _entity);
 	void PlaceTurret(Entity* _callingButton);
+	void OnTurretDestroyed(Entity* _turret);
 	void GameOver(Entity* _playerEntity);
 	void QuitToMenu(Entity* _callingButton);
 	void CreateAbilityUI();
@@ -88,7 +89,7 @@ private:
 	float m_timeBetweenEnemies;
 	float m_timeSinceLastEnemy;
 	float m_turretBuildCost;
-	std::vector<Entity*> m_enemies;
+	std::map<Entity*, Entity*> m_turretPlacements;
 	Entity* m_player;
 	CBank* m_playerBank;
 	CLabel* m_playerMoneyLabel;
