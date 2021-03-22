@@ -320,6 +320,7 @@ void SGame::AttackPlayerBase(CBoxCollider* _a, CBoxCollider* _b, Vec2& _overlap)
 	m_playerHealth->Damage(enemy->GetComponent<CEnemy>()->GetDamage());
 
 	// Delete the enemy since it has reached the player base
+	m_waveSpawner->OnEnemyDestroy(enemy);
 	m_registry.DeleteEntity(enemy);
 }
 

@@ -220,7 +220,7 @@ void WaveSpawner::OnEnemyDestroy(Entity* _enemy)
 //--- Getters ---//
 int WaveSpawner::GetCurrentWaveNumber() const
 {
-	return m_currentWaveNumber;
+	return m_currentWaveNumber + 1;
 }
 
 int WaveSpawner::GetNumWaves() const
